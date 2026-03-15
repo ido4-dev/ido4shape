@@ -75,6 +75,8 @@ SKILL_DIRS=(
   "skills/creative-decomposition"
   "skills/dependency-analysis"
   "skills/quality-guidance"
+  "skills/stakeholder-brief"
+  "skills/review-spec"
 )
 
 for skill_dir in "${SKILL_DIRS[@]}"; do
@@ -132,7 +134,7 @@ echo ""
 echo "--- Test 4: Auto-Triggered vs User-Invocable ---"
 
 AUTO_TRIGGERED=("artifact-format" "creative-decomposition" "dependency-analysis" "quality-guidance")
-USER_INVOCABLE=("create-spec" "refine-spec" "validate-spec" "synthesize-spec")
+USER_INVOCABLE=("create-spec" "refine-spec" "validate-spec" "synthesize-spec" "stakeholder-brief" "review-spec")
 
 for skill in "${AUTO_TRIGGERED[@]}"; do
   skill_file="$PLUGIN_DIR/skills/$skill/SKILL.md"
@@ -158,7 +160,7 @@ echo ""
 
 echo "--- Test 5: Agent Files ---"
 
-AGENTS=("spec-reviewer.md" "canvas-synthesizer.md")
+AGENTS=("spec-reviewer.md" "canvas-synthesizer.md" "technical-reviewer.md" "scope-reviewer.md" "dependency-auditor.md")
 for agent in "${AGENTS[@]}"; do
   agent_file="$PLUGIN_DIR/agents/$agent"
   agent_name=$(basename "$agent" .md)

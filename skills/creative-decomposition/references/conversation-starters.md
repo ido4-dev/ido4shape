@@ -73,6 +73,49 @@ Opening hooks and follow-up patterns adapted to different types of work.
 - "What's the existing feature doing well that we should preserve?"
 - "If we enhance this, what breaks? What existing workflows need to adapt?"
 
+## Stakeholder-Specific Openers (Multi-Stakeholder Sessions)
+
+### Architect Joining an Existing Project
+
+**Opening:**
+"I've been working with the PM on [project]. Quick context: [2-sentence problem]. The solution shape is forming around [key concepts]. I have three technical questions, and I'd rather get your honest take before the architecture hardens."
+
+**Follow-ups:**
+- "Is this achievable with your current infrastructure, or does it need new capabilities?"
+- "What's the scariest part of this technically?"
+- "Where would you draw the architectural boundaries differently from what we have?"
+
+### UX Designer Joining an Existing Project
+
+**Opening:**
+"We've been shaping a [project type] spec. The problem is [1 sentence]. The engineers have proposed [key interaction points]. I want your perspective before these solidify — specifically on [2-3 specific UI/UX questions]."
+
+**Follow-ups:**
+- "Walk me through what a user would actually see and do here."
+- "The engineer version of this flow has [N] steps — does that feel right from a user perspective?"
+- "What happens when this fails? What should the user experience?"
+
+### Business Stakeholder Joining
+
+**Opening:**
+"We're shaping the scope for [project]. The team has a solution direction, but I want to make sure the business constraints are right before we lock it down. Two things I need from you: timeline reality and budget implications."
+
+**Follow-ups:**
+- "The current scope implies roughly [effort range]. Does that match the business expectation?"
+- "Are there organizational dependencies — other teams, approvals, compliance gates?"
+- "What's the competitive pressure here — are we racing someone?"
+
+### Returning Stakeholder (Same Person, New Session)
+
+**Opening (if new materials were processed):**
+"Since last time, I processed [what was added]. [Specific observation]. This connects to [something from their previous session]."
+
+**Opening (if tensions need resolution):**
+"There's a tension I've been holding since your last session and [other stakeholder]'s input. [Describe tension]. I think we're ready to resolve it now."
+
+**Opening (if dimension is thin):**
+"Looking at where we are — I feel solid about [strong areas]. But [thin dimension] needs more depth. That's where I'd like to focus today."
+
 ## Universal Recovery Patterns
 
 When conversation energy drops:

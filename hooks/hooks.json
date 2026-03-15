@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "If .ido4shape/ exists, this is a returning specification project. Scan .ido4shape/sources/ for any files newer than the latest session summary in .ido4shape/sessions/. If new source materials are found, read and process them immediately — develop observations, questions, and connections to existing canvas knowledge. Open the conversation with what you noticed in the new materials, not with a generic greeting."
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Write",
@@ -18,6 +29,17 @@
           {
             "type": "prompt",
             "prompt": "If .ido4shape/canvas.md exists, this is an active specification session. Read the Understanding Assessment section from .ido4shape/canvas.md and inject it as context. Also note the latest session summary filename from .ido4shape/sessions/ (if any exist). This ensures the agent always has the current knowledge state in recent context, even after context compaction."
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Context is about to be compacted. If .ido4shape/ exists and specification work happened in this session, immediately update canvas.md with any insights from the current conversation that haven't been written yet. This prevents knowledge loss during compaction. Focus on updating the Understanding Assessment and any emerging structure that exists only in conversation context."
           }
         ]
       }
