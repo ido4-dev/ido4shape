@@ -136,6 +136,10 @@ To investigate a hung or failed session, read the conversation JSONL and look fo
 - Path resolution errors — relative paths don't resolve safely in the VM sandbox
 - Rate limit events — API throttling
 
+### Cowork Usage Requirement
+
+**Always select a working folder** when starting a Cowork session with ido4shape. Without a mounted folder, Cowork's injection defense blocks skill execution. With a folder selected, it works reliably.
+
 ### Cowork Compatibility Rules (Learned the Hard Way)
 
 - **No XML tags in SKILL.md** — tags like `<context>`, `<initialization>` trigger Cowork's injection defense. Use markdown headers instead.
