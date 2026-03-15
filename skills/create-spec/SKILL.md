@@ -18,11 +18,54 @@ Read `${CLAUDE_SKILL_DIR}/../../references/soul.md` and inhabit that character f
 
 **First session (no `.ido4shape/` directory exists):**
 
-1. Create the workspace: `.ido4shape/canvas.md`, `.ido4shape/sessions/`, `.ido4shape/sources/`, `.ido4shape/decisions.md`, `.ido4shape/tensions.md`, `.ido4shape/stakeholders.md`
-2. Scan the project folder for existing materials — documents, data files, code, images, meeting notes, anything that provides context. Read everything available before your first question.
-3. If a project name was passed as argument (`$ARGUMENTS`), use it. Otherwise, discover it through conversation.
-4. Detect the stakeholder — see the stakeholder-detection section below.
-5. Begin the conversation grounded in what you already know from the materials. Never open with "Tell me about your project" when you've already read their documents.
+1. Read `${CLAUDE_SKILL_DIR}/references/canvas-format.md` for detailed format guidance.
+2. Create ALL of these files and directories — do NOT skip any, do NOT merge them:
+   - `.ido4shape/sources/` — create this directory (for raw input materials)
+   - `.ido4shape/sessions/` — create this directory (for session summaries)
+   - `.ido4shape/decisions.md` — create this file with content: `# Decisions\n\n_No decisions made yet._`
+   - `.ido4shape/tensions.md` — create this file with content: `# Tensions\n\n_No active tensions._`
+   - `.ido4shape/stakeholders.md` — create this file with content: `# Stakeholders`
+   - `.ido4shape/canvas.md` — create this file using EXACTLY this template:
+
+```markdown
+# [Project Name] — Knowledge Canvas
+
+## Understanding Assessment
+- Problem Depth: not started
+- Solution Shape: not started
+- Boundary Clarity: not started
+- Risk Landscape: not started
+- Dependency Logic: not started
+- Quality Bar: not started
+
+## Problem Understanding
+
+[To be developed through conversation]
+
+## Solution Concepts
+
+[To be developed through conversation]
+
+## Constraints & Non-Goals
+
+**Constraints:**
+- [To be discovered]
+
+**Non-goals:**
+- [To be discovered]
+
+## Open Questions
+
+- [To be discovered]
+
+## Key Insights
+
+- [None yet]
+```
+3. Scan the project folder for existing materials — documents, data files, code, images, meeting notes. Read everything available before your first question.
+4. If a project name was passed as argument (`$ARGUMENTS`), use it. Otherwise, discover it through conversation.
+5. Detect the stakeholder — see the stakeholder-detection section below.
+6. Begin the conversation grounded in what you already know from the materials. Never open with "Tell me about your project" when you've already read their documents.
 
 **Returning session (`.ido4shape/` exists):**
 
@@ -139,12 +182,22 @@ What feels right?"
 
 The knowledge canvas (`.ido4shape/canvas.md`) is your working memory. Update it after every significant insight, not just at session end.
 
-The canvas format is defined in `${CLAUDE_SKILL_DIR}/references/canvas-format.md`. Key rules:
+The canvas format is defined in `${CLAUDE_SKILL_DIR}/references/canvas-format.md`. You MUST follow that format exactly. Key rules:
 
+- The canvas MUST always have an `## Understanding Assessment` section at the top with all six dimensions, confidence signals, and stakeholder attribution in parentheses. Example:
+  ```
+  ## Understanding Assessment
+  - Problem Depth: deep (PM) — can articulate from user perspective
+  - Solution Shape: forming (PM) — 3 capability clusters emerging
+  - Boundary Clarity: solid (PM) — constraints locked
+  - Risk Landscape: thin — no architect input yet
+  - Dependency Logic: not started
+  - Quality Bar: not started
+  ```
 - The canvas represents CURRENT understanding, not history. When something changes, update it — don't append.
 - Structure emerges organically. Early canvas is narrative. Later, concepts cluster into capability chunks, proto-groups, and eventually formal structure.
-- Always maintain an Understanding Assessment section with perspective tracking and honest confidence signals.
-- The canvas is human-readable. Any stakeholder can open it between sessions and understand the current state.
+- Session summaries go in `.ido4shape/sessions/session-NNN-[role].md` — NOT in the canvas and NOT in a flat log file.
+- Decisions go in `.ido4shape/decisions.md`. Tensions go in `.ido4shape/tensions.md`. Do NOT merge these into the canvas.
 
 </canvas-management>
 
