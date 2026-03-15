@@ -140,18 +140,19 @@ To investigate a hung or failed session, read the conversation JSONL and look fo
 
 **Always select a working folder** when starting a Cowork session with ido4shape. Without a mounted folder, Cowork's injection defense blocks skill execution. With a folder selected, it works reliably.
 
-### Cowork Plugin Update Gotcha
+### Deploying Updates
 
-`claude plugin install/uninstall` only updates `~/.claude/plugins/cache/`. **Cowork reads from a separate copy** at:
-```
-~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<orgId>/cowork_plugins/marketplaces/local-desktop-app-uploads/ido4shape/
-```
-After updating the plugin via CLI, you must also sync the cowork_plugins copy:
-```bash
-COWORK="$HOME/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<orgId>/cowork_plugins/marketplaces/local-desktop-app-uploads/ido4shape"
-CACHE="$HOME/.claude/plugins/cache/ido4-plugins/ido4shape/1.0.0"
-rm -rf "$COWORK" && cp -R "$CACHE" "$COWORK"
-```
+**For Cowork:**
+1. Push to GitHub (`git push`)
+2. In Cowork UI: click `...` next to `ido4-plugins` → Sync
+3. Reinstall the plugin in Cowork
+
+**For Claude Code CLI:**
+1. Push to GitHub
+2. `claude plugin marketplace update ido4-plugins`
+3. `claude plugin uninstall ido4shape@ido4-plugins && claude plugin install ido4shape@ido4-plugins`
+
+These are separate systems. CLI commands do NOT update Cowork. Cowork UI syncs do NOT update CLI. Do not use `deploy-to-cowork.sh` or manual file copies — they create duplicate plugin copies that conflict.
 
 ### Cowork Compatibility Rules (Learned the Hard Way)
 
