@@ -1,24 +1,10 @@
 #!/bin/bash
 # UserPromptSubmit hook: inject canvas Understanding Assessment into every prompt
-# Outputs the current state so the agent always has it in recent context
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+WORKSPACE=$("$SCRIPT_DIR/find-workspace.sh" 2>/dev/null) || exit 0
 
-WORKSPACE=""
-for dir in /sessions/*/mnt/*/; do
-  if [ -d "${dir}.ido4shape" ]; then
-    WORKSPACE="${dir}.ido4shape"
-    break
-  fi
-done
+[ -f "$WORKSPACE/canvas.md" ] || exit 0
 
-if [ -z "$WORKSPACE" ] && [ -d ".ido4shape" ]; then
-  WORKSPACE=".ido4shape"
-fi
-
-if [ -z "$WORKSPACE" ] || [ ! -f "$WORKSPACE/canvas.md" ]; then
-  exit 0  # No workspace or canvas — do nothing
-fi
-
-# Extract and output Understanding Assessment
 ASSESSMENT=$(sed -n '/^## Understanding Assessment/,/^## /{ /^## Understanding Assessment/d; /^## [^U]/d; p; }' "$WORKSPACE/canvas.md" 2>/dev/null)
 
 if [ -n "$ASSESSMENT" ]; then

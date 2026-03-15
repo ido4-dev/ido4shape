@@ -1,40 +1,99 @@
 #!/bin/bash
-# SessionStart hook: detect new source materials and output canvas state
-# Outputs context text that gets injected into the session
+# SessionStart hook: create workspace if needed, detect new materials, output canvas state
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-WORKSPACE=""
-# Find .ido4shape in any mounted directory
-for dir in /sessions/*/mnt/*/; do
-  if [ -d "${dir}.ido4shape" ]; then
-    WORKSPACE="${dir}.ido4shape"
-    break
+# Try to find existing workspace
+WORKSPACE=$("$SCRIPT_DIR/find-workspace.sh" 2>/dev/null)
+
+if [ $? -ne 0 ]; then
+  # No workspace found — find the project directory and create one
+
+  PROJECT_DIR=""
+
+  # In Cowork VM: look for mounted user directories
+  if [ -d "/sessions" ]; then
+    for dir in /sessions/*/mnt/*/; do
+      [ -d "$dir" ] || continue
+      case "$dir" in
+        */.local-plugins/*|*/.claude/*|*/.skills/*) continue ;;
+      esac
+      PROJECT_DIR="$dir"
+      break
+    done
   fi
-done
 
-# Also check cwd-relative paths
-if [ -z "$WORKSPACE" ] && [ -d ".ido4shape" ]; then
-  WORKSPACE=".ido4shape"
+  # Fallback: use current working directory
+  if [ -z "$PROJECT_DIR" ]; then
+    PROJECT_DIR="$(pwd)"
+  fi
+
+  WORKSPACE="$PROJECT_DIR/.ido4shape"
+  mkdir -p "$WORKSPACE/sessions" "$WORKSPACE/sources" 2>/dev/null
+
+  cat > "$WORKSPACE/canvas.md" << 'CANVAS'
+# Knowledge Canvas
+
+## Understanding Assessment
+- Problem Depth: not started
+- Solution Shape: not started
+- Boundary Clarity: not started
+- Risk Landscape: not started
+- Dependency Logic: not started
+- Quality Bar: not started
+
+## Problem Understanding
+
+[To be developed through conversation]
+
+## Solution Concepts
+
+[To be developed through conversation]
+
+## Constraints & Non-Goals
+
+**Constraints:**
+- [To be discovered]
+
+**Non-goals:**
+- [To be discovered]
+
+## Open Questions
+
+- [To be discovered]
+CANVAS
+
+  cat > "$WORKSPACE/decisions.md" << 'EOF'
+# Decisions
+
+_No decisions made yet._
+EOF
+
+  cat > "$WORKSPACE/tensions.md" << 'EOF'
+# Tensions
+
+_No active tensions._
+EOF
+
+  cat > "$WORKSPACE/stakeholders.md" << 'EOF'
+# Stakeholders
+EOF
+
+  echo "ido4shape workspace created. Canvas initialized with Understanding Assessment (all dimensions: not started)."
+  exit 0
 fi
 
-if [ -z "$WORKSPACE" ]; then
-  exit 0  # No workspace — not a spec project, do nothing
-fi
-
+# === EXISTING WORKSPACE — OUTPUT CONTEXT ===
 echo "=== ido4shape session context ==="
 
-# Output current Understanding Assessment
 if [ -f "$WORKSPACE/canvas.md" ]; then
   echo ""
   echo "Current canvas Understanding Assessment:"
-  # Extract the Understanding Assessment section
   sed -n '/^## Understanding Assessment/,/^## /{ /^## Understanding Assessment/d; /^## [^U]/d; p; }' "$WORKSPACE/canvas.md" 2>/dev/null
 fi
 
-# Check for new source materials
 if [ -d "$WORKSPACE/sources" ]; then
   LATEST_SESSION=$(ls -t "$WORKSPACE/sessions/" 2>/dev/null | head -1)
   if [ -n "$LATEST_SESSION" ]; then
-    # Find files in sources/ newer than the latest session summary
     NEW_FILES=$(find "$WORKSPACE/sources/" -type f -newer "$WORKSPACE/sessions/$LATEST_SESSION" 2>/dev/null)
     if [ -n "$NEW_FILES" ]; then
       echo ""
@@ -44,7 +103,6 @@ if [ -d "$WORKSPACE/sources" ]; then
   fi
 fi
 
-# Output stakeholder summary if exists
 if [ -f "$WORKSPACE/stakeholders.md" ]; then
   STAKEHOLDER_COUNT=$(grep -c "^## " "$WORKSPACE/stakeholders.md" 2>/dev/null || echo "0")
   if [ "$STAKEHOLDER_COUNT" -gt 0 ]; then
@@ -53,9 +111,9 @@ if [ -f "$WORKSPACE/stakeholders.md" ]; then
   fi
 fi
 
-# Output active tensions count
 if [ -f "$WORKSPACE/tensions.md" ]; then
-  TENSION_COUNT=$(grep -ci "active\|unresolved" "$WORKSPACE/tensions.md" 2>/dev/null || echo "0")
+  TENSION_COUNT=$(grep -c "^- " "$WORKSPACE/tensions.md" 2>/dev/null || true)
+  TENSION_COUNT=${TENSION_COUNT:-0}
   if [ "$TENSION_COUNT" -gt 0 ]; then
     echo ""
     echo "Active tensions: $TENSION_COUNT"
