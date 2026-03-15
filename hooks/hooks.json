@@ -5,8 +5,9 @@
         "matcher": "startup",
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "Check if the project directory contains an .ido4shape/sources/ folder with any files newer than the latest session summary. If new materials are found, note them for discussion."
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/session-start.sh",
+            "timeout": 10
           }
         ]
       }
@@ -16,8 +17,9 @@
         "matcher": "Write",
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "If the file being written matches *-spec.md and the project has an .ido4shape/ workspace where the Understanding Assessment shows any dimension as thin or not started, this write should be blocked. Spec composition requires sufficient understanding depth."
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/phase-gate.sh",
+            "timeout": 5
           }
         ]
       }
@@ -27,8 +29,9 @@
         "matcher": "",
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "If an .ido4shape/canvas.md exists in the project, note the current Understanding Assessment dimensions and confidence levels as context for this response."
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/canvas-context.sh",
+            "timeout": 5
           }
         ]
       }
@@ -39,7 +42,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "If .ido4shape/ exists, save any current conversation insights to canvas.md before context is compacted."
+            "prompt": "Context is about to be compacted. If specification work is in progress, save current conversation insights to the canvas before context is lost."
           }
         ]
       }
@@ -50,7 +53,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "If .ido4shape/ exists and specification work happened, ensure canvas.md is updated and a session summary exists in the sessions directory."
+            "prompt": "If specification work happened in this session, ensure the canvas is updated and a session summary has been written."
           }
         ]
       }
