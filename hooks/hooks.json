@@ -1,12 +1,34 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check if the project directory contains an .ido4shape/sources/ folder with any files newer than the latest session summary. If new materials are found, note them for discussion."
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Write",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "If the file being written matches *-spec.md and .ido4shape/canvas.md exists with any Understanding Assessment dimension showing 'thin' or 'not started', BLOCK this write with: 'Understanding is insufficient for spec composition.' Otherwise allow."
+            "prompt": "If the file being written matches *-spec.md and the project has an .ido4shape/ workspace where the Understanding Assessment shows any dimension as thin or not started, this write should be blocked. Spec composition requires sufficient understanding depth."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "If an .ido4shape/canvas.md exists in the project, note the current Understanding Assessment dimensions and confidence levels as context for this response."
           }
         ]
       }
@@ -17,7 +39,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "If .ido4shape/ exists, update canvas.md with any insights from the current conversation before context is compacted."
+            "prompt": "If .ido4shape/ exists, save any current conversation insights to canvas.md before context is compacted."
           }
         ]
       }
@@ -28,7 +50,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "If .ido4shape/ exists and specification work happened, ensure canvas.md is updated and a session summary exists in .ido4shape/sessions/."
+            "prompt": "If .ido4shape/ exists and specification work happened, ensure canvas.md is updated and a session summary exists in the sessions directory."
           }
         ]
       }
