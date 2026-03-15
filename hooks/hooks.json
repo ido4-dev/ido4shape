@@ -1,34 +1,12 @@
 {
   "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "startup",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "If .ido4shape/ exists, this is a returning specification project. Scan .ido4shape/sources/ for any files newer than the latest session summary in .ido4shape/sessions/. If new source materials are found, read and process them immediately — develop observations, questions, and connections to existing canvas knowledge. Open the conversation with what you noticed in the new materials, not with a generic greeting."
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Write",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "A file is about to be written. If the target file matches *-spec.md and the .ido4shape/ workspace exists with a canvas.md whose Understanding Assessment shows any dimension as 'thin' or 'not started', BLOCK this write. Premature crystallization produces bad specs. The canvas must show sufficient depth across all six knowledge dimensions before producing the artifact. Return 'BLOCK: Understanding is insufficient for spec composition — [dimension] needs more exploration.' If the canvas shows sufficient depth, or if the file being written is NOT a spec artifact (e.g., canvas.md, session files, tensions.md), allow the write."
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "If .ido4shape/canvas.md exists, this is an active specification session. Read the Understanding Assessment section from .ido4shape/canvas.md and inject it as context. Also note the latest session summary filename from .ido4shape/sessions/ (if any exist). This ensures the agent always has the current knowledge state in recent context, even after context compaction."
+            "prompt": "If the file being written matches *-spec.md and .ido4shape/canvas.md exists with any Understanding Assessment dimension showing 'thin' or 'not started', BLOCK this write with: 'Understanding is insufficient for spec composition.' Otherwise allow."
           }
         ]
       }
@@ -39,7 +17,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Context is about to be compacted. If .ido4shape/ exists and specification work happened in this session, immediately update canvas.md with any insights from the current conversation that haven't been written yet. This prevents knowledge loss during compaction. Focus on updating the Understanding Assessment and any emerging structure that exists only in conversation context."
+            "prompt": "If .ido4shape/ exists, update canvas.md with any insights from the current conversation before context is compacted."
           }
         ]
       }
@@ -50,7 +28,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "The session is ending. If .ido4shape/ exists and specification work happened in this session, ensure: (1) canvas.md has been updated with insights from this session, (2) a session summary was written to .ido4shape/sessions/, (3) any new tensions or decisions were logged. If any of these are missing, do them now before the session ends."
+            "prompt": "If .ido4shape/ exists and specification work happened, ensure canvas.md is updated and a session summary exists in .ido4shape/sessions/."
           }
         ]
       }
