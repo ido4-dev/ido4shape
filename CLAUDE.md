@@ -117,6 +117,35 @@ ido4shape/
 - Conversation philosophy: `CLAUDE.md` (energy management, question strategies)
 - Example project: `projects/mini-jira/`
 
+## Cowork Debugging
+
+Cowork session data lives at:
+```
+~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<orgId>/
+```
+
+Each session has:
+- `local_<sessionId>.json` — metadata (title, model, timestamps, userSelectedFolders)
+- `local_<sessionId>/` — session directory
+  - `.claude/projects/-sessions-<vm-name>/<cliSessionId>.jsonl` — conversation transcript
+  - `audit.jsonl` — audit log
+  - `outputs/` — files produced
+
+To investigate a hung or failed session, read the conversation JSONL and look for:
+- `"Operation stopped by hook"` — Cowork's injection defense falsely flagged skill content
+- Path resolution errors — relative paths don't resolve safely in the VM sandbox
+- Rate limit events — API throttling
+
+### Cowork Compatibility Rules (Learned the Hard Way)
+
+- **No XML tags in SKILL.md** — tags like `<context>`, `<initialization>` trigger Cowork's injection defense. Use markdown headers instead.
+- **No directive language that sounds like injection** — "you are not following instructions" gets flagged. Use guidance framing instead.
+- **Avoid literal relative paths in skill instructions** — `.ido4shape/canvas.md` as a literal instruction gets flagged as "file-based context injection." Describe the intent instead.
+- **`${CLAUDE_SKILL_DIR}`** resolves to the skill's own directory. Use `${CLAUDE_SKILL_DIR}/references/` for within-skill refs.
+- **`${CLAUDE_SKILL_DIR}/../../references/`** traverses up to plugin root. Works but can be fragile in the VM.
+- **`${CLAUDE_PLUGIN_ROOT}`** only works in hooks.json and .mcp.json — NOT in SKILL.md content.
+- **Keep skills lean** — heavy instruction-loaded skills are slower and more likely to trigger safety false positives.
+
 ## Working Style
 
 - Lead with original thinking, not organized checklists

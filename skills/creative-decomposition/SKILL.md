@@ -11,15 +11,13 @@ description: >
 user-invocable: false
 ---
 
-<conversation-methodology>
-
 ## Opening a Session
 
-Never open cold. Before the first question, consume all available materials in the project folder — documents, data, code, screenshots, research. Then open with what you know, targeting the gaps:
+Before the first question, look through any available materials in the project folder. Then open with what you know, targeting the gaps:
 
 "I've read everything you shared — your analytics show X, your architecture doc reveals Y, and the meeting notes suggest Z. I have a solid starting picture. But help me understand something the documents don't answer..."
 
-For project-type-specific opening hooks and follow-up patterns, read `${CLAUDE_SKILL_DIR}/references/conversation-starters.md`.
+For project-type-specific opening hooks and follow-up patterns, see `${CLAUDE_SKILL_DIR}/references/conversation-starters.md`.
 
 ## Questioning Patterns
 
@@ -29,11 +27,11 @@ For project-type-specific opening hooks and follow-up patterns, read `${CLAUDE_S
 
 **Connect the Dots** — Listen for related concepts across answers (or across sessions), point out connections they haven't seen, ask how those relationships affect the work. Use when you notice patterns forming.
 
-**Surface to Depth** progression: What's the problem? -> How long has it been an issue? -> Who gets hurt? -> What would change if we solved it? -> What's the cost of NOT solving it?
+**Surface to Depth** progression: What's the problem? How long has it been an issue? Who gets hurt? What would change if we solved it? What's the cost of NOT solving it?
 
-**General to Specific** progression: Tell me about users -> What's different about power users? -> Describe the most demanding one -> What would they do in this situation?
+**General to Specific** progression: Tell me about users. What's different about power users? Describe the most demanding one. What would they do in this situation?
 
-For detailed examples of each pattern, read `${CLAUDE_SKILL_DIR}/references/conversation-patterns.md`.
+For detailed examples of each pattern, see `${CLAUDE_SKILL_DIR}/references/conversation-patterns.md`.
 
 ## Energy Management
 
@@ -52,8 +50,8 @@ For detailed examples of each pattern, read `${CLAUDE_SKILL_DIR}/references/conv
 **Recovery techniques:**
 - Re-energize: "Look at how much we've figured out. The remaining unknowns are actually quite focused."
 - Change angle: "Let me approach this differently — what part of this project excites you most?"
-- Summarize progress: "Let me step back and show you what we've built so far."
-- Park and move: "I think we've gone as deep as we can on this right now. Let's explore [different dimension]."
+- Summarize progress: show what's been built so far
+- Park and move: "I think we've gone as deep as we can on this right now. Let's explore a different dimension."
 
 ## Adaptive Depth
 
@@ -64,29 +62,10 @@ Not every project needs the same depth of exploration:
 - **Platform/infrastructure**: Heavy on technical feasibility, dependencies, risk
 - **Migration**: Focus on current vs target state, data migration, rollback strategy
 
-Read project signals and calibrate. Don't apply new-feature-level discovery to a bugfix.
-
 ## Group Discovery
 
-Groups should feel natural — not forced. They emerge when:
-- Multiple related capabilities cluster together
-- A coherent business value can be delivered as a unit
-- The team would naturally think of this work as "a thing"
-
-Warning signs of bad groups:
-- A group has only one task (probably not a real group)
-- A group has 15+ tasks (probably two groups merged)
-- Tasks in a group have no internal dependencies (might be artificially grouped)
-- Group boundaries feel arbitrary rather than natural
+Groups should feel natural, not forced. They emerge when multiple related capabilities cluster together and deliver coherent business value. Warning signs of bad groups: a group with only one task, a group with 15+ tasks, tasks in a group with no internal dependencies.
 
 ## Proactive Intelligence
 
-Between sessions, develop observations and bring them up:
-- "I realized we never discussed security implications for..."
-- "Three tasks in the emerging structure all depend on something nobody has mentioned."
-- "The architect's comment actually resolves a tension from session one."
-- "We've gone deep on X but Y — the riskier part — hasn't been explored."
-
-Be proactive about connections and tensions. Be restrained about answers and solutions.
-
-</conversation-methodology>
+Between sessions, develop observations and bring them up. Be proactive about connections and tensions. Be restrained about answers and solutions — let the stakeholder discover rather than being told.

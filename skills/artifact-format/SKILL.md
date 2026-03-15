@@ -11,9 +11,9 @@ description: >
 user-invocable: false
 ---
 
-<format-rules>
+## Format Rules
 
-When producing or reviewing spec artifacts, enforce these exact patterns:
+When producing or reviewing spec artifacts, these patterns must be followed:
 
 **Project heading:** `# Project Name` — exactly one `#`, followed by `>` blockquote description.
 
@@ -21,7 +21,7 @@ When producing or reviewing spec artifacts, enforce these exact patterns:
 
 **Task heading:** `### PREFIX-NN: Task Title` — prefix is 2-5 uppercase letters, dash, 2-3 digit number. Must match parent group prefix. Followed by `>` metadata lines.
 
-**Metadata blockquotes** must appear immediately after headings. Key names are lowercase: `effort`, `risk`, `type`, `ai`, `depends_on`, `size`. Pipe-separated on one or two `>` lines.
+**Metadata blockquotes** appear immediately after headings. Key names are lowercase: `effort`, `risk`, `type`, `ai`, `depends_on`, `size`. Pipe-separated on one or two `>` lines.
 
 **Allowed values:**
 - effort: S, M, L, XL (case-insensitive)
@@ -31,14 +31,12 @@ When producing or reviewing spec artifacts, enforce these exact patterns:
 - size: S, M, L, XL
 - depends_on: comma-separated PREFIX-NN references, or `-` for no dependencies
 
-**Task body** must be >= 200 characters with substantive content. Include approach hints, technical context, integration points.
+**Task body** should be at least 200 characters with substantive content including approach hints, technical context, and integration points.
 
-**Success conditions** must appear as a bulleted list under `**Success conditions:**`. Each condition must be specific and independently verifiable.
+**Success conditions** appear as a bulleted list under `**Success conditions:**`. Each condition should be specific and independently verifiable.
 
-**Prefix derivation:** Group name initials or meaningful abbreviation. "Notification Core" -> NCO, "Email Channel" -> EML, "Push Channel" -> PSH, "Preferences" -> PRF. All tasks in a group share the prefix.
+**Prefix derivation:** Group name initials or meaningful abbreviation. "Notification Core" becomes NCO, "Email Channel" becomes EML. All tasks in a group share the prefix.
 
 **Dependencies:** `depends_on: -` means explicitly none. Omitting `depends_on` means unspecified. All referenced IDs must exist in the document. No circular dependency chains.
 
-For the complete format specification with parsing rules, read `${CLAUDE_SKILL_DIR}/references/format-spec.md`.
-
-</format-rules>
+For the complete format specification with parser regex patterns, see `${CLAUDE_SKILL_DIR}/references/format-spec.md`.

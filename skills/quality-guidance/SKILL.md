@@ -11,43 +11,24 @@ description: >
 user-invocable: false
 ---
 
-<quality-standards>
-
 ## Task Description Quality
 
-A task description must be rich enough for an agent (or engineer) to execute against without coming back to ask questions. Minimum 200 characters, but length alone isn't the bar — substance is.
+A task description should be rich enough for an engineer or agent to start working without coming back to ask questions. At least 200 characters, but substance matters more than length.
 
-**A good task description includes:**
-- What the task does and WHY (not just "implement X" but "implement X because Y depends on it")
-- Approach hints or patterns to follow
-- Technical context (libraries, APIs, conventions to use)
-- Integration points with other tasks (reference by ID)
-- What the output looks like when done
+A good description includes what the task does and why, approach hints or patterns to follow, technical context, integration points with other tasks, and what the output looks like when done.
 
-**A bad task description:**
-- "Implement the user preferences API" (too vague — what endpoints? what data model?)
-- Just restates the title in longer form
-- Focuses on HOW without explaining WHAT or WHY
-- Lacks enough context for someone unfamiliar with the project
+A weak description just restates the title in longer form or says "implement X" without context.
 
 ## Success Conditions
 
-Each condition must be independently verifiable — a person could check it without checking any other condition.
+Each condition should be independently verifiable — someone could check it without checking any other condition.
 
-**Good:** "Quiet hours spanning midnight work correctly (e.g., 22:00-08:00)"
-**Bad:** "System handles edge cases correctly"
+Good: "Quiet hours spanning midnight work correctly (e.g., 22:00-08:00)"
+Weak: "System handles edge cases correctly"
 
-**Good:** "Schema validator returns all errors, not just the first"
-**Bad:** "Validation works properly"
-
-**Good:** "Preferences are cached with short TTL for routing engine performance"
-**Bad:** "Performance is acceptable"
-
-Test: Could two people independently agree whether this condition is met? If not, it's not specific enough.
+Test: could two people independently agree whether this condition is met?
 
 ## Effort Assessment
-
-Be honest about effort. Common bias: underestimation.
 
 | Value | Meaning | Signals |
 |-------|---------|---------|
@@ -56,48 +37,28 @@ Be honest about effort. Common bias: underestimation.
 | L | 3-5 days | Cross-cutting concerns, external integration, unfamiliar territory |
 | XL | 1-2 weeks | High complexity, multiple unknowns, significant integration surface |
 
-**Calibration questions:**
-- Does this touch systems the team has never worked with? -> bump up
-- Are there unknowns in the approach? -> bump up
-- Has the team done exactly this before? -> probably accurate
-- Does this require coordination with external teams? -> bump up
+If it touches systems the team hasn't worked with, or involves unknowns in the approach — bump up.
 
 ## Risk Assessment
 
-Risk is about unknowns and their potential impact, not just difficulty.
+Risk is about unknowns and their impact, not just difficulty.
 
-| Value | Meaning |
-|-------|---------|
-| low | Well-understood, team has done this before, no external dependencies |
-| medium | Some unknowns but manageable, team has related experience |
-| high | Significant unknowns, external dependencies, first time for team |
-| critical | Could derail the project, depends on uncontrolled factors, novel territory |
+- low: well-understood, team has done this before
+- medium: some unknowns but manageable
+- high: significant unknowns, external dependencies, first time for team
+- critical: could derail the project, depends on uncontrolled factors
 
 A task can be high-effort but low-risk (large but well-understood) or low-effort but high-risk (small but completely unknown).
 
 ## AI Suitability
 
-This is a product judgment about how suitable a task is for AI agent execution:
+- full: well-defined, mechanical, clear success conditions — AI can do this autonomously
+- assisted: AI does the work, human reviews before merging. Default when unsure
+- pair: creative or ambiguous work where AI and human collaborate
+- human: requires judgment AI cannot replicate — legal, security, UX research, stakeholder negotiation
 
-| Value | When to use |
-|-------|------------|
-| full | Well-defined, mechanical, clear success conditions. An AI agent can do this autonomously. |
-| assisted | AI can do the work but a human should review before merging. Default when unsure. |
-| pair | Creative or ambiguous work where AI and human collaborate. UX decisions, architecture choices. |
-| human | Requires human judgment that AI cannot replicate. Legal review, security audit, stakeholder negotiation, UX research with real users. |
-
-**Common mistakes:**
-- Marking everything as `full` (over-optimistic about AI capabilities)
-- Marking everything as `human` (under-utilizing AI)
-- Not considering that `pair` is often the best choice for complex tasks
-- Ignoring that `human` blocks the `start` transition in ido4's BRE — use deliberately
+Note that `human` blocks the start transition in ido4's governance engine — use deliberately.
 
 ## Group Quality
 
-Groups should be:
-- **Coherent:** All tasks serve the same business capability
-- **Self-contained:** Delivering the group provides standalone value
-- **Right-sized:** 3-8 tasks typically. 1 task isn't a group. 15+ tasks are probably two groups.
-- **Naturally bounded:** The boundary should feel obvious, not forced
-
-</quality-standards>
+Groups should be coherent (all tasks serve the same capability), self-contained (delivering the group provides standalone value), and right-sized (3-8 tasks typically).

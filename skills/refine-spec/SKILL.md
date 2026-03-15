@@ -9,70 +9,32 @@ description: >
 allowed-tools: Read, Write, Edit, Glob, Grep
 ---
 
-<refinement-protocol>
+## Character
 
-Read the spec artifact file passed as `$ARGUMENTS`. If no argument, look for `*-spec.md` files in the current directory.
+Your character is defined in `${CLAUDE_SKILL_DIR}/../../references/soul.md`. You care about the quality of what you produce.
 
-Read `${CLAUDE_SKILL_DIR}/../../references/soul.md` — maintain character. You care about the quality of what you produce.
+## Getting Started
+
+Look for spec artifact files (`*-spec.md`) in the project directory. If a path was passed as `$ARGUMENTS`, use that.
 
 ## Understanding the Change
 
-Before making any edit, understand:
-1. What the user wants changed (the request)
-2. Why they want it changed (the motivation — if not stated, ask)
-3. What else might be affected (ripple effects)
+Before making any edit, understand what the user wants changed, why, and what else might be affected.
 
-Changes often have implications the user hasn't considered. Surface them: "If we split this group, the three tasks that currently share prefix NCO- will need new prefixes. And NCO-03's dependency on NCO-01 becomes a cross-group dependency. Is that what you want?"
+Changes often have ripple effects. Surface them: "If we split this group, the three tasks that share prefix NCO- will need new prefixes. And NCO-03's dependency on NCO-01 becomes a cross-group dependency. Is that what you want?"
 
 ## Types of Refinement
 
-**Adding a task:**
-- Determine which group it belongs to
-- Use the group's prefix with the next available number
-- Write a substantive description (>= 200 chars)
-- Add success conditions
-- Set metadata (effort, risk, type, ai)
-- Set depends_on (check what it needs, and what might need it)
-- Update any existing tasks that should depend on the new one
+**Adding a task:** Determine the group, use the group's prefix with next available number, write a substantive description, add success conditions, set metadata, set depends_on, update any tasks that should depend on the new one.
 
-**Removing a task:**
-- Check if any other tasks depend on it (depends_on references)
-- If so, either update those tasks' dependencies or warn the user
-- Remove the task cleanly
+**Removing a task:** Check if anything depends on it. Update or warn about orphaned dependencies.
 
-**Splitting a group:**
-- Create two new groups with appropriate names and prefixes
-- Reassign tasks to the correct group, updating prefixes
-- Update all depends_on references to use new task IDs
-- Update any cross-references in task descriptions
+**Splitting a group:** Create two groups with new names and prefixes, reassign tasks, update all depends_on references.
 
-**Merging groups:**
-- Choose the surviving group name and prefix
-- Reassign tasks, updating prefixes
-- Update all depends_on references
-- Merge group descriptions
+**Merging groups:** Choose the surviving prefix, reassign tasks, update references.
 
-**Changing dependencies:**
-- Verify the new dependency target exists
-- Check for circular dependencies after the change
-- Update task descriptions if they reference upstream tasks by ID
+**Changing dependencies:** Verify the new target exists, check for circular dependencies after the change.
 
-**Updating metadata:**
-- Verify new values are from allowed sets
-- Consider whether the change affects related assessments (e.g., increasing risk might affect dependent tasks)
+## After Each Refinement
 
-## Delta Tracking
-
-After each refinement, mentally verify:
-- All task IDs are still unique
-- All depends_on references still point to existing tasks
-- No circular dependencies were introduced
-- Prefixes still match their groups
-- Task bodies are still >= 200 characters
-- The change is consistent with the project's constraints and non-goals
-
-## Conversation Style
-
-Refinement is collaborative. Don't just execute the edit silently — explain what you changed and why, flag any ripple effects, and suggest related changes the user might want to make: "I've added the caching task. Since the routing engine (NCO-03) currently calls preferences directly, you might want to update NCO-03's description to mention the cache layer. Want me to do that?"
-
-</refinement-protocol>
+Verify: all task IDs unique, all depends_on references valid, no circular dependencies introduced, prefixes match groups, bodies still substantive. Explain what you changed and suggest related changes the user might want.

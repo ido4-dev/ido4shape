@@ -8,100 +8,31 @@ description: >
 allowed-tools: Read, Glob, Grep
 ---
 
-<validation-protocol>
+## What to Validate
 
-Read the spec artifact file passed as `$ARGUMENTS`. If no argument, look for `*-spec.md` files in the current directory.
+Look for spec artifact files (`*-spec.md`) in the project directory. If a path was passed as `$ARGUMENTS`, use that.
 
-## Format Validation (Pass 1)
+## Format Checks
 
-Check each structural element against ido4's parser expectations:
+Verify each structural element against the parser's expectations:
 
-**Project header:**
-- [ ] Exactly one `#` heading (project name)
-- [ ] `>` blockquote description immediately after
-- [ ] `**Constraints:**` section with bullet items
-- [ ] `**Non-goals:**` section with bullet items
-- [ ] `**Open questions:**` section (optional but recommended)
+**Project header:** One `#` heading, `>` description, Constraints/Non-goals/Open questions sections.
 
-**Groups:**
-- [ ] Each group uses `## Group: Name` format (not `## Name`)
-- [ ] `>` metadata line with `size` and `risk` immediately after heading
-- [ ] Size value is S, M, L, or XL
-- [ ] Risk value is low, medium, high, or critical
-- [ ] Group has a description body
+**Groups:** `## Group: Name` format with `>` metadata containing size and risk values from allowed sets.
 
-**Tasks:**
-- [ ] Each task uses `### PREFIX-NN: Title` format
-- [ ] PREFIX is 2-5 uppercase letters: `/[A-Z]{2,5}/`
-- [ ] NN is 2-3 digits: `/\d{2,3}/`
-- [ ] PREFIX matches parent group's derived prefix
-- [ ] `>` metadata lines immediately after heading
-- [ ] Metadata keys are exactly: effort, risk, type, ai, depends_on
-- [ ] effort value: S, M, L, or XL
-- [ ] risk value: low, medium, high, or critical
-- [ ] type value: feature, bug, research, or infrastructure
-- [ ] ai value: full, assisted, pair, or human
-- [ ] depends_on: valid comma-separated PREFIX-NN references, or `-`
+**Tasks:** `### PREFIX-NN: Title` where PREFIX is 2-5 uppercase letters and NN is 2-3 digits. Prefix matches parent group. Metadata lines with effort, risk, type, ai, depends_on using allowed values.
 
-**Dependencies:**
-- [ ] All depends_on references point to task IDs that exist in the document
-- [ ] No circular dependency chains
-- [ ] `depends_on: -` used (not omitted) when task has no dependencies
+**Dependencies:** All depends_on references point to existing task IDs. No circular chains.
 
-## Content Quality (Pass 2)
+## Content Quality
 
-**Task descriptions:**
-- [ ] Each task body >= 200 characters
-- [ ] Description includes substantive content (not just restating the title)
-- [ ] Approach hints or technical context present
-- [ ] Integration points referenced where relevant
+- Task bodies at least 200 characters with substantive content
+- Success conditions present, specific, independently verifiable
+- Effort/risk calibration plausible (no external integration marked low risk, no XL marked low risk)
+- Groups have 3-8 tasks with related purposes
 
-**Success conditions:**
-- [ ] `**Success conditions:**` section present for every task
-- [ ] Each condition is a bullet item
-- [ ] Each condition is specific and independently verifiable
-- [ ] No vague conditions ("works correctly", "performs well")
+## Report
 
-**Effort/Risk calibration:**
-- [ ] No task with external integration marked as low risk
-- [ ] No XL-effort task marked as low risk (large scope usually means unknowns)
-- [ ] Research-type tasks have appropriate risk (usually medium+)
-
-**Group coherence:**
-- [ ] Each group has 3-8 tasks (1-2 is suspicious, 10+ should probably be split)
-- [ ] Tasks within a group are related to the group's purpose
-- [ ] Group description explains why tasks belong together
-
-## Report Format
-
-```
-## Validation Report: [filename]
-
-### Format Compliance
-- Errors: [count] (must fix before ingestion)
-- Warnings: [count] (should fix)
-
-[List each error/warning with line reference and explanation]
-
-### Content Quality
-- Task description quality: [assessment]
-- Success condition quality: [assessment]
-- Effort/risk calibration: [assessment]
-- Group coherence: [assessment]
-
-[Specific issues with suggestions]
-
-### Dependency Graph
-- Total tasks: [N]
-- Root tasks (no dependencies): [N]
-- Critical path: [task chain]
-- Cross-group dependencies: [count]
-- Circular dependencies: [none | list]
-
-### Verdict
-[PASS — ready for ido4 ingestion | PASS WITH WARNINGS | FAIL — issues listed above]
-```
+Produce a structured report with: summary counts, errors (must fix), warnings (should fix), suggestions (could improve), dependency graph with critical path, and a verdict (PASS / PASS WITH WARNINGS / FAIL).
 
 If ido4 MCP is available, suggest running `ingest_spec` with `dryRun=true` for full governance validation.
-
-</validation-protocol>

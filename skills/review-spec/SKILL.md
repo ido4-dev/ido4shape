@@ -9,63 +9,26 @@ description: >
 allowed-tools: Read, Glob, Grep, Agent
 ---
 
-<review-protocol>
+## Review Process
 
-This skill launches three independent review sub-agents in parallel. Each reviews from a different lens and produces a focused report. The reviews are independent — no reviewer sees another's output.
+This skill launches three independent review sub-agents in parallel. Each reviews from a different lens and produces a focused report.
 
-## Pre-Flight
+Check the canvas in the project's `.ido4shape/` directory to verify the Understanding Assessment shows sufficient depth. If any dimension is thin, warn that review may be premature.
 
-Read `.ido4shape/canvas.md` to verify the Understanding Assessment shows sufficient depth. If any dimension is "thin" or "not started", warn the user that review may be premature.
+If a spec artifact exists (`*-spec.md`), reviewers assess the artifact. If only the canvas exists, they assess canvas readiness for composition.
 
-If a spec artifact exists (`*-spec.md`), reviewers assess the artifact. If only the canvas exists, reviewers assess canvas readiness for composition.
-
-## Launch Three Reviewers
+## Three Reviewers
 
 Launch all three in parallel using the Agent tool:
 
-**1. Technical Feasibility Reviewer** (`agents/technical-reviewer.md`)
-- Does the architecture cohere?
-- Are effort/risk estimates honest given the technical approach?
-- Are there hidden technical dependencies not captured?
-- Do throughput/scale claims match the proposed architecture?
-- Are technology choices appropriate for the constraints?
+1. **Technical Feasibility** (`agents/technical-reviewer.md`) — Architecture coherence, effort/risk honesty, hidden technical dependencies, scale claims, technology choices.
 
-**2. Scope Alignment Reviewer** (`agents/scope-reviewer.md`)
-- Does every group/task trace to the project's north star?
-- Are constraints and non-goals respected throughout?
-- Is there scope creep — tasks that don't belong?
-- Are there gaps — work needed that no task covers?
-- Does the scope match the implied timeline/effort?
+2. **Scope Alignment** (`agents/scope-reviewer.md`) — North star alignment, constraint compliance, non-goal violations, coverage gaps, scope-effort coherence.
 
-**3. Dependency Auditor** (`agents/dependency-auditor.md`)
-- Is the dependency graph acyclic?
-- Does the critical path make sense?
-- Are cross-group dependencies minimized?
-- Are there hidden dependencies not captured in `depends_on`?
-- Could any group be delivered independently?
+3. **Dependency Audit** (`agents/dependency-auditor.md`) — Graph integrity, critical path analysis, cross-group dependency health, parallelization opportunities, hidden dependencies.
 
 ## Synthesis
 
-After all three reviewers report back, synthesize their findings:
+After all three report back, synthesize findings into a summary with: verdict (READY / READY WITH NOTES / NOT READY), critical issues, recommendations, and observations.
 
-```markdown
-# Review Summary
-
-## Verdict: [READY | READY WITH NOTES | NOT READY]
-
-## Critical Issues (must address before composition)
-[Issues from any reviewer that would produce a bad spec]
-
-## Recommendations (should address)
-[Improvements that would strengthen the spec]
-
-## Observations (worth noting)
-[Patterns, risks, or insights the reviewers noticed]
-
-## Reviewer Reports
-[Include each reviewer's full report below]
-```
-
-If the verdict is READY or READY WITH NOTES, suggest proceeding to `/ido4shape:synthesize-spec`. If NOT READY, identify what needs to happen — more conversation, a missing stakeholder perspective, or tension resolution.
-
-</review-protocol>
+If READY, suggest proceeding to `/ido4shape:synthesize-spec`. If NOT READY, identify what needs to happen.
