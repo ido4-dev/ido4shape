@@ -2,32 +2,18 @@
 # SessionStart hook: create workspace if needed, detect new materials, output canvas state
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Try to find existing workspace
+# Find existing workspace
 WORKSPACE=$("$SCRIPT_DIR/find-workspace.sh" 2>/dev/null)
 
 if [ $? -ne 0 ]; then
-  # No workspace found — find the project directory and create one
+  # No workspace — find the project directory and create one
+  PROJECT_DIR=$("$SCRIPT_DIR/find-project-dir.sh" 2>/dev/null)
 
-  PROJECT_DIR=""
-
-  # In Cowork VM: look for mounted user directories
-  if [ -d "/sessions" ]; then
-    for dir in /sessions/*/mnt/*/; do
-      [ -d "$dir" ] || continue
-      case "$dir" in
-        */.local-plugins/*|*/.claude/*|*/.skills/*) continue ;;
-      esac
-      PROJECT_DIR="$dir"
-      break
-    done
-  fi
-
-  # Fallback: use current working directory
   if [ -z "$PROJECT_DIR" ]; then
-    PROJECT_DIR="$(pwd)"
+    exit 0  # Can't determine project directory
   fi
 
-  WORKSPACE="$PROJECT_DIR/.ido4shape"
+  WORKSPACE="${PROJECT_DIR}.ido4shape"
   mkdir -p "$WORKSPACE/sessions" "$WORKSPACE/sources" 2>/dev/null
 
   cat > "$WORKSPACE/canvas.md" << 'CANVAS'
@@ -78,7 +64,8 @@ EOF
 # Stakeholders
 EOF
 
-  echo "ido4shape workspace created. Canvas initialized with Understanding Assessment (all dimensions: not started)."
+  echo "ido4shape workspace created in project directory."
+  echo "Canvas initialized with Understanding Assessment (all dimensions: not started)."
   exit 0
 fi
 
@@ -104,7 +91,8 @@ if [ -d "$WORKSPACE/sources" ]; then
 fi
 
 if [ -f "$WORKSPACE/stakeholders.md" ]; then
-  STAKEHOLDER_COUNT=$(grep -c "^## " "$WORKSPACE/stakeholders.md" 2>/dev/null || echo "0")
+  STAKEHOLDER_COUNT=$(grep -c "^## " "$WORKSPACE/stakeholders.md" 2>/dev/null || true)
+  STAKEHOLDER_COUNT=${STAKEHOLDER_COUNT:-0}
   if [ "$STAKEHOLDER_COUNT" -gt 0 ]; then
     echo ""
     echo "Stakeholders who have contributed: $STAKEHOLDER_COUNT"
