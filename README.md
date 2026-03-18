@@ -2,30 +2,31 @@
 
 A thinking partner that helps crystallize what needs to be built.
 
-ido4shape guides product managers, founders, and tech leads through creative, non-linear conversation — consuming documents, data, research, and human insight — until understanding is deep enough to produce a structured specification artifact.
+ido4shape guides product managers, founders, and tech leads through creative, non-linear conversation — consuming documents, data, research, and human insight — until understanding is deep enough to produce a structured strategic specification.
 
 ## What It Does
 
 Every specification tool assumes you already know what to build. ido4shape starts at "tell me about your problem" and helps you discover things you didn't know you needed to think about.
 
 ```
-ido4shape (plugin)  →  spec artifact (.md)  →  ido4 MCP (governance)
-Creative upstream       The contract             GitHub issues + methodology
+ido4shape (plugin)  →  strategic spec (.md)  →  ido4 MCP (decomposition)  →  technical spec (.md)  →  GitHub issues
+Creative upstream       The WHAT                  Codebase-aware                The HOW                  Governance
 ```
 
-The spec artifact is a structured markdown file — methodology-agnostic, human-readable, machine-parseable. It feeds directly into [ido4 MCP](https://github.com/b-coman/ido4-MCP) for governed execution.
+The strategic spec captures multi-stakeholder understanding — what to build, who needs it, why, constraints, NFRs, success conditions. [ido4 MCP](https://github.com/ido4-dev/ido4) then decomposes it against the actual codebase to produce implementation-ready tasks.
 
 ## Installation
 
 ```bash
-# Load locally (development / pre-marketplace)
-claude --plugin-dir ./ido4shape
+# Via marketplace
+claude plugin marketplace add ido4-dev/ido4-plugins
+claude plugin install ido4shape@ido4-plugins
 
-# Once published to a marketplace
-claude plugin install ido4shape
+# Load locally (development)
+claude --plugin-dir ./ido4shape
 ```
 
-For Cowork (Claude Desktop), add the plugin directory manually or install via marketplace once published.
+For Cowork (Claude Desktop): sync `ido4-plugins` marketplace and install the plugin.
 
 ## Usage
 
@@ -43,7 +44,7 @@ The agent reads any existing materials in your project folder, then guides you t
 /ido4shape:synthesize-spec
 ```
 
-When the canvas shows sufficient depth across all knowledge dimensions, crystallize understanding into a formal spec artifact.
+When the canvas shows sufficient depth across all knowledge dimensions, crystallize understanding into a strategic spec artifact.
 
 ### Validate a spec
 
@@ -51,7 +52,7 @@ When the canvas shows sufficient depth across all knowledge dimensions, crystall
 /ido4shape:validate-spec path/to/spec.md
 ```
 
-Check format compliance and content quality before feeding the artifact to ido4.
+Check format compliance and content quality before handoff to ido4 MCP.
 
 ### Refine an existing spec
 
@@ -59,7 +60,7 @@ Check format compliance and content quality before feeding the artifact to ido4.
 /ido4shape:refine-spec path/to/spec.md
 ```
 
-Edit specs using natural language: "add a caching layer to Group 2", "the architect says task DB-03 should depend on DB-01."
+Edit specs using natural language: "add a capability to Group 2", "the architect says we need GDPR compliance."
 
 ## How It Works
 
@@ -81,6 +82,7 @@ During specification, ido4shape maintains a workspace at `.ido4shape/`:
 ```
 .ido4shape/
 ├── canvas.md          # Current understanding (continuously updated)
+├── stakeholders.md    # Contributors and their perspectives
 ├── sources/           # Raw input materials
 ├── sessions/          # Session summaries
 ├── tensions.md        # Active contradictions
@@ -89,26 +91,49 @@ During specification, ido4shape maintains a workspace at `.ido4shape/`:
 
 The canvas is the agent's working memory — human-readable, always current, and designed for multi-session continuity.
 
-## The Spec Artifact
+## The Strategic Spec
 
-The output is a structured markdown file compatible with ido4 MCP's ingestion engine:
+The output is a structured markdown document:
 
 ```markdown
 # Project Name
-> Description
+> format: strategic-spec | version: 1.0
 
-## Group: Group Name
-> size: M | risk: medium
+[Problem description, stakeholders, constraints, non-goals]
 
-### PREFIX-01: Task Title
-> effort: M | risk: low | type: feature | ai: assisted
+## Cross-Cutting Concerns
+### Performance / Security / Accessibility
+[NFRs and cross-cutting requirements as prose]
+
+## Group: Capability Cluster
+> priority: must-have
+
+### PREFIX-01: Capability Title
+> priority: must-have | risk: low
 > depends_on: -
 
-Task description (>= 200 chars)...
+[Rich description with stakeholder context (>= 200 chars)]
 
 **Success conditions:**
 - Specific, verifiable condition
 ```
+
+<!-- BEGIN SKILL INVENTORY -->
+## Skills
+
+| Skill | Type | Description |
+|-------|------|-------------|
+| `artifact-format` | auto-triggered | Provides strategic spec artifact format knowledge. |
+| `create-spec` | user-invocable | Guides users through creative specification development. |
+| `creative-decomposition` | auto-triggered | Provides conversation methodology for creative specification work. |
+| `dependency-analysis` | auto-triggered | Provides dependency graph knowledge. |
+| `quality-guidance` | auto-triggered | Provides strategic spec quality standards. |
+| `refine-spec` | user-invocable | Edits existing spec artifacts using natural language instructions. |
+| `review-spec` | user-invocable | Launches parallel independent reviewers to assess the canvas or spec artifact before composition. |
+| `stakeholder-brief` | user-invocable | Generates a stakeholder-specific briefing from the current canvas. |
+| `synthesize-spec` | user-invocable | Crystallizes a knowledge canvas into a strategic spec artifact. |
+| `validate-spec` | user-invocable | Validates a strategic spec artifact for format compliance and content quality. |
+<!-- END SKILL INVENTORY -->
 
 ## License
 

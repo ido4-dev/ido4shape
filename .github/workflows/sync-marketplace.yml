@@ -61,3 +61,14 @@ jobs:
           git add .claude-plugin/marketplace.json
           git commit -m "ido4shape v${{ steps.version.outputs.version }}"
           git push
+
+      - name: Create GitHub Release
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="v${{ steps.version.outputs.version }}"
+          gh release create "$VERSION" \
+            --title "$VERSION" \
+            --generate-notes \
+            --latest
