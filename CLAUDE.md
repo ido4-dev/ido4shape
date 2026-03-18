@@ -154,17 +154,31 @@ To investigate a hung or failed session, read the conversation JSONL and look fo
 
 **Always select a working folder** when starting a Cowork session with ido4shape. Without a mounted folder, Cowork's injection defense blocks skill execution. With a folder selected, it works reliably.
 
-### Deploying Updates
+### CI & Automation
+
+**CI** runs on every push to main and on PRs — validates plugin structure (125 tests, ~4s).
+
+**Marketplace auto-sync** triggers when `plugin.json` version changes on main — automatically updates `ido4-dev/ido4-plugins` marketplace. No manual marketplace bumps needed.
+
+### Releasing
+
+```bash
+bash scripts/release.sh [patch|minor|major] "Release message"
+```
+
+This bumps the version in `plugin.json`, commits, and pushes. The marketplace sync CI handles the rest automatically.
+
+### Deploying to Cowork / CLI
+
+After a release is pushed:
 
 **For Cowork:**
-1. Push to GitHub (`git push`)
-2. In Cowork UI: click `...` next to `ido4-plugins` → Sync
-3. Reinstall the plugin in Cowork
+1. In Cowork UI: click `...` next to `ido4-plugins` → Sync
+2. Reinstall the plugin in Cowork
 
 **For Claude Code CLI:**
-1. Push to GitHub
-2. `claude plugin marketplace update ido4-plugins`
-3. `claude plugin uninstall ido4shape@ido4-plugins && claude plugin install ido4shape@ido4-plugins`
+1. `claude plugin marketplace update ido4-plugins`
+2. `claude plugin uninstall ido4shape@ido4-plugins && claude plugin install ido4shape@ido4-plugins`
 
 These are separate systems. CLI commands do NOT update Cowork. Cowork UI syncs do NOT update CLI. Do not use `deploy-to-cowork.sh` or manual file copies — they create duplicate plugin copies that conflict.
 
