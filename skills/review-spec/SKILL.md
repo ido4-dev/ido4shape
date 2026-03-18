@@ -21,9 +21,9 @@ If a spec artifact exists (`*-spec.md`), reviewers assess the artifact. If only 
 
 Launch all three in parallel using the Agent tool:
 
-1. **Technical Feasibility** (`agents/technical-reviewer.md`) — Architecture coherence, effort/risk honesty, hidden technical dependencies, scale claims, technology choices.
+1. **Technical Feasibility** (`agents/technical-reviewer.md`) — Architecture coherence, strategic risk honesty, cross-cutting concern completeness, hidden dependencies, constraint realism.
 
-2. **Scope Alignment** (`agents/scope-reviewer.md`) — North star alignment, constraint compliance, non-goal violations, coverage gaps, scope-effort coherence.
+2. **Scope Alignment** (`agents/scope-reviewer.md`) — North star alignment, constraint compliance, non-goal violations, coverage gaps, priority coherence.
 
 3. **Dependency Audit** (`agents/dependency-auditor.md`) — Graph integrity, critical path analysis, cross-group dependency health, parallelization opportunities, hidden dependencies.
 

@@ -4,11 +4,13 @@
 
 ido4shape is a **Claude Code / Cowork plugin** — a thinking partner that helps people crystallize what needs to be built. It guides PMs, founders, and tech leads through non-linear conversation until understanding is deep enough to produce a structured specification artifact.
 
-**Two-tool architecture:**
+**Two-artifact pipeline:**
 ```
-ido4shape (plugin)  →  spec artifact (.md)  →  ido4 MCP (governance)
-Creative upstream       The contract             GitHub issues + methodology
+ido4shape (plugin)  →  strategic spec (.md)  →  ido4 MCP (decomposition)  →  technical spec (.md)  →  ido4 ingestion  →  GitHub issues
+Creative upstream       The WHAT                  Codebase-aware                The HOW                  Governance
 ```
+
+ido4shape produces strategic specs — multi-stakeholder understanding crystallized into structured prose. ido4 MCP reads the strategic spec, explores the actual codebase, and produces a technical spec with implementation-ready tasks. The existing ingestion pipeline turns the technical spec into governed GitHub issues.
 
 **V1 is zero code.** Every deliverable is a markdown file — soul.md, SKILL.md files, agent definitions, references. The intelligence lives in prompt design, not infrastructure.
 
@@ -25,29 +27,39 @@ Creative upstream       The contract             GitHub issues + methodology
 
 ## The Downstream Contract (Critical)
 
-ido4shape produces spec artifacts that ido4's `spec-parser.ts` consumes. The parser is a line-by-line state machine with exact expectations:
+ido4shape produces **strategic specs** consumed by ido4 MCP's decomposition agent — an AI that reads the spec, explores the codebase, and produces technical implementation tasks. The strategic spec is NOT consumed by the ingestion parser directly.
 
-**Heading patterns (regex):**
+**Format identifier:** `> format: strategic-spec | version: 1.0` in project metadata.
+
+**Heading patterns (same structural regex):**
 ```
-PROJECT:  /^# (.+)$/
-GROUP:    /^## Group:\s*(.+)$/
-TASK:     /^### ([A-Z]{2,5}-\d{2,3}):\s*(.+)$/
+PROJECT:     /^# (.+)$/
+GROUP:       /^## Group:\s*(.+)$/
+CAPABILITY:  /^### ([A-Z]{2,5}-\d{2,3}):\s*(.+)$/
 ```
 
-**Metadata — exact key names, in blockquotes immediately after headings:**
+**Metadata — strategic level only:**
 ```markdown
-> effort: S|M|L|XL | risk: low|medium|high|critical | type: feature|bug|research|infrastructure | ai: full|assisted|pair|human
-> depends_on: PREFIX-NN, PREFIX-NN | -
+> format: strategic-spec | version: 1.0          (project level)
+> priority: must-have|should-have|nice-to-have    (groups and capabilities)
+> priority: must-have | risk: low|medium|high     (capabilities)
+> depends_on: PREFIX-NN, PREFIX-NN | -            (capabilities)
 ```
+
+**Not in strategic specs:** `effort`, `type`, `ai`, `size` — these require codebase knowledge and are determined by ido4 MCP during technical decomposition.
 
 **Quality gates:**
-- Task body ≥200 characters with structured content
+- Capability body ≥200 characters with multi-stakeholder context
 - Success conditions under `**Success conditions:**` as bullet list
 - All `depends_on` references must exist in the document
-- No circular dependencies (Kahn's algorithm)
-- Task prefix must match group prefix (e.g., NCO- tasks in "Notification Core" group)
-- Metadata values must be from exact allowed sets (case-insensitive)
+- No circular dependencies
+- Capability prefix must match group prefix
+- Stakeholders section present
+- Cross-cutting concerns section with substance (when applicable)
 - `depends_on: -` means explicit no dependencies; omitted = unspecified
+
+**Full format spec:** `references/strategic-spec-format.md`
+**Example:** `references/example-strategic-notification-system.md`
 
 ## Plugin Structure (Target)
 
@@ -82,9 +94,12 @@ ido4shape/
 │   └── canvas-synthesizer.md          # Opus — reasoning-intensive composition
 ├── references/
 │   ├── soul.md                        # Agent character (SoulSpec-aligned)
-│   ├── artifact-format-spec.md
-│   ├── example-notification-system.md
+│   ├── strategic-spec-format.md       # Full strategic spec format specification
+│   ├── artifact-format-spec.md        # Quick reference
+│   ├── example-strategic-notification-system.md  # Strategic spec example
+│   ├── example-notification-system.md # Technical spec example (reference)
 │   ├── methodology-mapping.md
+│   ├── strategic-spec-adaptation-plan.md  # Work plan for this adaptation
 │   └── project-templates/
 ├── settings.json
 ├── CLAUDE.md                          # This file
@@ -93,23 +108,22 @@ ido4shape/
 └── README.md
 ```
 
-## Build Order (Current)
+## Build History
 
-1. ~~CLAUDE.md + memory files~~ ← done
-2. `references/soul.md` — agent character definition (SoulSpec-aligned). First — it infuses everything
-3. `create-spec` SKILL.md — the conversation engine (80% of value)
-4. Auto-triggered skills (artifact-format, creative-decomposition)
-5. Canvas format reference + synthesize-spec
-6. Remaining skills, agents, hooks, plugin manifest
+1. ~~V1 plugin~~ — complete (30 files, 99 tests, all skills/agents/hooks)
+2. ~~Strategic spec format~~ — designed and documented
+3. ~~Skill adaptation~~ — all skills, agents, references updated for strategic spec output
+4. Next: test with real conversations, then update project templates
 
 ## Related Repos
 
 **ido4-MCP** — `/Users/bogdanionutcoman/dev-projects/ido4-MCP/`
-- Spec artifact format: `spec-artifact-format.md`
-- Parser: `packages/core/src/domains/ingestion/spec-parser.ts`
+- Technical spec format: `spec-artifact-format.md` (what ido4 MCP produces, not what ido4shape produces)
+- Parser: `packages/core/src/domains/ingestion/spec-parser.ts` (consumes technical specs only)
 - Mapper: `packages/core/src/domains/ingestion/spec-mapper.ts`
 - Profiles: `packages/core/src/profiles/` (hydro.ts, scrum.ts, shape-up.ts)
-- Startup brief: `specs-wizard-startup-brief.md`
+- MCP plan: `strategic-spec-mcp-plan.md` (ido4 MCP's side of the two-artifact work)
+- Transferred skills: `packages/plugin/skills/spec-quality/`, `packages/plugin/skills/spec-validate/`
 
 **specs-wizard** (old, reference only) — `/Users/bogdanionutcoman/dev-projects/specs-wizard/`
 - Conversation starters: `templates/conversation-starters.md`

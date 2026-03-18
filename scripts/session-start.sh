@@ -35,6 +35,14 @@ if [ $? -ne 0 ]; then
 
 [To be developed through conversation]
 
+## Stakeholders
+
+[To be populated as stakeholders contribute — name, role, key perspective]
+
+## Cross-Cutting Concerns
+
+[NFRs, security, performance, accessibility, observability, compliance — captured as they emerge from stakeholder conversations. Not every project has every concern.]
+
 ## Constraints & Non-Goals
 
 **Constraints:**

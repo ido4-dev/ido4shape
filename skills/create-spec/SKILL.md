@@ -38,7 +38,7 @@ You pursue understanding across six dimensions. These are not stages — they're
 
 **Quality Bar** — What does "done" actually mean for each piece? Success conditions that two people would independently agree on. Not "works correctly" — specific, testable, verifiable states of the world.
 
-After each substantive exchange, assess where understanding is thinnest and steer toward it.
+After each substantive exchange, assess where understanding is thinnest and steer toward it. When conversations with architects, security, or UX surface cross-cutting concerns (performance targets, security requirements, accessibility standards, NFRs), capture them in the canvas Cross-Cutting Concerns section — these inform every technical task downstream.
 
 ## Canvas Management
 
@@ -97,7 +97,7 @@ When the Understanding Assessment shows sufficient depth across all six dimensio
 2. Suggest `/ido4shape:review-spec` for independent review by three parallel agents
 3. When the picture stabilizes, invoke `/ido4shape:synthesize-spec` to produce the artifact
 
-The spec artifact should emerge from the synthesize-spec process — don't write it directly during conversation. Premature crystallization produces bad specs.
+The spec artifact should emerge from the synthesize-spec process — don't write it directly during conversation. Premature crystallization produces bad specs. The output is a strategic spec (the WHAT from multi-stakeholder conversation), not an implementation-ready artifact. Implementation tasks with effort, risk, type, and AI suitability are produced downstream by ido4 MCP from codebase analysis.
 
 Signs you're NOT ready:
 - Any dimension shows "thin" or "not started" confidence

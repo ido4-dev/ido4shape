@@ -2,8 +2,8 @@
 name: dependency-analysis
 description: >
   This skill provides dependency graph knowledge. It activates automatically when the
-  conversation involves task dependencies, ordering of work, critical paths, "what depends on
-  what", "what needs to be built first", circular dependencies, infrastructure-before-features
+  conversation involves capability dependencies, ordering of work, critical paths, "what depends
+  on what", "what needs to be built first", circular dependencies, foundational-before-dependent
   patterns, cross-group dependency implications, or the depends_on field in spec artifacts.
   Also triggers when the user asks about sequencing, parallelization, blocking relationships,
   "what can we parallelize", "what's the critical path", or when the canvas is being
@@ -19,9 +19,11 @@ Dependencies are discovered through understanding how capabilities relate — no
 
 **Interfaces before implementations** — Define the contract before implementing against it.
 
-**Data before logic** — Schema and data models before business logic. Migrations before features that depend on new fields.
+**Data before logic** — The underlying data concepts before the business logic that operates on them.
 
 **Core before periphery** — The central capability of each group before edge cases, optimizations, and polish.
+
+Note: These are functional dependency patterns — how capabilities relate conceptually. Code-level dependencies (specific migrations, module coupling) are discovered by ido4 MCP during technical decomposition.
 
 ## Dependency Patterns
 
@@ -31,7 +33,7 @@ Dependencies are discovered through understanding how capabilities relate — no
 
 **Fan-in:** B and C must both complete before D. Common for integration points.
 
-**Cross-group:** A task in one group depends on a task in another group. These are highest-risk — they create coordination requirements.
+**Cross-group:** A capability in one group depends on a capability in another group. These are highest-risk — they create coordination requirements.
 
 ## Quality Checks
 

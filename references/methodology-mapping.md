@@ -1,44 +1,35 @@
 # Methodology Mapping Reference
 
-ido4shape produces methodology-agnostic artifacts. ido4 MCP applies methodology mapping at ingestion time through three built-in profiles. This reference documents how artifact concepts map to each methodology so the agent can make informed decisions about metadata values — but ido4shape NEVER asks the user which methodology they're using.
+ido4shape produces methodology-agnostic strategic specs. Methodology mapping happens downstream — ido4 MCP applies methodology-specific interpretation when producing technical specs and during ingestion through its built-in profiles (Hydro, Scrum, Shape Up).
 
-## Mapping Table
+## What This Means for ido4shape
 
-| Artifact Concept | Hydro (Wave-Based) | Scrum (Sprint-Based) | Shape Up (Betting) |
-|-----------------|-------|-------|----------|
-| Group | Epic | Feature group | Bet |
-| Group size | — | — | Appetite (S/M/L/XL) |
-| Task | Task (issue) | Story / Spike | Scope |
-| Task effort S | Small | 1 point | — |
-| Task effort M | Medium | 3 points | — |
-| Task effort L | Large | 5 points | — |
-| Task effort XL | Large | 8 points | — |
-| Task risk low | Low | — | — |
-| Task risk medium | Medium | — | — |
-| Task risk high | High | Spike candidate | Rabbit hole flag |
-| Task risk critical | High + critical-risk label | Spike candidate | Rabbit hole flag |
-| Task type: research | Task with risk=high | Spike (relaxed pipeline) | Research scope |
-| Task ai: full | ai-only | ai-only | ai-only |
-| Task ai: assisted | ai-reviewed | ai-reviewed | ai-reviewed |
-| Task ai: pair | hybrid | hybrid | hybrid |
-| Task ai: human | human-only (blocks start) | human-only | human-only |
-| Success conditions | Acceptance Criteria | Definition of Done | "Done means" |
-| depends_on | Dependencies field | Dependencies field | Dependencies field |
+Strategic specs contain no methodology-specific fields or language. The mapping between strategic concepts and methodology-specific concepts is ido4 MCP's responsibility:
 
-## Why This Matters for ido4shape
-
-The agent should understand that:
-
-- **effort: XL** maps to the same as L in Hydro (Large) — ido4 doesn't distinguish. The value is still meaningful for human understanding of scope.
-- **risk: critical** maps to High with an extra label — the distinction between high and critical is preserved semantically even when the risk field collapses them.
-- **type: research** triggers special handling in Scrum (becomes a Spike with relaxed validation) — worth noting when a task involves exploration or unknowns.
-- **ai: human** blocks the `start` transition in ido4's BRE — these tasks cannot be claimed by AI agents. Use this deliberately for tasks requiring human judgment.
-- **Group size** only matters in Shape Up where it maps to Appetite — but it's always worth capturing as it communicates scope to humans.
+| Strategic Spec Concept | What ido4 MCP Maps It To |
+|----------------------|--------------------------|
+| Group | Epic (Hydro), Feature group (Scrum), Bet (Shape Up) |
+| Capability | Task/Issue (Hydro), Story/Spike (Scrum), Scope (Shape Up) |
+| Priority (must-have/should-have/nice-to-have) | Drives decomposition ordering and resource allocation |
+| Strategic risk (low/medium/high) | Informs technical risk assessment, not replaces it |
+| Functional dependencies | Preserved + augmented with code-level dependencies |
+| Success conditions | Become acceptance criteria, definition of done, or "done means" per methodology |
 
 ## What ido4shape Must NOT Do
 
 - Never ask "are you using Scrum or Shape Up?"
-- Never use methodology-specific language (no "sprint," "wave," "bet," "epic" in the artifact)
+- Never use methodology-specific language (no "sprint," "wave," "bet," "epic," "story points," "appetite")
 - Never adjust metadata values based on assumed methodology
 - Never reference containers, cycles, or methodology-specific concepts
-- The artifact is a universal contract — methodology is applied downstream
+- The strategic spec is a universal contract — methodology is applied downstream by ido4 MCP
+
+## Fields That Moved Downstream
+
+These fields used to be in the spec artifact but are now determined by ido4 MCP from codebase analysis:
+
+- **effort (S/M/L/XL):** Requires knowing code complexity. ido4 MCP maps to methodology-specific sizing.
+- **type (feature/bug/research/infrastructure):** One capability may decompose into multiple types.
+- **ai (full/assisted/pair/human):** Requires knowing code patterns and test coverage.
+- **size (S/M/L/XL on groups):** Implementation scope, unknowable from conversation.
+
+Strategic specs capture priority and strategic risk instead — things stakeholder conversations CAN meaningfully determine.

@@ -1,22 +1,25 @@
-# Spec Artifact Format — Quick Reference
+# Strategic Spec Format — Quick Reference
 
 The canonical format specification lives at `skills/artifact-format/references/format-spec.md`. This file provides a quick reference for the essential patterns.
 
 ## Hierarchy
 
 ```
-# Project Name          → project
-## Group: Group Name    → logical grouping
-### PREFIX-NN: Title    → individual task
+# Project Name                    → project (with format: strategic-spec | version: 1.0)
+## Cross-Cutting Concerns         → NFRs, security, performance (prose sections)
+## Group: Capability Cluster      → logical grouping
+### PREFIX-NN: Capability Title   → individual capability
 ```
 
 ## Metadata (in `>` blockquotes immediately after headings)
 
-**Group:** `> size: S|M|L|XL | risk: low|medium|high|critical`
+**Project:** `> format: strategic-spec | version: 1.0`
 
-**Task:**
+**Group:** `> priority: must-have|should-have|nice-to-have`
+
+**Capability:**
 ```
-> effort: S|M|L|XL | risk: low|medium|high|critical | type: feature|bug|research|infrastructure | ai: full|assisted|pair|human
+> priority: must-have|should-have|nice-to-have | risk: low|medium|high
 > depends_on: PREFIX-NN, PREFIX-NN | -
 ```
 
@@ -24,13 +27,19 @@ Key names must be **lowercase**. Values are case-insensitive.
 
 ## Quality Gates
 
-- Task body >= 200 characters
+- Capability body >= 200 characters with multi-stakeholder context
 - Success conditions under `**Success conditions:**` as bullets
 - All `depends_on` references must exist
 - No circular dependencies
-- Task prefix must match group prefix
+- Capability prefix must match group prefix
 - `depends_on: -` = explicitly no dependencies
+- Stakeholders section present
+- Cross-cutting concerns not empty filler
+
+## Not in Strategic Specs
+
+effort, type, ai, size — these require codebase knowledge. Determined by ido4 MCP during technical decomposition.
 
 ## Full Specification
 
-See `skills/artifact-format/references/format-spec.md` for parser regex patterns, state machine details, value mappings, and common errors.
+See `skills/artifact-format/references/format-spec.md` for the complete reference.

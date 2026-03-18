@@ -1,100 +1,127 @@
-# Complete Format Specification
+# Strategic Spec Format — Complete Reference
 
-This is the detailed reference for the spec artifact format. The artifact-format skill provides the essential rules; this file contains the complete specification including parser regex patterns and edge cases.
+This is the detailed reference for the strategic spec artifact format. The artifact-format skill provides the essential rules; this file contains the complete specification.
 
-## Parser Regex Patterns (from ido4's spec-parser.ts)
+## Document Structure
 
 ```
-PROJECT_HEADING:  /^# (.+)$/
-GROUP_HEADING:    /^## Group:\s*(.+)$/
-TASK_HEADING:     /^### ([A-Z]{2,5}-\d{2,3}):\s*(.+)$/
-BLOCKQUOTE:       /^>\s?(.*)$/
-BULLET_ITEM:      /^- (.+)$/
-SECTION_HEADER:   /^\*\*(.+?):\*\*\s*$/
-SEPARATOR:        /^---\s*$/
+# Project Name                          → PROJECT level (one per document)
+> format: strategic-spec | version: 1.0
+
+[Problem description, stakeholders, constraints, non-goals, open questions]
+
+## Cross-Cutting Concerns               → CONCERNS level (one section, multiple subsections)
+### Performance / Security / etc.
+
+## Group: Capability Cluster Name       → GROUP level (multiple)
+> priority: must-have|should-have|nice-to-have
+
+### PREFIX-NN: Capability Title         → CAPABILITY level (multiple per group)
+> priority: must-have|should-have|nice-to-have | risk: low|medium|high
+> depends_on: PREFIX-NN, PREFIX-NN | -
 ```
 
-## State Machine
+## Heading Patterns
 
-The parser processes the markdown line-by-line through states: INIT -> PROJECT -> GROUP -> TASK.
+The strategic spec uses the same heading regex as the technical spec for structural compatibility:
 
-- `#` heading transitions to PROJECT state
-- `## Group:` transitions to GROUP state
-- `### PREFIX-NN:` transitions to TASK state
-- `>` lines after any heading are metadata
-- Everything else between headings is body text
-- `---` is an optional visual separator
-
-## Metadata Parsing
-
-Metadata lines use pipe-separated key-value pairs:
 ```
-> effort: M | risk: low | type: feature | ai: full
-> depends_on: NCO-01, NCO-02
+PROJECT:     /^# (.+)$/
+GROUP:       /^## Group:\s*(.+)$/
+CAPABILITY:  /^### ([A-Z]{2,5}-\d{2,3}):\s*(.+)$/
 ```
 
-Key names must be lowercase (effort, risk, type, ai, depends_on, size). The parser matches keys case-sensitively — `Effort` or `EFFORT` will generate an unknown-key warning. Values are matched case-insensitively (e.g., `effort: m` and `effort: M` both work). Unknown keys generate warnings but don't fail parsing.
+Additional recognized sections (not regex-parsed, recognized by convention):
+- `## Cross-Cutting Concerns` — project-wide NFRs and constraints
+- `## Stakeholders` — within the project header area (before first group)
 
-Multiple `>` lines are concatenated. The depends_on field is typically on its own line for readability.
+## Metadata
+
+Metadata appears in blockquotes immediately after headings. Key names are lowercase. Values are case-insensitive. Pipe-separated.
+
+### Project Metadata
+```
+> format: strategic-spec | version: 1.0
+```
+Required. Identifies the document as a strategic spec.
+
+### Group Metadata
+```
+> priority: must-have|should-have|nice-to-have
+```
+Required on every group.
+
+### Capability Metadata
+```
+> priority: must-have|should-have|nice-to-have | risk: low|medium|high
+> depends_on: PREFIX-NN, PREFIX-NN | -
+```
+`priority` required. `risk` recommended. `depends_on` recommended (explicit `-` for no dependencies; omitting means unspecified).
+
+## Strategic Risk (Not Code Risk)
+
+Risk in strategic specs means something different from risk in technical specs:
+
+- **low:** Well-understood by stakeholders. Requirements clear and stable. No external blockers. Team has confidence.
+- **medium:** Some unknowns but bounded. Partial stakeholder alignment. Manageable external dependencies. Might need further conversation.
+- **high:** Significant unknowns. Depends on factors outside team control (third-party APIs, legal sign-off, market validation). Stakeholder disagreement unresolved. Requirements may shift.
+
+This is NOT code complexity risk. That's determined by ido4 MCP from actual codebase analysis.
+
+## Fields NOT Present in Strategic Specs
+
+These fields exist in technical specs (produced by ido4 MCP) but not in strategic specs:
+
+| Field | Why Not | Where It Lives |
+|-------|---------|----------------|
+| effort: S/M/L/XL | Requires knowing code complexity, coupling, migration needs | Technical spec |
+| type: feature/bug/research/infrastructure | One capability may decompose into multiple types | Technical spec |
+| ai: full/assisted/pair/human | Requires knowing code patterns, test coverage | Technical spec |
+| size: S/M/L/XL (group) | Implementation scope, unknowable from conversation | Technical spec |
 
 ## Prefix Derivation
 
-The parser derives expected prefixes from group names:
-- Takes uppercase initials: "Notification Core" -> "NC"
-- Or uses abbreviation: "Notification Core" -> "NCO"
-- The prefix in task headings must match the group's expected prefix
+Same rules as technical specs:
+- Takes uppercase initials or abbreviation from group name
+- "Notification Core" → NCO, "Email Channel" → EML, "User Preferences" → UPR
 - Prefix length: 2-5 characters (regex: `[A-Z]{2,5}`)
-- Task number: 2-3 digits (regex: `\d{2,3}`), typically zero-padded
+- Capability number: 2-3 digits (regex: `\d{2,3}`), typically zero-padded
+- All capabilities in a group share the prefix
 
 ## Dependency Validation
 
-During mapping (spec-mapper.ts):
-1. All `depends_on` references are collected
-2. Each reference is checked against existing task IDs
-3. References to non-existent tasks generate errors
-4. Topological sort via Kahn's algorithm detects circular dependencies
-5. Tasks are ordered for creation: dependencies created before dependents
+- All `depends_on` references must point to existing capability IDs in the document
+- No circular dependency chains
+- These are functional dependencies: "notification delivery before notification preferences"
+- Code-level dependencies ("migration before API endpoint") are added by ido4 MCP during technical decomposition
 
-## Value Mapping (at ingestion time)
+## Content Quality Gates
 
-**Effort mapping:**
-| Artifact | ido4 Internal |
-|----------|--------------|
-| S | Small |
-| M | Medium |
-| L | Large |
-| XL | Large (no distinction from L) |
+### Capability descriptions
+- Minimum 200 characters with substantive content
+- Must carry multi-stakeholder understanding: what, who needs it, why, stakeholder context
+- Should NOT prescribe implementation approach — that's the technical spec's job
+- Stakeholder attribution inline where relevant: "Per Marcus: needs idempotency key"
 
-**Risk mapping:**
-| Artifact | ido4 Internal |
-|----------|--------------|
-| low | Low |
-| medium | Medium |
-| high | High |
-| critical | High (+ critical-risk label) |
+### Success conditions
+- Present on every capability as `**Success conditions:**` bullet list
+- Specific and independently verifiable
+- Product-level: "user can set quiet hours" not "database migration runs successfully"
+- Two independent people should agree whether the condition is met
 
-**AI mapping:**
-| Artifact | ido4 Internal |
-|----------|--------------|
-| full | AI_ONLY |
-| assisted | AI_REVIEWED |
-| pair | HYBRID |
-| human | HUMAN_ONLY |
+### Cross-cutting concerns
+- Not empty template filler — each concern should have specific targets or requirements
+- Stakeholder attribution where relevant
+- Rich enough for a technical decomposition agent to factor into implementation decisions
 
-**Type mapping:**
-| Artifact | ido4 Internal |
-|----------|--------------|
-| feature | FEATURE |
-| bug | BUG |
-| research | RESEARCH |
-| infrastructure | INFRASTRUCTURE |
+### Project sections
+- Stakeholders section lists real contributors with real perspectives
+- Constraints have rationale (not just "must use PostgreSQL" but why)
+- Non-goals are genuine boundaries, not obvious statements
+- Open questions are honest unknowns, not disguised decisions
 
-## Common Validation Failures
+## The Downstream Consumer
 
-1. `## Name` without `Group:` prefix — not recognized as a group
-2. `### name-01:` with lowercase prefix — doesn't match `[A-Z]{2,5}`
-3. `> Effort: M` with capital E — unknown key warning (keys are matched case-sensitively in some paths)
-4. Body under 200 characters — SpecCompletenessValidation fails
-5. Missing `**Success conditions:**` — quality gate warning
-6. `depends_on: TASK-99` referencing non-existent task — dependency resolution error
-7. Circular dependency chain (A -> B -> C -> A) — Kahn's algorithm fails
+The strategic spec is consumed by ido4 MCP's decomposition agent — an AI that reads this document, explores the actual codebase, and produces a technical spec with implementation-ready tasks. The richer and more honest this document is, the better the technical decomposition will be.
+
+The technical spec then feeds into ido4's existing ingestion pipeline (spec-parser.ts → spec-mapper.ts → GitHub issues). The strategic spec never touches that parser directly.
