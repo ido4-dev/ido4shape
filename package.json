@@ -1,0 +1,9 @@
+{
+  "name": "ido4shape-plugin",
+  "version": "0.2.1",
+  "private": true,
+  "description": "Dependencies for ido4shape. Installed automatically via SessionStart hook.",
+  "dependencies": {
+    "@ido4/spec-format": "^0.5.0"
+  }
+}
