@@ -113,7 +113,16 @@ ido4shape/
 1. ~~V1 plugin~~ — complete (30 files, 99 tests, all skills/agents/hooks)
 2. ~~Strategic spec format~~ — designed and documented
 3. ~~Skill adaptation~~ — all skills, agents, references updated for strategic spec output
-4. Next: test with real conversations, then update project templates
+4. ~~First real-world test~~ — complete (2026-03-24). Full pipeline: create-spec → synthesize-spec → validate-spec → refine-spec → review-spec → validate-spec. 12 observations logged. See `reports/first-real-world-test.md`
+5. Next: address high-severity observations (OBS-01, 05, 06, 08, 11), then update project templates
+
+## Testing & Experience Reports
+
+After every end-to-end test of ido4shape (manual or synthetic), produce a structured experience report in `reports/`. Each report documents: what was tested, pipeline steps, what worked, what didn't, observations, and implications.
+
+- `reports/first-real-world-test.md` — First e2e test (ido4-simulate project, 2026-03-24). **This is the calibration baseline for the ido4-simulate synthetic testing framework.** The 12 observations map to synthetic test signals — the framework should detect these same issues automatically.
+- `ido4-simulate-observations.md` — Structured observation log from the first test (12 observations with type, root cause, fix candidates, synthetic test signals)
+- `ido4-simulate-plan.md` — Detailed plan for the synthetic testing framework (1,200+ lines, architecture, cost model, research design)
 
 ## Related Repos
 
