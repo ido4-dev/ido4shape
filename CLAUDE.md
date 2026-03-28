@@ -12,11 +12,12 @@ Creative upstream       The WHAT                  Codebase-aware                
 
 ido4shape produces strategic specs — multi-stakeholder understanding crystallized into structured prose. ido4 MCP reads the strategic spec, explores the actual codebase, and produces a technical spec with implementation-ready tasks. The existing ingestion pipeline turns the technical spec into governed GitHub issues.
 
-**V1 is zero code.** Every deliverable is a markdown file — soul.md, SKILL.md files, agent definitions, references. The intelligence lives in prompt design, not infrastructure.
+**V1 has zero external dependencies.** Every deliverable is a markdown file — soul.md, SKILL.md files, agent definitions, references. The intelligence lives in prompt design, not infrastructure. The one exception is `dist/spec-validator.js` — a bundled copy of the @ido4/spec-format parser CLI (~8KB, zero npm deps) for deterministic structural validation.
 
 ## Development Conventions
 
-- **All files are markdown** — no build tools, no npm, no TypeScript, no compilation
+- **All authored files are markdown** — no build tools, no npm, no TypeScript, no compilation
+- **One bundled artifact:** `dist/spec-validator.js` is built upstream in ido4-MCP, committed to git, and shipped with the plugin
 - **Plugin follows the Agent Skills standard** (agentskills.io) — SKILL.md with YAML frontmatter
 - **SKILL.md bodies target 1,500-2,000 words** — heavy content goes in `references/` subdirectories within each skill
 - **Skill descriptions should be "a little bit pushy"** — Claude tends to undertrigger; descriptions should clearly state activation conditions
@@ -115,6 +116,34 @@ ido4shape/
 3. ~~Skill adaptation~~ — all skills, agents, references updated for strategic spec output
 4. ~~First real-world test~~ — complete (2026-03-24). Full pipeline: create-spec → synthesize-spec → validate-spec → refine-spec → review-spec → validate-spec. 12 observations logged. See `reports/first-real-world-test.md`
 5. Next: address high-severity observations (OBS-01, 05, 06, 08, 11), then update project templates
+6. ~~Bundled validator~~ — replaced npm install approach with bundled .js file (2026-03-28). See `architecture/bundled-validator-architecture.md` in ido4-MCP.
+
+## Bundled Validator
+
+ido4shape ships a bundled copy of the @ido4/spec-format parser CLI at `dist/spec-validator.js`.
+This is a single self-contained JS file (~8KB) with zero npm dependencies.
+
+**How it works:**
+- SessionStart hook copies the bundle to `${CLAUDE_PLUGIN_DATA}/spec-validator.js`
+- The validate-spec skill runs it via `node` to get deterministic structural validation
+- If the bundle is unavailable, validation falls back to LLM-only (graceful degradation)
+
+**How it's updated:**
+- ido4-MCP publishes @ido4/spec-format → CI dispatches to ido4shape
+- `update-validator.yml` creates a PR with the new bundle
+- Patch/minor updates auto-merge after CI passes
+- Major version updates require review (output format may have changed)
+
+**Manual update (if needed):**
+```bash
+scripts/update-validator.sh 0.7.0                  # from npm
+scripts/update-validator.sh ~/dev-projects/ido4-MCP # from local build
+```
+
+**Release checks:**
+- `release.sh` hard-fails if bundle is missing
+- `release.sh` warns if bundle version differs from latest npm version
+- CI validates bundle presence, version header, and execution
 
 ## Testing & Experience Reports
 

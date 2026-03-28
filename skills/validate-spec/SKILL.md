@@ -21,12 +21,12 @@ This skill performs validation in two passes. Both passes are required.
 Run the spec format parser against the artifact:
 
 ```bash
-node "${CLAUDE_PLUGIN_DATA}/node_modules/@ido4/spec-format/dist/cli.js" <path-to-spec.md>
+node "${CLAUDE_PLUGIN_DATA}/spec-validator.js" <path-to-spec.md>
 ```
 
 The parser outputs JSON to stdout. Parse it and use the full output for intelligent interpretation.
 
-If the CLI is not available (npm install failed), skip this pass and note it in the report. Do NOT attempt to replicate the parser's structural checks manually — the whole point is deterministic validation.
+If the CLI is not available (file not found or node error), skip this pass and note it in the report. Do NOT attempt to replicate the parser's structural checks manually — the whole point is deterministic validation.
 
 #### Interpreting Parser Output
 

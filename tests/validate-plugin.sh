@@ -423,9 +423,60 @@ fi
 
 echo ""
 
-# ─── TEST 12: No Obvious Content Issues ───────────────────
+# ─── TEST 12: Bundled Validator ────────────────────────────
 
-echo "--- Test 12: Content Anti-Pattern Scan ---"
+echo "--- Test 12: Bundled Validator ---"
+
+if [ -f "$PLUGIN_DIR/dist/spec-validator.js" ]; then
+  pass "Validator bundle exists"
+else
+  fail "Validator bundle missing (dist/spec-validator.js)"
+fi
+
+if [ -f "$PLUGIN_DIR/dist/.spec-format-version" ]; then
+  BUNDLE_VERSION=$(cat "$PLUGIN_DIR/dist/.spec-format-version")
+  pass "Version marker exists (v$BUNDLE_VERSION)"
+else
+  fail "Version marker missing (dist/.spec-format-version)"
+fi
+
+# Version header check
+if [ -f "$PLUGIN_DIR/dist/spec-validator.js" ]; then
+  if head -3 "$PLUGIN_DIR/dist/spec-validator.js" | grep -q "@ido4/spec-format v"; then
+    pass "Bundle has version header"
+  else
+    fail "Bundle missing version header"
+  fi
+fi
+
+# Smoke test (if node available)
+if command -v node &>/dev/null && [ -f "$PLUGIN_DIR/dist/spec-validator.js" ]; then
+  TEST_SPEC="$PLUGIN_DIR/references/example-strategic-notification-system.md"
+  if [ -f "$TEST_SPEC" ]; then
+    if node "$PLUGIN_DIR/dist/spec-validator.js" "$TEST_SPEC" >/dev/null 2>&1; then
+      pass "Bundle executes successfully"
+    else
+      fail "Bundle execution failed"
+    fi
+    # Verify output structure
+    RESULT=$(node "$PLUGIN_DIR/dist/spec-validator.js" "$TEST_SPEC" 2>/dev/null)
+    if echo "$RESULT" | python3 -c "import sys,json; d=json.load(sys.stdin); assert d.get('valid') is not None" 2>/dev/null; then
+      pass "Bundle produces valid JSON output"
+    else
+      fail "Bundle output is not valid parser JSON"
+    fi
+  else
+    warn "Example spec fixture not found — skipping smoke test"
+  fi
+else
+  warn "node not available — skipping bundle smoke test"
+fi
+
+echo ""
+
+# ─── TEST 13: No Obvious Content Issues ───────────────────
+
+echo "--- Test 13: Content Anti-Pattern Scan ---"
 
 # Check for aggressive prompt language (research says it hurts newer Claude models)
 AGGRESSIVE=$(grep -rli "CRITICAL!\|YOU MUST\|NEVER EVER\|IMPORTANT:" "$PLUGIN_DIR/skills/" "$PLUGIN_DIR/agents/" 2>/dev/null | wc -l | tr -d ' ')

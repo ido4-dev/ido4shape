@@ -11,6 +11,38 @@ MARKETPLACE_DIR="$(cd "$PLUGIN_DIR/../ido4-plugins" && pwd)"
 BUMP_TYPE="${1:-patch}"
 MESSAGE="${2:-Release}"
 
+# ─── Pre-flight: Bundle Validation ─────────────────────────
+
+BUNDLE="$PLUGIN_DIR/dist/spec-validator.js"
+VERSION_FILE="$PLUGIN_DIR/dist/.spec-format-version"
+
+if [ ! -f "$BUNDLE" ]; then
+  echo "ERROR: $BUNDLE not found."
+  echo "Run: scripts/update-validator.sh <version>"
+  exit 1
+fi
+
+if ! head -3 "$BUNDLE" | grep -q "@ido4/spec-format v"; then
+  echo "ERROR: $BUNDLE missing version header — not a valid bundle"
+  exit 1
+fi
+
+BUNDLED_VERSION=$(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")
+LATEST_NPM=$(npm view @ido4/spec-format version 2>/dev/null || echo "unknown")
+
+if [ "$BUNDLED_VERSION" != "$LATEST_NPM" ] && [ "$LATEST_NPM" != "unknown" ]; then
+  echo "WARNING: Bundled spec-validator is v$BUNDLED_VERSION, latest on npm is v$LATEST_NPM"
+  echo "Consider running: scripts/update-validator.sh $LATEST_NPM"
+  read -p "Continue anyway? [y/N] " -n 1 -r
+  echo
+  [[ $REPLY =~ ^[Yy]$ ]] || exit 1
+fi
+
+echo "Pre-flight: spec-validator v$BUNDLED_VERSION ✓"
+echo ""
+
+# ─── Version Bump ──────────────────────────────────────────
+
 # Read current version from plugin.json
 CURRENT=$(python3 -c "
 import json
