@@ -96,6 +96,7 @@ The artifact must follow this exact structure. Study it — heading levels, meta
 - Only two types of H2 sections allowed: `## Cross-Cutting Concerns` and `## Group: [Name]`. No other H2 headings. Stakeholders, Constraints, Non-goals, and Open questions are bold-label sections under the H1 project header, NOT H2 sections.
 - Group headings use exactly `## Group: ` prefix (H2, with colon and space)
 - Capability headings use exactly `### PREFIX-NN: ` pattern (H3)
+- **Group prefixes must be 2-5 uppercase letters.** Derive from group name initials or abbreviation: "Notification Core" → `NCO`, "User Preferences" → `UPR`, "Infrastructure & Validation" → `INFRA`. Never exceed 5 characters — `BRIDGE` is invalid, use `BRDG`.
 - Capability IDs use zero-padded 2-digit numbers: `PREFIX-01`, `PREFIX-02`, ... `PREFIX-10`. Never single digits like `PREFIX-1`.
 - All metadata uses blockquote syntax (`> priority: ...`), never inline bold or other formatting
 - Cross-Cutting Concerns subsections use H3 (`### Performance`, `### Security`, etc.)
