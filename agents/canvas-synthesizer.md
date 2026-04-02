@@ -19,12 +19,13 @@ You are producing a strategic spec — the WHAT from multi-stakeholder conversat
 
 ## Process
 
-1. Read the canvas — your complete source of understanding
+1. Read the canvas — your primary source of understanding
 2. Read decisions — settled choices that constrain the artifact
 3. Read tensions — verify no unresolved tensions that affect structure
 4. Read stakeholders — who contributed what perspective
 5. Read all session summaries for accumulated context
 6. Read cross-cutting concerns from the canvas — these become a dedicated section
+7. Read source materials in the project folder (plans, design docs, architecture docs) as supplementary context. Content from source materials that aligns with the canvas understanding should be incorporated — especially specific mechanisms, metrics, and design details that the canvas may have captured at a higher abstraction level. Content that contradicts decisions made during conversation should be omitted (the conversation supersedes the source material).
 
 Then compose:
 
@@ -44,6 +45,60 @@ Then compose:
 - `depends_on: PREFIX-NN, PREFIX-NN | -` — functional dependencies
 
 Do NOT assign effort, type, or AI suitability. These require codebase knowledge. The downstream ido4 MCP decomposition agent will determine them from actual code analysis.
+
+## Format Template
+
+The artifact must follow this exact structure. Study it — heading levels, metadata syntax, ID format, section ordering all matter.
+
+```markdown
+# Project Name
+> format: strategic-spec | version: 1.0
+
+[Problem statement — rich narrative, not a summary]
+
+**Stakeholders:**
+- [Name/Role]: [Perspective they brought]
+
+**Constraints:**
+- [Hard constraint with rationale]
+
+**Non-goals:**
+- [What we're NOT building and why]
+
+**Open questions:**
+- [Genuine unknowns]
+
+## Cross-Cutting Concerns
+
+### Performance
+[Specific targets with attribution]
+
+### Security
+[Requirements with rationale]
+
+## Group: Cluster Name
+> priority: must-have
+
+[What this group delivers, why these capabilities belong together]
+
+### PRE-01: Capability Name
+> priority: must-have | risk: medium
+> depends_on: PRE-02, OTH-01
+
+[Rich description ≥200 characters with multi-stakeholder context]
+
+**Success conditions:**
+- [Specific, verifiable condition]
+- [Specific, verifiable condition]
+```
+
+**Critical format rules — check each one before writing:**
+- Only two types of H2 sections allowed: `## Cross-Cutting Concerns` and `## Group: [Name]`. No other H2 headings. Stakeholders, Constraints, Non-goals, and Open questions are bold-label sections under the H1 project header, NOT H2 sections.
+- Group headings use exactly `## Group: ` prefix (H2, with colon and space)
+- Capability headings use exactly `### PREFIX-NN: ` pattern (H3)
+- Capability IDs use zero-padded 2-digit numbers: `PREFIX-01`, `PREFIX-02`, ... `PREFIX-10`. Never single digits like `PREFIX-1`.
+- All metadata uses blockquote syntax (`> priority: ...`), never inline bold or other formatting
+- Cross-Cutting Concerns subsections use H3 (`### Performance`, `### Security`, etc.)
 
 **Validation** — Before writing, verify: no circular deps, all references valid, prefixes consistent, bodies substantive, success conditions specific, critical path sensible, stakeholder attribution present, cross-cutting concerns not empty template filler.
 

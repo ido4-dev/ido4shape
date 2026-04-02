@@ -43,4 +43,10 @@ Changes often have ripple effects. Surface them: "If we split this group, the th
 
 ## After Each Refinement
 
-Verify: all capability IDs unique, all depends_on references valid, no circular dependencies introduced, prefixes match groups, bodies still substantive, stakeholder attribution preserved. Explain what you changed and suggest related changes the user might want.
+Verify: all capability IDs unique, all depends_on references valid, no circular dependencies introduced, prefixes match groups, bodies still substantive, stakeholder attribution preserved.
+
+**Format checks:** Capability IDs must use zero-padded 2-digit numbers (`PREFIX-01`, not `PREFIX-1`). Group headings must use `## Group: ` prefix. All metadata must use blockquote syntax (`> priority: ...`). Only `## Group:` and `## Cross-Cutting Concerns` are allowed as H2 sections.
+
+When fixing format compliance issues, identify the pattern (e.g., all IDs missing zero-padding) and fix ALL instances in one pass. Don't fix one at a time — that's expensive and risks content drift.
+
+Explain what you changed and suggest related changes the user might want.

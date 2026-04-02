@@ -21,9 +21,20 @@ Before composing, verify readiness by checking the canvas in the project workspa
 
 The readiness threshold for a strategic spec is different from an implementation-ready one: you don't need enough detail to estimate effort, but you DO need rich stakeholder perspectives, clear success conditions, and captured cross-cutting concerns. If the canvas is thin on stakeholder coverage or has empty cross-cutting concerns despite relevant conversations, suggest returning to `/ido4shape:create-spec` to fill gaps.
 
-## Optional Pre-Composition Review
+## Source Material Reconciliation
 
-For complex specs (4+ groups, 10+ capabilities, multiple stakeholders), consider running `/ido4shape:review-spec` first. This launches parallel reviewers that catch issues when fixes are cheap.
+Before invoking the synthesizer, check for source materials in the project folder — plans, design documents, architecture docs, meeting notes, anything the user brought into the session. Compare their substantive content against what's captured in the canvas.
+
+If source materials exist and contain substantive content not reflected in the canvas:
+1. List the items that weren't contradicted by conversation but also weren't captured in the canvas
+2. Present the list to the user: "These items from your source materials weren't discussed — should they be included in the spec, excluded, or discussed before synthesis?"
+3. For items the user confirms should be included, add them to the canvas before synthesis
+
+This prevents content loss. The synthesizer works primarily from the canvas — anything not in the canvas is at risk of being lost. Source materials that were extensively discussed in conversation are already in the canvas. But specific mechanisms, metrics, or design details that were implicitly endorsed (not contradicted) may not be.
+
+## Pre-Composition Review
+
+For specs with 4+ groups or 10+ capabilities, run `/ido4shape:review-spec` before synthesis. The dependency auditor catches structural issues that are expensive to fix after the spec is written. If review-spec hasn't been run, tell the user: "Independent review hasn't been run yet. The dependency auditor catches issues the synthesizer often misses. Run `/ido4shape:review-spec` first?"
 
 ## Composition
 
