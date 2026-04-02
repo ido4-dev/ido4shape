@@ -1,7 +1,7 @@
 {
   "name": "ido4shape",
   "description": "A thinking partner that helps crystallize what needs to be built. Guides product managers, founders, and tech leads through creative, non-linear conversation until understanding is deep enough to produce a structured specification artifact.",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "author": {
     "name": "Bogdan Coman",
     "url": "https://github.com/b-coman"
