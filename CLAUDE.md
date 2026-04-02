@@ -115,8 +115,10 @@ ido4shape/
 2. ~~Strategic spec format~~ — designed and documented
 3. ~~Skill adaptation~~ — all skills, agents, references updated for strategic spec output
 4. ~~First real-world test~~ — complete (2026-03-24). Full pipeline: create-spec → synthesize-spec → validate-spec → refine-spec → review-spec → validate-spec. 12 observations logged. See `reports/first-real-world-test.md`
-5. Next: address high-severity observations (OBS-01, 05, 06, 08, 11), then update project templates
+5. ~~High-severity obs fixes~~ — OBS-01, 05, 06, 08, 11 addressed (v0.3.3, 2026-03-30). Workspace discipline, turn discipline, format skeleton, source reconciliation, review gate.
 6. ~~Bundled validator~~ — replaced npm install approach with bundled .js file (2026-03-28). See `architecture/bundled-validator-architecture.md` in ido4-MCP.
+7. ~~E2E test #2~~ — OpenClaw outreach project (v0.3.3, 2026-04-02). 4/5 fixes pass, 1 mostly pass. 3 follow-up fixes applied (v0.3.4): convergence check, stronger propose mode, prefix length rule. See `reports/e2e-test-002-openclaw-outreach.md`
+8. Next: 1-2 more e2e tests on different project types, then marketplace submission
 
 ## Bundled Validator
 
