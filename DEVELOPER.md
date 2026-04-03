@@ -5,8 +5,10 @@ Technical details for contributors and advanced users.
 ## Local Development
 
 ```bash
-claude --plugin-dir ./ido4shape
+claude --plugin-dir ./
 ```
+
+Run from the plugin root directory.
 
 Use `/reload-plugins` to pick up changes during iteration.
 

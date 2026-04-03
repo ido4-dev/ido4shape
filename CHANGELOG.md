@@ -30,7 +30,7 @@ Follow-up fixes from the second end-to-end test (OpenClaw outreach project).
 - **Stronger propose mode** — when the user signals uncertainty, the agent leads with one recommendation instead of presenting a menu of options.
 - **Prefix length rule** — canvas-synthesizer now enforces the 2-5 character prefix constraint with explicit examples (BRIDGE becomes BRDG).
 
-## [0.3.3] — 2026-03-30
+## [0.3.3] — 2026-04-02
 
 Five high-severity observation fixes from the first real-world test. These addressed the most impactful behavioral issues discovered during the ido4-simulate specification session.
 
@@ -46,7 +46,7 @@ Five high-severity observation fixes from the first real-world test. These addre
 ### Fixed
 - Added Bash and Agent to allowed tool permissions for Cowork compatibility.
 
-## [0.3.1] — 2026-03-28
+## [0.3.1] — 2026-03-29
 
 ### Changed
 - **Bundled spec-format validator** — replaced npm install approach with a single self-contained JS file (~8KB, zero npm dependencies). SessionStart hook copies the bundle; validate-spec runs it via node.
@@ -57,7 +57,7 @@ Five high-severity observation fixes from the first real-world test. These addre
 ### Added
 - **Deterministic spec validation** — integrated @ido4/spec-format parser for structural validation. validate-spec now runs a two-pass process: deterministic parser (format compliance) + LLM judgment (content quality).
 
-## [0.2.1] — 2026-03-25
+## [0.2.1] — 2026-03-19
 
 ### Added
 - CI workflow — runs 125+ structural validation tests on push and PR.
@@ -65,7 +65,7 @@ Five high-severity observation fixes from the first real-world test. These addre
 - Skill inventory auto-generation in README.
 - GitHub Releases created automatically on version bump.
 
-## [0.2.0] — 2026-03-18
+## [0.2.0] — 2026-03-19
 
 The architectural pivot. ido4shape stops producing implementation-ready specs and starts producing strategic specs.
 
@@ -74,12 +74,12 @@ The architectural pivot. ido4shape stops producing implementation-ready specs an
 - **Strategic spec format** designed: `format: strategic-spec | version: 1.0`. Rich prose descriptions, stakeholder attribution, cross-cutting concerns as prose, functional dependencies. No methodology-specific fields.
 - All skills, agents, and references adapted for strategic spec output.
 
-## [0.1.1] — 2026-03-17
+## [0.1.1] — 2026-03-15
 
 ### Changed
 - Restored canvas management depth with V4 multi-stakeholder features, merged with V1 instruction richness in markdown format (no XML tags).
 
-## [0.1.0] — 2026-03-16
+## [0.1.0] — 2026-03-15
 
 ### Changed
 - Reset to semver pre-release versioning. Added release script.
