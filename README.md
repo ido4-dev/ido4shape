@@ -9,8 +9,8 @@ Every specification tool assumes you already know what to build. ido4shape start
 ## Installation
 
 **Cowork (Claude Desktop):**
-1. Open plugin settings and add the `ido4-dev/ido4-plugins` marketplace
-2. Install ido4shape from the marketplace
+1. Open Settings, go to the Plugins section, and add `ido4-dev/ido4-plugins` as a marketplace
+2. Find ido4shape in the marketplace and install it
 
 **Claude Code (CLI):**
 ```bash
@@ -29,17 +29,6 @@ claude plugin install ido4shape@ido4-plugins
 5. **When ready**, run `/ido4shape:synthesize-spec` to produce the formal spec
 
 > **Cowork users:** Always select a working folder before starting. Without a folder selected, the plugin won't work.
-
-## Commands
-
-| Command | What it does |
-|---------|-------------|
-| `/ido4shape:create-spec` | Start a specification session — guided discovery conversation |
-| `/ido4shape:review-spec` | Run independent reviewers on the canvas or spec before synthesis |
-| `/ido4shape:synthesize-spec` | Produce the formal strategic spec from your knowledge canvas |
-| `/ido4shape:validate-spec` | Check the spec for format compliance and content quality |
-| `/ido4shape:refine-spec` | Edit an existing spec with natural language instructions |
-| `/ido4shape:stakeholder-brief` | Generate a role-specific summary from the current canvas |
 
 ## Example Workflows
 
