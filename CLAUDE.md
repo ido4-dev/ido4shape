@@ -21,7 +21,7 @@ ido4shape produces strategic specs — multi-stakeholder understanding crystalli
 - **Plugin follows the Agent Skills standard** (agentskills.io) — SKILL.md with YAML frontmatter
 - **SKILL.md bodies target 1,500-2,000 words** — heavy content goes in `references/` subdirectories within each skill
 - **Skill descriptions should be "a little bit pushy"** — Claude tends to undertrigger; descriptions should clearly state activation conditions
-- **Use XML tags in skill bodies** where Claude needs structured reasoning — XML produces better results than markdown for instructions
+- **No XML tags in skill bodies** — triggers Cowork injection defense. Use markdown headers instead
 - **Progressive disclosure**: metadata (~100 tokens) always loaded → skill body on activation → references on demand
 - **State in inspectable files**: all workspace state lives in `.ido4shape/` as human-readable markdown
 - **Test locally**: `claude --plugin-dir ./` loads the plugin without installation. `/reload-plugins` picks up changes
@@ -80,6 +80,10 @@ ido4shape/
 │   │   └── SKILL.md
 │   ├── synthesize-spec/               # User-invocable
 │   │   └── SKILL.md
+│   ├── review-spec/                   # User-invocable
+│   │   └── SKILL.md
+│   ├── stakeholder-brief/             # User-invocable
+│   │   └── SKILL.md
 │   ├── artifact-format/               # Auto-triggered (user-invocable: false)
 │   │   ├── SKILL.md
 │   │   └── references/
@@ -91,8 +95,11 @@ ido4shape/
 │   └── quality-guidance/              # Auto-triggered
 │       └── SKILL.md
 ├── agents/
-│   ├── spec-reviewer.md               # Sonnet — format + quality review
-│   └── canvas-synthesizer.md          # Opus — reasoning-intensive composition
+│   ├── spec-reviewer.md               # Sonnet — format + quality review (4th reviewer in review-spec)
+│   ├── canvas-synthesizer.md          # Opus — reasoning-intensive composition
+│   ├── technical-reviewer.md          # Sonnet — architecture feasibility review
+│   ├── scope-reviewer.md              # Sonnet — scope alignment review
+│   └── dependency-auditor.md          # Sonnet — dependency graph audit
 ├── references/
 │   ├── soul.md                        # Agent character (SoulSpec-aligned)
 │   ├── strategic-spec-format.md       # Full strategic spec format specification
@@ -102,9 +109,16 @@ ido4shape/
 │   ├── methodology-mapping.md
 │   ├── strategic-spec-adaptation-plan.md  # Work plan for this adaptation
 │   └── project-templates/
+├── dist/
+│   ├── spec-validator.js              # Bundled validator (~8KB, zero deps)
+│   ├── .spec-format-version           # Bundle version marker
+│   └── .spec-format-checksum          # SHA-256 checksum
 ├── settings.json
 ├── CLAUDE.md                          # This file
-├── VISION.md                          # Full vision document
+├── VISION.md                          # Product vision & strategy
+├── SECURITY.md                        # Data handling, hooks, privacy
+├── DEVELOPER.md                       # Spec format, workspace structure, pipeline
+├── CHANGELOG.md                       # Version history (auto-generated on release)
 ├── LICENSE
 └── README.md
 ```
@@ -115,10 +129,11 @@ ido4shape/
 2. ~~Strategic spec format~~ — designed and documented
 3. ~~Skill adaptation~~ — all skills, agents, references updated for strategic spec output
 4. ~~First real-world test~~ — complete (2026-03-24). Full pipeline: create-spec → synthesize-spec → validate-spec → refine-spec → review-spec → validate-spec. 12 observations logged. See `reports/first-real-world-test.md`
-5. ~~High-severity obs fixes~~ — OBS-01, 05, 06, 08, 11 addressed (v0.3.3, 2026-03-30). Workspace discipline, turn discipline, format skeleton, source reconciliation, review gate.
-6. ~~Bundled validator~~ — replaced npm install approach with bundled .js file (2026-03-28). See `architecture/bundled-validator-architecture.md` in ido4-MCP.
+5. ~~High-severity obs fixes~~ — OBS-01, 05, 06, 08, 11 addressed (v0.3.3, 2026-04-02). Workspace discipline, turn discipline, format skeleton, source reconciliation, review gate.
+6. ~~Bundled validator~~ — replaced npm install approach with bundled .js file (2026-03-29). See `architecture/bundled-validator-architecture.md` in ido4-MCP.
 7. ~~E2E test #2~~ — OpenClaw outreach project (v0.3.3, 2026-04-02). 4/5 fixes pass, 1 mostly pass. 3 follow-up fixes applied (v0.3.4): convergence check, stronger propose mode, prefix length rule. See `reports/e2e-test-002-openclaw-outreach.md`
-8. Next: 1-2 more e2e tests on different project types, then marketplace submission
+8. ~~Marketplace submission prep~~ — (v0.4.0-v0.4.2, 2026-04-03). Standalone positioning, README rewrite with example workflows, SECURITY.md, DEVELOPER.md, CHANGELOG.md, SEO optimization, spec-reviewer integrated into review-spec, test suite expanded to 199 checks, LLM-powered changelog generation, marketplace sync for description/category.
+9. Next: Submit to official Anthropic plugin marketplace
 
 ## Bundled Validator
 
@@ -152,8 +167,9 @@ scripts/update-validator.sh ~/dev-projects/ido4-MCP # from local build
 After every end-to-end test of ido4shape (manual or synthetic), produce a structured experience report in `reports/`. Each report documents: what was tested, pipeline steps, what worked, what didn't, observations, and implications.
 
 - `reports/first-real-world-test.md` — First e2e test (ido4-simulate project, 2026-03-24). **This is the calibration baseline for the ido4-simulate synthetic testing framework.** The 12 observations map to synthetic test signals — the framework should detect these same issues automatically.
-- `ido4-simulate-observations.md` — Structured observation log from the first test (12 observations with type, root cause, fix candidates, synthetic test signals)
+- `reports/ido4-simulate-observations.md` — Structured observation log from the first test (12 observations with type, root cause, fix candidates, synthetic test signals)
 - `ido4-simulate-plan.md` — Detailed plan for the synthetic testing framework (1,200+ lines, architecture, cost model, research design)
+- `reports/e2e-test-002-openclaw-outreach.md` — Second e2e test (OpenClaw outreach, 2026-04-02). Validated obs fixes, found 3 follow-ups.
 
 ## Related Repos
 
@@ -196,9 +212,9 @@ To investigate a hung or failed session, read the conversation JSONL and look fo
 
 ### CI & Automation
 
-**CI** runs on every push to main and on PRs — validates plugin structure (125 tests, ~4s).
+**CI** runs on every push to main and on PRs — validates plugin structure (199 tests, ~4s).
 
-**Marketplace auto-sync** triggers when `plugin.json` version changes on main — automatically updates `ido4-dev/ido4-plugins` marketplace. No manual marketplace bumps needed.
+**Marketplace auto-sync** triggers when `plugin.json` version changes on main — syncs full plugin directory + updates description, category, and version in `ido4-dev/ido4-plugins` marketplace manifest. No manual marketplace bumps needed.
 
 ### Releasing
 
@@ -206,7 +222,9 @@ To investigate a hung or failed session, read the conversation JSONL and look fo
 bash scripts/release.sh [patch|minor|major] "Release message"
 ```
 
-This bumps the version in `plugin.json`, commits, and pushes. The marketplace sync CI handles the rest automatically.
+This bumps the version in `plugin.json`, auto-generates a CHANGELOG entry (LLM-powered via Haiku with deterministic fallback), commits, and pushes. The marketplace sync CI handles the rest automatically.
+
+**LLM changelog:** Requires `claude` CLI to be logged in (`claude /login`). The script warns at startup if auth is missing. Falls back to deterministic conventional-commit parsing if unavailable.
 
 ### Deploying to Cowork / CLI
 
