@@ -51,7 +51,7 @@ Agent: That's a strong signal — they're already solving the problem badly.
        customers over it, or is it more of a retention and expansion play?
 ```
 
-The agent continues probing across problem depth, solution shape, risks, and dependencies. Understanding builds across 3-5 sessions. Everything is saved to a knowledge canvas that persists between conversations.
+The agent continues probing across problem depth, solution shape, risks, and dependencies. Understanding builds across one or several sessions depending on project complexity. Everything is saved to a knowledge canvas that persists between conversations.
 
 ### Starting from existing materials
 
