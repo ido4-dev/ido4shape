@@ -15,7 +15,7 @@ MESSAGE="${2:-Release}"
 
 if ! command -v claude &>/dev/null; then
   echo "WARNING: 'claude' CLI not found — changelog will use deterministic generation"
-elif ! claude -p --bare --max-turns 1 "ok" < /dev/null &>/dev/null; then
+elif ! echo "ok" | claude -p --no-session-persistence --max-turns 1 --output-format text &>/dev/null; then
   echo "WARNING: 'claude' CLI not logged in — changelog will use deterministic generation"
   echo "  Run 'claude /login' for LLM-powered changelog entries"
   echo ""
@@ -109,8 +109,9 @@ DIFF_STAT=$(git diff "$RANGE" --stat 2>/dev/null || echo "")
 ENTRY=""
 if command -v claude &>/dev/null; then
   echo "  Generating changelog with Claude (requires 'claude' CLI to be logged in)..."
-  ENTRY=$(claude -p --bare --model haiku --output-format text --max-turns 1 "$(cat <<PROMPT
-Write a CHANGELOG entry for a Cowork/Claude Code plugin release.
+
+  # Build prompt as a variable to avoid heredoc-in-substitution issues
+  PROMPT="Write a CHANGELOG entry for a Cowork/Claude Code plugin release.
 
 Version: $NEW_VERSION ($BUMP_TYPE bump)
 Release message: $MESSAGE
@@ -124,12 +125,14 @@ $DIFF_STAT
 Rules:
 - Use ### Added, ### Changed, ### Fixed sections (only sections that apply)
 - Group related commits into single coherent items — don't list every commit separately
-- Write from the USER's perspective, not the developer's (e.g., "Installation instructions now cover both Cowork and Claude Code" not "docs: complete installation instructions")
-- One line per item, starting with "- "
+- Write from the USER's perspective, not the developer's
+- One line per item, starting with \"- \"
 - Be concise — each item should be one sentence
-- No preamble, no explanation — output ONLY the markdown sections
-PROMPT
-)" < /dev/null 2>/dev/null) || true
+- No preamble, no explanation — output ONLY the markdown sections"
+
+  RAW_ENTRY=$(echo "$PROMPT" | claude -p --no-session-persistence --model haiku --output-format text --max-turns 1 2>/dev/null) || true
+  # Strip markdown code fences if present
+  ENTRY=$(echo "$RAW_ENTRY" | sed '/^```/d')
 fi
 
 # Fall back to deterministic generation if claude unavailable or failed
