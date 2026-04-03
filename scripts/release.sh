@@ -91,9 +91,42 @@ else
   RANGE="HEAD"
 fi
 
-# Generate changelog entry from commits since last tag
-ENTRY=$(python3 -c "
-import subprocess, re, sys
+# Collect raw commit messages and diff stats
+COMMITS=$(git log "$RANGE" --pretty=format:"%s" | grep -v "^v[0-9]" | grep -v "^Merge")
+DIFF_STAT=$(git diff "$RANGE" --stat 2>/dev/null || echo "")
+
+# Try LLM-enhanced changelog first, fall back to deterministic
+ENTRY=""
+if command -v claude &>/dev/null; then
+  echo "  Generating changelog with Claude (requires 'claude' CLI to be logged in)..."
+  ENTRY=$(claude -p --bare --model haiku --output-format text --max-turns 1 "$(cat <<PROMPT
+Write a CHANGELOG entry for a Cowork/Claude Code plugin release.
+
+Version: $NEW_VERSION ($BUMP_TYPE bump)
+Release message: $MESSAGE
+
+Commits since last release:
+$COMMITS
+
+Files changed:
+$DIFF_STAT
+
+Rules:
+- Use ### Added, ### Changed, ### Fixed sections (only sections that apply)
+- Group related commits into single coherent items — don't list every commit separately
+- Write from the USER's perspective, not the developer's (e.g., "Installation instructions now cover both Cowork and Claude Code" not "docs: complete installation instructions")
+- One line per item, starting with "- "
+- Be concise — each item should be one sentence
+- No preamble, no explanation — output ONLY the markdown sections
+PROMPT
+)" < /dev/null 2>/dev/null) || true
+fi
+
+# Fall back to deterministic generation if claude unavailable or failed
+if [ -z "$ENTRY" ]; then
+  echo "  Generating changelog deterministically..."
+  ENTRY=$(python3 -c "
+import subprocess, re
 
 range_arg = '$RANGE'
 result = subprocess.run(
@@ -101,64 +134,31 @@ result = subprocess.run(
     capture_output=True, text=True, cwd='$PLUGIN_DIR'
 )
 commits = [line.strip() for line in result.stdout.strip().split('\n') if line.strip()]
-
-# Skip version bump commits and merge commits
 commits = [c for c in commits if not c.startswith('v') and not c.startswith('Merge')]
 
-changed = []
-added = []
-fixed = []
-docs_items = []
-
+changed, added, fixed = [], [], []
 for c in commits:
-    # Strip Co-Authored-By lines
     c = c.split('\n')[0].strip()
-    if not c:
-        continue
-
-    # Parse conventional commit prefix
+    if not c: continue
     m = re.match(r'^(feat|fix|docs|enhance|refactor|chore|test)[\(:]?\s*(.+)', c, re.IGNORECASE)
     if m:
         prefix = m.group(1).lower()
         desc = m.group(2).lstrip(': ').rstrip('.')
-        # Remove scope parenthetical if present
         desc = re.sub(r'^\([^)]+\)\s*:?\s*', '', desc)
         desc = desc[0].upper() + desc[1:] if desc else desc
     else:
-        prefix = ''
-        desc = c[0].upper() + c[1:] if c else c
+        prefix, desc = '', c[0].upper() + c[1:] if c else c
+    if prefix == 'fix': fixed.append(desc)
+    elif prefix in ('feat','enhance'): added.append(desc)
+    else: changed.append(desc)
 
-    if prefix == 'fix':
-        fixed.append(desc)
-    elif prefix == 'feat' or prefix == 'enhance':
-        added.append(desc)
-    elif prefix == 'docs':
-        docs_items.append(desc)
-    elif prefix in ('refactor', 'chore', 'test'):
-        changed.append(desc)
-    else:
-        changed.append(desc)
-
-# Build entry
 lines = []
-if added:
-    lines.append('### Added')
-    for item in added:
-        lines.append(f'- {item}')
-    lines.append('')
-if changed or docs_items:
-    lines.append('### Changed')
-    for item in changed + docs_items:
-        lines.append(f'- {item}')
-    lines.append('')
-if fixed:
-    lines.append('### Fixed')
-    for item in fixed:
-        lines.append(f'- {item}')
-    lines.append('')
-
+if added: lines += ['### Added'] + [f'- {x}' for x in added] + ['']
+if changed: lines += ['### Changed'] + [f'- {x}' for x in changed] + ['']
+if fixed: lines += ['### Fixed'] + [f'- {x}' for x in fixed] + ['']
 print('\n'.join(lines) if lines else '- $MESSAGE')
 ")
+fi
 
 # Prepend new entry to CHANGELOG
 if [ -f "$CHANGELOG" ]; then
