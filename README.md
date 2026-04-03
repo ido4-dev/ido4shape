@@ -146,7 +146,7 @@ The agent adapts to your communication style and energy. It connects dots across
 
 The output is a **strategic specification** — a structured document capturing what to build, who needs it, why, constraints, and verifiable success conditions for each capability.
 
-The spec is organized into groups of related capabilities, each with priorities, risk assessments, and dependency relationships. It's designed to be read by humans and consumed by AI tools alike.
+The spec is organized into groups of related capabilities, each with priorities, risk assessments, and dependency relationships. It's designed to be read by humans and consumed by AI tools alike. See a [complete example spec](references/example-strategic-notification-system.md).
 
 You can hand it to your engineering team, feed it to any AI coding agent, or use it as a project brief. No downstream tooling required.
 
