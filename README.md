@@ -13,8 +13,11 @@ Either way — every specification tool assumes you already know what to build. 
 ## Installation
 
 **Cowork (Claude Desktop):**
-1. Open Settings, go to the Plugins section, and add `ido4-dev/ido4-plugins` as a marketplace
-2. Find ido4shape in the marketplace and install it
+1. Click **Customize** in the left sidebar
+2. Under **Personal plugins**, click the **+** button
+3. Select **Create plugin** → **Add marketplace**
+4. Enter `ido4-dev/ido4-plugins` and click **Sync**
+5. Open the Directory, go to the **Personal** tab, and click **+** on ido4shape to install
 
 **Claude Code (CLI):**
 ```bash
@@ -24,15 +27,14 @@ claude plugin install ido4shape@ido4-plugins
 
 ## Getting Started
 
-1. **Create a project folder** for your specification work (or use an existing one)
-2. **Add any supporting materials** you have — PRDs, meeting notes, architecture docs, research, analytics. The agent reads everything in the folder before asking its first question. You can also start with nothing.
-3. **Start a session:**
-   - **Cowork:** Select your project folder as the working folder, then type `/ido4shape:create-spec my-project`
+1. **Prepare a project folder** with any materials you have — PRDs, meeting notes, architecture docs, research. You can also start with nothing.
+2. **Start a session:**
+   - **Cowork:** Click **"Work in a project"** at the bottom of the chat input and select your project folder. Then type `/create-spec my-project` or pick from the "Get to work with ido4shape" suggestions.
    - **Claude Code:** Navigate to your project folder, start Claude Code, then run `/ido4shape:create-spec my-project`
-4. **Have a conversation** — the agent guides discovery. You can stop and resume across sessions; everything is saved.
-5. **When ready**, run `/ido4shape:synthesize-spec` to produce the formal spec
+3. **Have a conversation** — the agent reads your materials, asks questions, and builds understanding. Stop and resume anytime; everything is saved.
+4. **When ready**, run `/synthesize-spec` to produce the formal spec
 
-> **Cowork users:** Always select a working folder before starting. Without a folder selected, the plugin won't work.
+> **Cowork users:** Always select a project folder via "Work in a project" before starting. Without a folder selected, the plugin won't work.
 
 ## Example Workflows
 
