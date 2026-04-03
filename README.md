@@ -166,12 +166,12 @@ This is optional. The strategic spec is a complete, standalone artifact.
 
 | Skill | Description |
 |-------|-------------|
-| `/ido4shape:create-spec` | Start a specification session — guided discovery conversation |
-| `/ido4shape:synthesize-spec` | Crystallize the knowledge canvas into a formal strategic spec |
-| `/ido4shape:validate-spec` | Check a spec for format compliance and content quality |
-| `/ido4shape:refine-spec` | Edit an existing spec using natural language instructions |
-| `/ido4shape:review-spec` | Launch parallel independent reviewers on the canvas or spec |
-| `/ido4shape:stakeholder-brief` | Generate a role-specific briefing from the current canvas |
+| `/ido4shape:create-spec` | Guides users through creative specification development. |
+| `/ido4shape:refine-spec` | Edits existing spec artifacts using natural language instructions. |
+| `/ido4shape:review-spec` | Launches parallel independent reviewers to assess the canvas or spec artifact before composition. |
+| `/ido4shape:stakeholder-brief` | Generates a stakeholder-specific briefing from the current canvas. |
+| `/ido4shape:synthesize-spec` | Crystallizes a knowledge canvas into a strategic spec artifact. |
+| `/ido4shape:validate-spec` | Validates a strategic spec artifact for format compliance and content quality. |
 
 ### Supporting skills (auto-triggered)
 
@@ -179,10 +179,10 @@ These activate automatically during conversation when relevant — you don't inv
 
 | Skill | Description |
 |-------|-------------|
-| `artifact-format` | Provides strategic spec format knowledge when working with specs |
-| `creative-decomposition` | Guides conversation methodology during discovery |
-| `dependency-analysis` | Activates when discussing task ordering and dependencies |
-| `quality-guidance` | Applies quality standards when writing descriptions and conditions |
+| `artifact-format` | Provides strategic spec artifact format knowledge. |
+| `creative-decomposition` | Provides conversation methodology for creative specification work. |
+| `dependency-analysis` | Provides dependency graph knowledge. |
+| `quality-guidance` | Provides strategic spec quality standards. |
 <!-- END SKILL INVENTORY -->
 
 ## Glossary
