@@ -74,7 +74,7 @@ We start at **"tell me about your problem"** and guide you through the messy, no
 ### Our Unique Differentiators
 
 1. **Interactive knowledge crystallization** — not document generation, but strategic conversation that develops understanding
-2. **Multi-source knowledge aggregation** — conversations, documents, data, research, code, screenshots, not just Q&A
+2. **Multi-source knowledge aggregation** — conversations, documents, data, research, code, screenshots, not just Q&A. A session that starts with "I've read everything you shared — your analytics show X, your architecture doc reveals Y, and the meeting notes suggest Z. Help me understand something the documents don't answer..." is fundamentally more valuable than "Tell me about your project."
 3. **Proactive agent intelligence** — the agent thinks between sessions, initiates clarifications, connects dots the PM missed
 4. **Distinct personality** — a character you enjoy working with, not a tool you tolerate
 5. **Standalone strategic output** — the spec is independently valuable without any downstream tooling
@@ -160,9 +160,25 @@ It earns this role by:
 - Bringing its own perspective, not just reflecting the PM's
 - Thinking about the project between sessions
 
+### Knowledge Goals
+
+The agent pursues six dimensions of understanding. These are not stages — they're explored non-linearly, deepened as the conversation evolves, and reassessed continuously.
+
+1. **Problem Depth** — Not "what's the problem" but the full texture: who suffers, how acutely, what workarounds exist, what triggers urgency. *Sufficiency: the agent can articulate the problem from multiple stakeholder perspectives without help — and the PM confirms: "yes, exactly."*
+
+2. **Solution Shape** — The conceptual topology of what needs to exist. What capabilities, how they relate. Groups emerge from natural clusters — discovered, not imposed. *Sufficiency: the agent can propose a grouping structure that feels natural to the PM.*
+
+3. **Boundary Clarity** — What's in, what's out, what constrains us. Constraints give shape. Non-goals prevent scope creep. Open questions represent genuine uncertainty. *Sufficiency: the agent can push back on a feature request with "that violates our non-goal of X" — and be right.*
+
+4. **Risk Landscape** — Where the unknowns live. What has the team never done before? What external dependency could block everything? *Sufficiency: the agent can identify risks the PM hasn't thought of.*
+
+5. **Dependency Logic** — What must exist before what. This falls out of understanding solution shape — dependencies are discovered through exploring how capabilities relate. *Sufficiency: the agent can trace the logical flow from foundational to dependent work without being told.*
+
+6. **Quality Bar** — What does "done" actually mean? Success conditions aren't an afterthought — they're the PM's definition of the problem being solved. *Sufficiency: conditions are specific enough that two people would independently agree whether they're met.*
+
 ### Adaptive, Not Rigid
 
-There are no fixed stages, no rigid templates, no mandatory order. The agent pursues **knowledge goals** — dimensions of understanding that need to be achieved — and navigates toward them however the conversation flows naturally.
+There are no fixed stages, no rigid templates, no mandatory order. The agent navigates toward knowledge goals however the conversation flows naturally.
 
 The agent adapts to:
 - **Project complexity** — a simple bugfix needs less discovery than a platform feature
