@@ -2,9 +2,13 @@
 
 A specification discovery plugin primarily designed for [Cowork](https://claude.com/product/cowork), Anthropic's agentic desktop application — though it also works in Claude Code.
 
-ido4shape helps product managers, founders, and tech leads figure out what to build. It guides you through conversation — reading your documents, asking the questions that matter, and tracking understanding across sessions — until clarity is deep enough to produce a structured strategic specification.
+ido4shape is like having a principal consultant inside Claude — it reads your docs, probes your assumptions, tracks stakeholder tensions across sessions, and produces the kind of structured strategic specification that usually takes weeks of consulting.
 
-Every specification tool assumes you already know what to build. ido4shape starts at "tell me about your problem."
+**Building with AI coding agents?** Your agent is only as good as the spec you give it. ido4shape produces structured specs with dependencies, priorities, and success conditions — input that makes Cursor, Claude Code, or Copilot actually deliver.
+
+**Need help thinking it through?** The agent probes your assumptions, extracts what your team knows but hasn't articulated, and turns it into something you can hand to your boss, your investors, or your dev team.
+
+Either way — every specification tool assumes you already know what to build. ido4shape starts at "tell me about your problem."
 
 ## Installation
 
@@ -144,19 +148,18 @@ The agent adapts to your communication style and energy. It connects dots across
 
 ## What You Get
 
-The output is a **strategic specification** — a structured document capturing what to build, who needs it, why, constraints, and verifiable success conditions for each capability.
+Not just a spec — the thinking behind it.
 
-The spec is organized into groups of related capabilities, each with priorities, risk assessments, and dependency relationships. It's designed to be read by humans and consumed by AI tools alike. See a [complete example spec](references/example-strategic-notification-system.md).
+The final output is a **strategic specification** — groups of capabilities with priorities, risk assessments, dependencies, and verifiable success conditions. Designed to be read by humans and consumed by AI tools alike. See a [complete example spec](references/example-strategic-notification-system.md).
 
-You can hand it to your engineering team, feed it to any AI coding agent, or use it as a project brief. No downstream tooling required.
+But the real value is everything the agent captures along the way:
 
-For teams that want to go further, [ido4 MCP](https://github.com/ido4-dev/ido4) can read the strategic spec, explore your codebase, and produce implementation-ready technical tasks. This is optional.
+- **The knowledge canvas** — your evolving understanding, updated after every insight, readable at any time. Survives sessions, context compaction, and crashes.
+- **Decisions & tensions** — every call made and why. Contradictions between stakeholders tracked until resolved. No more "why did we decide that?" six weeks later.
+- **Stakeholder perspectives** — who said what, what each person cares about, which perspectives are missing. Both the PM's view and the architect's survive into the spec.
+- **Independent review** — before the spec is finalized, parallel AI reviewers check technical feasibility, scope alignment, and dependency integrity.
 
-## The Knowledge Canvas
-
-During specification, the agent maintains a workspace that tracks everything across sessions — your evolving understanding, decisions made, tensions between stakeholder perspectives, and session summaries. You can read any of these files at any time; they're plain markdown.
-
-This is how multi-session continuity works: the agent reads its workspace at the start of each session and picks up exactly where you left off. If a session crashes, nothing is lost — the workspace reflects everything up to the last update.
+The spec goes wherever you need it — your dev team (as a project brief), your boss or investors (as a strategy document), AI coding agents (as structured input), or spec-driven tools like [ido4 MCP](https://github.com/ido4-dev/ido4) for automated technical decomposition.
 
 <!-- BEGIN SKILL INVENTORY -->
 ## Skills
