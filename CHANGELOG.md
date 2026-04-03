@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.2] — 2026-04-03
+
+Infrastructure: test suite expansion, automated changelog, marketplace sync
+
+### Added
+- Auto-generate CHANGELOG entries from commits on release
+
+### Changed
+- Expanded validation test suite from 130 to 199 checks
+- Release script now syncs plugin metadata to marketplace
+
+### Fixed
+- OAuth-compatible auth for LLM changelog generation and code fence cleanup
+- Warn when Claude CLI is not logged in at release start
+- Deterministic fallback when LLM is unavailable
+
 ## [0.4.0] — 2026-04-03
 
 Marketplace submission preparation. ido4shape is now positioned as an independent specification discovery tool, not just a pipeline component.
