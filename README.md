@@ -1,163 +1,157 @@
 # ido4shape
 
-A thinking partner that helps crystallize what needs to be built.
+A specification discovery plugin primarily designed for [Cowork](https://claude.com/product/cowork), Anthropic's agentic desktop application — though it also works in Claude Code.
 
-ido4shape guides product managers, founders, and tech leads through creative, non-linear conversation — consuming documents, data, research, and human insight — until understanding is deep enough to produce a structured strategic specification.
+ido4shape helps product managers, founders, and tech leads figure out what to build. It guides you through conversation — reading your documents, asking the questions that matter, and tracking understanding across sessions — until clarity is deep enough to produce a structured strategic specification.
 
-## What It Does
-
-Every specification tool assumes you already know what to build. ido4shape starts at "tell me about your problem" and helps you discover things you didn't know you needed to think about.
-
-The output is a strategic specification — multi-stakeholder understanding crystallized into structured markdown: what to build, who needs it, why, constraints, NFRs, and verifiable success conditions. Hand it to your team, feed it to any AI coding tool, or use it as a project brief. No downstream tooling required.
+Every specification tool assumes you already know what to build. ido4shape starts at "tell me about your problem."
 
 ## Installation
 
 ```bash
-# Via marketplace
-claude plugin marketplace add ido4-dev/ido4-plugins
 claude plugin install ido4shape@ido4-plugins
-
-# Load locally (development)
-claude --plugin-dir ./ido4shape
 ```
 
-For Cowork (Claude Desktop): sync `ido4-plugins` marketplace and install the plugin.
+For Cowork: sync the `ido4-plugins` marketplace in the plugin settings, then install ido4shape.
 
-## Quick Start
+## Commands
 
-1. **Navigate to your project folder** (or create a new one)
-2. **Run** `/ido4shape:create-spec my-project`
-3. **Have a conversation** — the agent reads your documents, asks questions, and builds understanding. Expect 3-5 sessions for a thorough spec.
-4. **When understanding is deep enough**, run `/ido4shape:review-spec` for independent review by parallel agents
-5. **Run** `/ido4shape:synthesize-spec` to produce the formal spec artifact
-6. **Run** `/ido4shape:validate-spec` to check format and quality before sharing
+| Command | What it does |
+|---------|-------------|
+| `/ido4shape:create-spec` | Start a specification session — guided discovery conversation |
+| `/ido4shape:review-spec` | Run independent reviewers on the canvas or spec before synthesis |
+| `/ido4shape:synthesize-spec` | Produce the formal strategic spec from your knowledge canvas |
+| `/ido4shape:validate-spec` | Check the spec for format compliance and content quality |
+| `/ido4shape:refine-spec` | Edit an existing spec with natural language instructions |
+| `/ido4shape:stakeholder-brief` | Generate a role-specific summary from the current canvas |
 
-The agent creates a `.ido4shape/` workspace in your project folder to track understanding across sessions. You can stop and resume at any time — the workspace is your continuity.
+## Example Workflows
 
-### Before you start
+### Starting from scratch
 
-Optionally gather any materials you have — PRDs, architecture docs, meeting notes, analytics, research, design references. Put them in your project folder. The agent reads everything available before asking its first question.
-
-You can also start with nothing. The agent guides discovery from scratch.
-
-## Usage
-
-### Start a specification session
+You have an idea but no documents. You start a session and the agent guides discovery.
 
 ```
-/ido4shape:create-spec my-project
+You: /ido4shape:create-spec my-saas-product
+
+Agent: What's your role on this project? I want to make sure I'm asking the
+       right questions.
+
+You: I'm the founder. We're building a B2B analytics dashboard.
+
+Agent: Before we go further — who's feeling the pain right now? Is this
+       "customers are asking for it" or "we think the market needs it"?
+       That changes how we think about the problem.
+
+You: Our existing customers keep building their own dashboards in spreadsheets.
+     We have the data, they just can't access it easily.
+
+Agent: That's a strong signal — they're already solving the problem badly.
+       What I want to understand is how acute this is. Are you losing
+       customers over it, or is it more of a retention and expansion play?
 ```
 
-The agent reads any existing materials in your project folder, then guides you through non-linear knowledge gathering. It maintains a knowledge canvas in `.ido4shape/canvas.md` that evolves as understanding deepens.
+The agent continues probing across problem depth, solution shape, risks, and dependencies. Understanding builds across 3-5 sessions. Everything is saved to a knowledge canvas that persists between conversations.
 
-### Review before synthesis
+### Starting from existing materials
 
-```
-/ido4shape:review-spec
-```
-
-Launches parallel independent reviewers (technical feasibility, scope alignment, dependency audit, format/quality) to catch issues before or after composition.
-
-### Compose the spec artifact
+You have documents — a PRD, meeting notes, architecture sketches. Drop them in your project folder before starting.
 
 ```
-/ido4shape:synthesize-spec
+You: /ido4shape:create-spec notification-system
+
+Agent: I've read the three documents in your folder. Your architecture doc
+       describes a multi-channel notification system with email, push, and
+       SMS. The meeting notes mention a 10,000 events/minute target from
+       Marcus, and Sarah flagged that users currently miss critical alerts.
+
+       Something jumped out at me: the architecture doc assumes synchronous
+       delivery, but at 10K events/minute that's going to be a bottleneck.
+       Has the team discussed async vs sync delivery?
 ```
 
-When the canvas shows sufficient depth across all knowledge dimensions, crystallize understanding into a strategic spec artifact.
+The agent doesn't start from zero — it reads everything first, then targets the gaps. Conversations go deeper faster because you're not repeating what's already written down.
 
-### Validate a spec
+### Picking up where you left off
 
-```
-/ido4shape:validate-spec path/to/spec.md
-```
-
-Check format compliance and content quality before sharing with your team.
-
-### Refine an existing spec
+Sessions can be days or weeks apart. The agent reads the canvas and continues.
 
 ```
-/ido4shape:refine-spec path/to/spec.md
+Agent: Welcome back. Last time we mapped out three capability groups and
+       identified a dependency chain through the authentication layer.
+       Since then, I've been thinking about something — the risk around
+       the third-party API integration we discussed. We left it as an
+       open question.
+
+       The architect hasn't weighed in yet on feasibility. Should we
+       bring them in, or do you want to make an assumption and flag it?
 ```
 
-Edit specs using natural language: "add a capability to Group 2", "the architect says we need GDPR compliance."
+### Running the full pipeline
 
-### Generate a stakeholder briefing
+When understanding is deep enough, the agent proposes moving to synthesis.
 
 ```
-/ido4shape:stakeholder-brief --as architect
-```
+Agent: I think we have enough to produce a solid spec. Here's the picture:
+       4 capability groups, 15 capabilities, 3 cross-cutting concerns. The
+       dependency graph is clean — no cycles, critical path through the
+       data pipeline group.
 
-Produce a role-specific summary from the current canvas — what an architect, PM, or designer needs to know.
+       I'd recommend running the independent reviewers first — the
+       dependency auditor catches things I consistently miss. Want me
+       to launch /ido4shape:review-spec?
+
+You: Yes, go ahead.
+
+[Three parallel reviewers run: technical feasibility, scope alignment,
+ dependency audit. Each produces an independent report.]
+
+Agent: Reviews are in. Two findings worth addressing: the scope reviewer
+       flagged that Group 3 has a capability that contradicts our non-goal
+       of real-time streaming, and the dependency auditor found an
+       optimization — decoupling the auth layer from the API gateway
+       would let two groups start in parallel.
+
+       Want me to adjust the canvas and then synthesize?
+
+You: Fix those and synthesize.
+
+[Agent updates canvas, runs /ido4shape:synthesize-spec, produces the
+ strategic spec artifact, then runs /ido4shape:validate-spec]
+
+Agent: Spec produced: 4 groups, 15 capabilities, valid format, no warnings.
+       The file is at notification-system-spec.md. Ready to share with
+       your team.
+```
 
 ## How It Works
 
-The agent explores six dimensions of understanding. These emerge naturally from conversation — you won't answer them in sequence; the agent follows what matters for your specific project.
+The agent explores six areas of understanding. These aren't stages you walk through in order — the agent follows what matters for your specific project, jumping between topics as the conversation evolves.
 
 1. **Problem Depth** — who suffers, how acutely, what workarounds exist
 2. **Solution Shape** — what capabilities need to exist, how they relate
 3. **Boundary Clarity** — constraints, non-goals, open questions
 4. **Risk Landscape** — unknowns, external dependencies, untested assumptions
 5. **Dependency Logic** — what must exist before what
-6. **Quality Bar** — what "done" means, verifiable success conditions
+6. **Quality Bar** — what "done" means for each capability
 
-Understanding develops non-linearly. The agent adapts to project complexity, communication style, and energy. It connects dots across sessions and stakeholders, surfaces tensions, and knows when to push deeper vs when to step back.
+The agent adapts to your communication style and energy. It connects dots across sessions and stakeholders, surfaces tensions between conflicting requirements, and knows when to push deeper vs when to step back. When you're stuck, it proposes — it doesn't just ask more questions.
+
+## What You Get
+
+The output is a **strategic specification** — a structured document capturing what to build, who needs it, why, constraints, and verifiable success conditions for each capability.
+
+The spec is organized into groups of related capabilities, each with priorities, risk assessments, and dependency relationships. It's designed to be read by humans and consumed by AI tools alike.
+
+You can hand it to your engineering team, feed it to any AI coding agent, or use it as a project brief. No downstream tooling required.
+
+For teams that want to go further, [ido4 MCP](https://github.com/ido4-dev/ido4) can read the strategic spec, explore your codebase, and produce implementation-ready technical tasks. This is optional.
 
 ## The Knowledge Canvas
 
-During specification, ido4shape maintains a workspace at `.ido4shape/`:
+During specification, the agent maintains a workspace that tracks everything across sessions — your evolving understanding, decisions made, tensions between stakeholder perspectives, and session summaries. You can read any of these files at any time; they're plain markdown.
 
-```
-.ido4shape/
-├── canvas.md          # Current understanding (continuously updated)
-├── stakeholders.md    # Contributors and their perspectives
-├── sources/           # Raw input materials
-├── sessions/          # Session summaries
-├── tensions.md        # Active contradictions
-└── decisions.md       # Settled choices
-```
-
-The canvas is the agent's working memory — human-readable, always current, and designed for multi-session continuity. If a session crashes after turn 15, the workspace reflects everything through turn 15.
-
-Add `.ido4shape/` to your `.gitignore` — it's working state, not a project artifact. The spec output (`*-spec.md`) is the artifact you share and commit.
-
-## The Strategic Spec
-
-The output is a structured markdown document:
-
-```markdown
-# Project Name
-> format: strategic-spec | version: 1.0
-
-[Problem description, stakeholders, constraints, non-goals]
-
-## Cross-Cutting Concerns
-### Performance / Security / Accessibility
-[NFRs and cross-cutting requirements as prose]
-
-## Group: Capability Cluster
-> priority: must-have
-
-### PREFIX-01: Capability Title
-> priority: must-have | risk: low
-> depends_on: -
-
-[Rich description with stakeholder context (>= 200 chars)]
-
-**Success conditions:**
-- Specific, verifiable condition
-```
-
-## Going Further: The ido4 Pipeline
-
-ido4shape produces strategic specs — the WHAT. If you want automated technical decomposition, [ido4 MCP](https://github.com/ido4-dev/ido4) reads the strategic spec, explores your actual codebase, and produces implementation-ready tasks with effort estimates, risk assessments, and methodology-specific governance.
-
-```
-ido4shape (plugin)  →  strategic spec (.md)  →  ido4 MCP (decomposition)  →  technical spec (.md)  →  GitHub issues
-Creative upstream       The WHAT                  Codebase-aware                The HOW                  Governance
-```
-
-This is optional. The strategic spec is a complete, standalone artifact.
+This is how multi-session continuity works: the agent reads its workspace at the start of each session and picks up exactly where you left off. If a session crashes, nothing is lost — the workspace reflects everything up to the last update.
 
 <!-- BEGIN SKILL INVENTORY -->
 ## Skills
@@ -187,18 +181,22 @@ These activate automatically during conversation when relevant — you don't inv
 
 ## Glossary
 
-- **Canvas** — The agent's working memory during specification. Lives in `.ido4shape/canvas.md`. Evolves throughout conversations.
+- **Canvas** — The agent's working memory during specification. Evolves throughout conversations. Human-readable markdown.
 - **Crystallization** — Moving from fuzzy conversation to structured, formal specification.
-- **Knowledge dimensions** — Six areas of understanding the agent explores: Problem Depth, Solution Shape, Boundary Clarity, Risk Landscape, Dependency Logic, Quality Bar.
+- **Knowledge dimensions** — Six areas the agent explores: Problem Depth, Solution Shape, Boundary Clarity, Risk Landscape, Dependency Logic, Quality Bar.
 - **Groups** — Clusters of related capabilities in a spec (e.g., "Notification Core", "Email Channel").
 - **Capabilities** — Individual units of functionality within a group, each with a description and success conditions.
-- **Strategic spec** — The output: a structured document capturing WHAT to build, for whom, and why. Does not include implementation details like effort estimates or code-level decisions.
+- **Strategic spec** — The output: a structured document capturing WHAT to build, for whom, and why.
 - **Cross-cutting concerns** — Non-functional requirements (performance, security, accessibility) that apply across the entire project.
 - **Success conditions** — Specific, verifiable statements of what "done" means for each capability.
+- **NFRs** — Non-functional requirements. Performance targets, security standards, accessibility requirements — things that aren't features but constrain how features are built.
 
-## Security & Data Handling
+## More Information
 
-See [SECURITY.md](SECURITY.md) for details on data handling, hooks, and privacy.
+- [SECURITY.md](SECURITY.md) — Data handling, hooks, privacy
+- [DEVELOPER.md](DEVELOPER.md) — Spec format details, workspace structure, the ido4 pipeline
+- [CHANGELOG.md](CHANGELOG.md) — Version history
+- [VISION.md](VISION.md) — Product vision, design philosophy, competitive analysis
 
 ## License
 
