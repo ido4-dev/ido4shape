@@ -8,11 +8,27 @@ Every specification tool assumes you already know what to build. ido4shape start
 
 ## Installation
 
+**Cowork (Claude Desktop):**
+1. Open plugin settings and add the `ido4-dev/ido4-plugins` marketplace
+2. Install ido4shape from the marketplace
+
+**Claude Code (CLI):**
 ```bash
+claude plugin marketplace add ido4-dev/ido4-plugins
 claude plugin install ido4shape@ido4-plugins
 ```
 
-For Cowork: sync the `ido4-plugins` marketplace in the plugin settings, then install ido4shape.
+## Getting Started
+
+1. **Create a project folder** for your specification work (or use an existing one)
+2. **Add any supporting materials** you have — PRDs, meeting notes, architecture docs, research, analytics. The agent reads everything in the folder before asking its first question. You can also start with nothing.
+3. **Start a session:**
+   - **Cowork:** Select your project folder as the working folder, then type `/ido4shape:create-spec my-project`
+   - **Claude Code:** Navigate to your project folder, start Claude Code, then run `/ido4shape:create-spec my-project`
+4. **Have a conversation** — the agent guides discovery. You can stop and resume across sessions; everything is saved.
+5. **When ready**, run `/ido4shape:synthesize-spec` to produce the formal spec
+
+> **Cowork users:** Always select a working folder before starting. Without a folder selected, the plugin won't work.
 
 ## Commands
 
