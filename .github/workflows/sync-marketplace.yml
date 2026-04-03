@@ -58,12 +58,17 @@ jobs:
         run: |
           python3 -c "
           import json
-          path = 'marketplace/.claude-plugin/marketplace.json'
-          d = json.load(open(path))
+          plugin_path = 'source/.claude-plugin/plugin.json'
+          market_path = 'marketplace/.claude-plugin/marketplace.json'
+          plugin = json.load(open(plugin_path))
+          d = json.load(open(market_path))
           for p in d['plugins']:
               if p['name'] == 'ido4shape':
-                  p['version'] = '${{ steps.version.outputs.version }}'
-          json.dump(d, open(path, 'w'), indent=2)
+                  p['version'] = plugin['version']
+                  p['description'] = plugin.get('description', p.get('description', ''))
+                  if 'category' in plugin:
+                      p['category'] = plugin['category']
+          json.dump(d, open(market_path, 'w'), indent=2)
           "
           echo "Updated marketplace.json to v${{ steps.version.outputs.version }}"
 
