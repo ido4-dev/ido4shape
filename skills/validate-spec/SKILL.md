@@ -3,8 +3,8 @@ name: validate-spec
 description: >
   This skill validates a strategic spec artifact for format compliance and content quality. Use
   this skill when the user says "validate the spec", "check the spec", "review the artifact",
-  "is this spec valid?", or wants to verify a spec file before handoff to ido4 MCP. Pass the
-  file path as argument: /ido4shape:validate-spec path/to/spec.md
+  "is this spec valid?", or wants to verify a spec file before sharing or downstream processing.
+  Pass the file path as argument: /ido4shape:validate-spec path/to/spec.md
 allowed-tools: Read, Glob, Grep, Bash
 ---
 
@@ -89,12 +89,12 @@ This catches synthesis loss — insights that were gathered but didn't survive c
 
 #### Downstream Awareness
 
-Frame content quality findings in terms of what the downstream consumer (ido4 MCP's decomposition pipeline) needs:
+Frame content quality findings in terms of what any consumer of the spec needs — whether that's a human team, an AI coding agent, or a decomposition pipeline:
 
-- Thin descriptions make it harder for the code analysis agent to find relevant code
-- Missing success conditions mean the technical spec writer has to guess what "done" means
-- Absent cross-cutting concerns lead to technical specs that ignore NFRs
-- Missing stakeholder attribution loses the "why" — the decomposition agent won't know which constraints come from which stakeholder
+- Thin descriptions make it harder for anyone acting on the spec to understand scope and intent
+- Missing success conditions mean whoever builds this has to guess what "done" means
+- Absent cross-cutting concerns lead to implementations that ignore NFRs
+- Missing stakeholder attribution loses the "why" — consumers won't know which constraints come from which stakeholder
 
 ## Combined Report
 
@@ -115,6 +115,6 @@ Merge both passes into a single, actionable report:
 
 **Verdict:** PASS / PASS WITH WARNINGS / FAIL
 
-A single structural error from the parser means FAIL — the downstream consumer will reject it. Content warnings alone mean PASS WITH WARNINGS.
+A single structural error from the parser means FAIL — the spec isn't ready for use. Content warnings alone mean PASS WITH WARNINGS.
 
 **When the verdict is FAIL or PASS WITH WARNINGS**, offer to fix issues via `/ido4shape:refine-spec`. For structural errors (broken refs, invalid metadata), describe the exact edits needed so the user can approve them. For content issues, suggest what to add and from where (canvas, stakeholder input, prior conversations).

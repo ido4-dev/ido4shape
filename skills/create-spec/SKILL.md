@@ -115,7 +115,7 @@ When understanding is sufficient, propose transitioning — don't wait for the u
 
 Do not skip step 2 silently. For specs with 4+ groups or 10+ capabilities, the review is strongly recommended — the synthesizer consistently misses dependency logic issues that the auditor catches.
 
-The spec artifact should emerge from the synthesize-spec process — don't write it directly during conversation. Premature crystallization produces bad specs. The output is a strategic spec (the WHAT from multi-stakeholder conversation), not an implementation-ready artifact. Implementation tasks with effort, risk, type, and AI suitability are produced downstream by ido4 MCP from codebase analysis.
+The spec artifact should emerge from the synthesize-spec process — don't write it directly during conversation. Premature crystallization produces bad specs. The output is a strategic spec (the WHAT from multi-stakeholder conversation), not an implementation-ready artifact. Implementation-level metadata (effort, type, AI suitability) requires codebase knowledge — it's determined during technical decomposition, not during strategic specification.
 
 Signs you're NOT ready:
 - Any dimension shows "thin" or "not started" confidence

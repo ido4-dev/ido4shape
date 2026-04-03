@@ -48,6 +48,8 @@ jobs:
             --exclude='*.plan.md' \
             --exclude='VISION.md' \
             --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='ido4-simulate*' \
             source/ marketplace/plugins/ido4shape/
 
           echo "Synced plugin directory"

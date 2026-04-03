@@ -106,8 +106,14 @@ fi
 # Write version marker
 echo "$VERSION" > "$VERSION_FILE"
 
+# Write checksum
+CHECKSUM_FILE="$DIST_DIR/.spec-format-checksum"
+shasum -a 256 "$BUNDLE_FILE" | sed "s|$DIST_DIR/||" > "$CHECKSUM_FILE"
+echo "Wrote checksum to $CHECKSUM_FILE"
+
 SIZE=$(wc -c < "$BUNDLE_FILE" | tr -d ' ')
 echo ""
 echo "Updated spec-validator.js to v$VERSION"
 echo "  Bundle: $BUNDLE_FILE ($SIZE bytes)"
 echo "  Version: $VERSION_FILE"
+echo "  Checksum: $CHECKSUM_FILE"

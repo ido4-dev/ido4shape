@@ -13,7 +13,7 @@ user-invocable: false
 
 ## Strategic Spec Format
 
-ido4shape produces strategic specs — the WHAT from multi-stakeholder conversation. The downstream consumer is an AI decomposition agent in ido4 MCP, not a line-by-line parser.
+ido4shape produces strategic specs — the WHAT from multi-stakeholder conversation. The downstream consumer may be a human team, an AI coding agent, or a decomposition pipeline like ido4 MCP — not a line-by-line parser.
 
 **Project heading:** `# Project Name` — exactly one `#`, followed by `> format: strategic-spec | version: 1.0` in a blockquote. Rich problem description follows — who suffers, how, why solving it now.
 
@@ -32,7 +32,7 @@ ido4shape produces strategic specs — the WHAT from multi-stakeholder conversat
 - risk: low, medium, high (strategic risk — unknowns, external dependencies, stakeholder disagreement. NOT code complexity.)
 - depends_on: comma-separated PREFIX-NN references, or `-` for no dependencies
 
-**Not in strategic specs:** effort, type, ai, size. These require codebase knowledge and are determined by ido4 MCP during technical decomposition.
+**Not in strategic specs:** effort, type, ai, size. These require codebase knowledge and are determined during technical decomposition (by tools like ido4 MCP or by your engineering team).
 
 **Capability body** should be at least 200 characters with substantive content including: what the capability provides, who needs it and why, stakeholder context ("Per Marcus: ..."), relevant constraints, and integration points with other capabilities.
 
