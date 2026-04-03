@@ -13,6 +13,9 @@ Either way — every specification tool assumes you already know what to build. 
 ## Installation
 
 **Cowork (Claude Desktop):**
+
+*Pending Anthropic marketplace approval. Once approved, ido4shape will be available directly in the Anthropic & Partners directory. Until then, install via personal marketplace:*
+
 1. Click **Customize** in the left sidebar
 2. Under **Personal plugins**, click the **+** button
 3. Select **Create plugin** → **Add marketplace**
