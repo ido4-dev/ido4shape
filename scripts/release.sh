@@ -11,6 +11,16 @@ PLUGIN_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 BUMP_TYPE="${1:-patch}"
 MESSAGE="${2:-Release}"
 
+# ─── Pre-flight: Claude CLI ────────────────────────────────
+
+if ! command -v claude &>/dev/null; then
+  echo "WARNING: 'claude' CLI not found — changelog will use deterministic generation"
+elif ! claude -p --bare --max-turns 1 "ok" < /dev/null &>/dev/null; then
+  echo "WARNING: 'claude' CLI not logged in — changelog will use deterministic generation"
+  echo "  Run 'claude /login' for LLM-powered changelog entries"
+  echo ""
+fi
+
 # ─── Pre-flight: Bundle Validation ─────────────────────────
 
 BUNDLE="$PLUGIN_DIR/dist/spec-validator.js"
