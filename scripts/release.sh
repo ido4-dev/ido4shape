@@ -1,5 +1,5 @@
 #!/bin/bash
-# Release script: bump version, commit, push ido4shape.
+# Release script: bump version, update changelog, commit, push ido4shape.
 # Marketplace sync happens automatically via sync-marketplace.yml CI workflow.
 # Usage: bash scripts/release.sh [patch|minor|major] "Release message"
 # Default: patch
@@ -76,6 +76,112 @@ d['version'] = '$NEW_VERSION'
 json.dump(d, open(path, 'w'), indent=2)
 print('  Updated: plugin.json')
 "
+
+# ─── Update CHANGELOG ─────────────────────────────────────
+
+CHANGELOG="$PLUGIN_DIR/CHANGELOG.md"
+TODAY=$(date +%Y-%m-%d)
+
+# Get the last release tag
+LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+if [ -n "$LAST_TAG" ]; then
+  RANGE="${LAST_TAG}..HEAD"
+else
+  RANGE="HEAD"
+fi
+
+# Generate changelog entry from commits since last tag
+ENTRY=$(python3 -c "
+import subprocess, re, sys
+
+range_arg = '$RANGE'
+result = subprocess.run(
+    ['git', 'log', range_arg, '--pretty=format:%s'],
+    capture_output=True, text=True, cwd='$PLUGIN_DIR'
+)
+commits = [line.strip() for line in result.stdout.strip().split('\n') if line.strip()]
+
+# Skip version bump commits and merge commits
+commits = [c for c in commits if not c.startswith('v') and not c.startswith('Merge')]
+
+changed = []
+added = []
+fixed = []
+docs_items = []
+
+for c in commits:
+    # Strip Co-Authored-By lines
+    c = c.split('\n')[0].strip()
+    if not c:
+        continue
+
+    # Parse conventional commit prefix
+    m = re.match(r'^(feat|fix|docs|enhance|refactor|chore|test)[\(:]?\s*(.+)', c, re.IGNORECASE)
+    if m:
+        prefix = m.group(1).lower()
+        desc = m.group(2).lstrip(': ').rstrip('.')
+        # Remove scope parenthetical if present
+        desc = re.sub(r'^\([^)]+\)\s*:?\s*', '', desc)
+        desc = desc[0].upper() + desc[1:] if desc else desc
+    else:
+        prefix = ''
+        desc = c[0].upper() + c[1:] if c else c
+
+    if prefix == 'fix':
+        fixed.append(desc)
+    elif prefix == 'feat' or prefix == 'enhance':
+        added.append(desc)
+    elif prefix == 'docs':
+        docs_items.append(desc)
+    elif prefix in ('refactor', 'chore', 'test'):
+        changed.append(desc)
+    else:
+        changed.append(desc)
+
+# Build entry
+lines = []
+if added:
+    lines.append('### Added')
+    for item in added:
+        lines.append(f'- {item}')
+    lines.append('')
+if changed or docs_items:
+    lines.append('### Changed')
+    for item in changed + docs_items:
+        lines.append(f'- {item}')
+    lines.append('')
+if fixed:
+    lines.append('### Fixed')
+    for item in fixed:
+        lines.append(f'- {item}')
+    lines.append('')
+
+print('\n'.join(lines) if lines else '- $MESSAGE')
+")
+
+# Prepend new entry to CHANGELOG
+if [ -f "$CHANGELOG" ]; then
+  python3 -c "
+changelog = open('$CHANGELOG').read()
+header = '# Changelog\n\n'
+if changelog.startswith('# Changelog'):
+    rest = changelog[len(header):]
+else:
+    rest = changelog
+
+new_entry = '''## [$NEW_VERSION] — $TODAY
+
+$MESSAGE
+
+$ENTRY'''
+
+open('$CHANGELOG', 'w').write(header + new_entry.rstrip() + '\n\n' + rest)
+print('  Updated: CHANGELOG.md')
+"
+else
+  echo "  WARNING: CHANGELOG.md not found — skipping"
+fi
 
 # Commit and push
 echo ""
