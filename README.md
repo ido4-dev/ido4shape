@@ -207,9 +207,10 @@ These activate automatically during conversation when relevant — you don't inv
 ## More Information
 
 - [SECURITY.md](SECURITY.md) — Data handling, hooks, privacy
-- [DEVELOPER.md](DEVELOPER.md) — Spec format details, workspace structure, the ido4 pipeline
+- [DEVELOPER.md](docs/DEVELOPER.md) — Spec format details, workspace structure, the ido4 pipeline
 - [CHANGELOG.md](CHANGELOG.md) — Version history
-- [VISION.md](VISION.md) — Product vision, design philosophy, competitive analysis
+- [VISION.md](docs/VISION.md) — Product vision, design philosophy, competitive analysis
+- [Documentation Index](docs/README.md) — Full documentation directory
 
 ## License
 

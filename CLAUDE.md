@@ -113,11 +113,18 @@ ido4shape/
 │   ├── spec-validator.js              # Bundled validator (~8KB, zero deps)
 │   ├── .spec-format-version           # Bundle version marker
 │   └── .spec-format-checksum          # SHA-256 checksum
+├── docs/
+│   ├── CLAUDE.md                      # Documentation directory instructions
+│   ├── README.md                      # Documentation index
+│   ├── DEVELOPER.md                   # Spec format, workspace structure, pipeline
+│   ├── VISION.md                      # Product vision & strategy
+│   └── system-architecture.md         # Technical architecture reference
+├── private/                           # Internal planning docs (gitignored)
+│   ├── enterprise-cloud-vision.md     # Enterprise cloud platform brief
+│   └── ido4-simulate-plan.md          # Synthetic testing framework plan
 ├── settings.json
 ├── CLAUDE.md                          # This file
-├── VISION.md                          # Product vision & strategy
 ├── SECURITY.md                        # Data handling, hooks, privacy
-├── DEVELOPER.md                       # Spec format, workspace structure, pipeline
 ├── CHANGELOG.md                       # Version history (auto-generated on release)
 ├── LICENSE
 └── README.md
@@ -168,7 +175,7 @@ After every end-to-end test of ido4shape (manual or synthetic), produce a struct
 
 - `reports/first-real-world-test.md` — First e2e test (ido4-simulate project, 2026-03-24). **This is the calibration baseline for the ido4-simulate synthetic testing framework.** The 12 observations map to synthetic test signals — the framework should detect these same issues automatically.
 - `reports/ido4-simulate-observations.md` — Structured observation log from the first test (12 observations with type, root cause, fix candidates, synthetic test signals)
-- `ido4-simulate-plan.md` — Detailed plan for the synthetic testing framework (1,200+ lines, architecture, cost model, research design)
+- `private/ido4-simulate-plan.md` — Detailed plan for the synthetic testing framework (1,200+ lines, architecture, cost model, research design). Gitignored — not in public repo.
 - `reports/e2e-test-002-openclaw-outreach.md` — Second e2e test (OpenClaw outreach, 2026-04-02). Validated obs fixes, found 3 follow-ups.
 
 ## Related Repos

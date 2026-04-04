@@ -46,7 +46,7 @@ jobs:
             --exclude='drafts' \
             --exclude='reports' \
             --exclude='*.plan.md' \
-            --exclude='VISION.md' \
+            --exclude='docs' \
             --exclude='node_modules' \
             --exclude='tests' \
             --exclude='ido4-simulate*' \

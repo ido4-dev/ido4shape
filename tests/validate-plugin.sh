@@ -101,11 +101,20 @@ echo ""
 
 echo "--- Test 3: Documentation Files ---"
 
-for doc in README.md SECURITY.md CHANGELOG.md DEVELOPER.md LICENSE; do
+for doc in README.md SECURITY.md CHANGELOG.md LICENSE; do
   if [ -f "$PLUGIN_DIR/$doc" ]; then
     pass "$doc exists"
   else
     fail "$doc missing"
+  fi
+done
+
+# Documentation in docs/
+for doc in DEVELOPER.md VISION.md; do
+  if [ -f "$PLUGIN_DIR/docs/$doc" ]; then
+    pass "docs/$doc exists"
+  else
+    fail "docs/$doc missing"
   fi
 done
 

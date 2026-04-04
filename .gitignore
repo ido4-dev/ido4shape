@@ -1,5 +1,6 @@
 .claude/
 .ido4shape/
+private/
 .DS_Store
 *.swp
 *.swo
