@@ -1,6 +1,8 @@
 # ido4shape — System Architecture
 
-**Version:** 0.4.2 | **Platform:** Claude Code, Cowork | **License:** MIT
+**Status:** living | **Last updated:** 2026-04-04 | **Audience:** public
+
+Version 0.4.2 | Platform: Claude Code, Cowork | License: MIT
 
 ---
 

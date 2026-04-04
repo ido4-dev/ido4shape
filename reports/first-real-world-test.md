@@ -232,4 +232,4 @@ The zero-padding was fixed via another refine-spec pass. Final validation: PASS.
 
 The strategic spec is ready for ido4dev decomposition. It was produced by the thing it's designed to test — which means the spec itself is evidence of both ido4shape's capability and its current limitations.
 
-The plan document (`ido4-simulate-plan.md`) remains the richer reference for implementation details that are out of scope for the strategic spec: research data design, ablation variants, cost model with token estimates, funding strategy. The implementation agent should read both.
+The plan document (`private/simulate-plan.md`) remains the richer reference for implementation details that are out of scope for the strategic spec: research data design, ablation variants, cost model with token estimates, funding strategy. The implementation agent should read both.

@@ -116,14 +116,15 @@ ido4shape/
 ├── docs/
 │   ├── CLAUDE.md                      # Documentation directory instructions
 │   ├── README.md                      # Documentation index
-│   ├── DEVELOPER.md                   # Spec format, workspace structure, pipeline
-│   ├── VISION.md                      # Product vision & strategy
+│   ├── developer-guide.md             # Spec format, workspace structure, pipeline
+│   ├── vision.md                      # Product vision & strategy
 │   └── system-architecture.md         # Technical architecture reference
 ├── private/                           # Internal planning docs (gitignored)
 │   ├── enterprise-cloud-vision.md     # Enterprise cloud platform brief
-│   └── ido4-simulate-plan.md          # Synthetic testing framework plan
+│   └── simulate-plan.md               # Synthetic testing framework plan
 ├── settings.json
 ├── CLAUDE.md                          # This file
+├── CONTRIBUTING.md                    # How to contribute
 ├── SECURITY.md                        # Data handling, hooks, privacy
 ├── CHANGELOG.md                       # Version history (auto-generated on release)
 ├── LICENSE
@@ -139,7 +140,7 @@ ido4shape/
 5. ~~High-severity obs fixes~~ — OBS-01, 05, 06, 08, 11 addressed (v0.3.3, 2026-04-02). Workspace discipline, turn discipline, format skeleton, source reconciliation, review gate.
 6. ~~Bundled validator~~ — replaced npm install approach with bundled .js file (2026-03-29). See `architecture/bundled-validator-architecture.md` in ido4-MCP.
 7. ~~E2E test #2~~ — OpenClaw outreach project (v0.3.3, 2026-04-02). 4/5 fixes pass, 1 mostly pass. 3 follow-up fixes applied (v0.3.4): convergence check, stronger propose mode, prefix length rule. See `reports/e2e-test-002-openclaw-outreach.md`
-8. ~~Marketplace submission prep~~ — (v0.4.0-v0.4.2, 2026-04-03). Standalone positioning, README rewrite with example workflows, SECURITY.md, DEVELOPER.md, CHANGELOG.md, SEO optimization, spec-reviewer integrated into review-spec, test suite expanded to 199 checks, LLM-powered changelog generation, marketplace sync for description/category.
+8. ~~Marketplace submission prep~~ — (v0.4.0-v0.4.2, 2026-04-03). Standalone positioning, README rewrite with example workflows, SECURITY.md, developer-guide.md, CHANGELOG.md, SEO optimization, spec-reviewer integrated into review-spec, test suite expanded to 199 checks, LLM-powered changelog generation, marketplace sync for description/category.
 9. Next: Submit to official Anthropic plugin marketplace
 
 ## Bundled Validator
@@ -175,7 +176,7 @@ After every end-to-end test of ido4shape (manual or synthetic), produce a struct
 
 - `reports/first-real-world-test.md` — First e2e test (ido4-simulate project, 2026-03-24). **This is the calibration baseline for the ido4-simulate synthetic testing framework.** The 12 observations map to synthetic test signals — the framework should detect these same issues automatically.
 - `reports/ido4-simulate-observations.md` — Structured observation log from the first test (12 observations with type, root cause, fix candidates, synthetic test signals)
-- `private/ido4-simulate-plan.md` — Detailed plan for the synthetic testing framework (1,200+ lines, architecture, cost model, research design). Gitignored — not in public repo.
+- `private/simulate-plan.md` — Detailed plan for the synthetic testing framework (1,200+ lines, architecture, cost model, research design). Gitignored — not in public repo.
 - `reports/e2e-test-002-openclaw-outreach.md` — Second e2e test (OpenClaw outreach, 2026-04-02). Validated obs fixes, found 3 follow-ups.
 
 ## Related Repos

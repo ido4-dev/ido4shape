@@ -1,8 +1,8 @@
 # ido4shape — Vision & Strategy
 
-**Status**: Living document — captures the product vision, strategic positioning, and design philosophy.
+**Status:** living | **Last updated:** 2026-04-03 | **Audience:** public
 
-**Last updated**: April 2026
+Product vision, strategic positioning, and design philosophy.
 
 ---
 

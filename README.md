@@ -206,10 +206,11 @@ These activate automatically during conversation when relevant — you don't inv
 
 ## More Information
 
+- [CONTRIBUTING.md](CONTRIBUTING.md) — How to report bugs, run tests, submit changes
 - [SECURITY.md](SECURITY.md) — Data handling, hooks, privacy
-- [DEVELOPER.md](docs/DEVELOPER.md) — Spec format details, workspace structure, the ido4 pipeline
+- [Developer Guide](docs/developer-guide.md) — Spec format details, workspace structure, the ido4 pipeline
 - [CHANGELOG.md](CHANGELOG.md) — Version history
-- [VISION.md](docs/VISION.md) — Product vision, design philosophy, competitive analysis
+- [Vision & Strategy](docs/vision.md) — Product vision, design philosophy, competitive analysis
 - [Documentation Index](docs/README.md) — Full documentation directory
 
 ## License

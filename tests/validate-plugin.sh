@@ -110,7 +110,7 @@ for doc in README.md SECURITY.md CHANGELOG.md LICENSE; do
 done
 
 # Documentation in docs/
-for doc in DEVELOPER.md VISION.md; do
+for doc in developer-guide.md vision.md; do
   if [ -f "$PLUGIN_DIR/docs/$doc" ]; then
     pass "docs/$doc exists"
   else
