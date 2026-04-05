@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.6] — 2026-04-06
+
+Assertion-based Pass 2 — authoritative content quality gate
+
+### Added
+- Automated CHANGELOG generation from git commits on release (LLM-powered with deterministic fallback)
+
+### Changed
+- Reorganized documentation: public docs in `docs/`, internal planning in `private/`
+- Expanded validation suite from 130 to 199 structural checks
+- README restructured to address both product builders and developers
+
+### Fixed
+- Downgraded description and openQuestions checks from FAIL to WARNING to reduce false positives
+- Corrected Cowork installation and getting started steps in documentation
+- Fixed marketplace metadata syncing (description and category) on release
+- Fixed OAuth compatibility in LLM changelog generation
+- Release script now warns if Claude CLI isn't logged in
+
 ## [0.4.5] — 2026-04-05
 
 Downgrade description check to WARNING — remove false positive on parser/docs mismatch

@@ -82,37 +82,70 @@ Empty required fields are structural failures, not cosmetic drift. Silent conten
 
 ### Pass 2 — Content Quality (LLM judgment)
 
-Read the spec file and assess what only judgment can evaluate:
+Read the spec file directly. Apply assertions about whether the content is fit for downstream decomposition — a code-analyzer agent that will read this spec, explore a codebase, and produce technical tasks. Each assertion is binary: satisfied or violated. Violations escalate to **FAIL** when they would break downstream decomposition, **WARNING** when they degrade usefulness without breaking it.
 
-- Capability descriptions at least 200 characters with multi-stakeholder context
-- Descriptions carry the WHY, not just the WHAT — stakeholder perspectives, not implementation approach
-- Success conditions present, specific, independently verifiable, product-level
-- Cross-cutting concerns have specific targets, not template filler
-- Stakeholders section lists real contributors with real perspectives
-- Constraints have rationale
-- Priority calibration plausible (not everything is must-have)
-- Strategic risk reflects actual unknowns, not guessed code complexity
-- No implementation-level metadata (effort, type, ai, size)
+Pass 1 (parser) guards structure and presence. Pass 2 (this) guards substance. No character thresholds, no counting — assertions are answered by reading the spec as a decomposer would.
 
-#### Canvas Cross-Reference
+#### Project-level assertions
 
-If the workspace has a canvas, compare what was captured against what made it to the spec:
+Read the project header, description, Stakeholders, Constraints, Non-goals, Open questions, and Cross-Cutting Concerns sections. Apply each assertion in turn:
 
-- Stakeholders in the canvas but missing from the spec's Stakeholders section
-- Cross-cutting concerns discussed in conversations but absent from the spec
-- Constraints or non-goals that were captured but lost during synthesis
-- Stakeholder perspectives that appear in the canvas but not attributed in capability descriptions
+**A1. Project description carries problem + stakes + stakeholder voice.** A decomposer reading only the description should understand what problem this addresses, who suffers, and why solving it now matters. Narrative, not summary.
+- Violated → **FAIL** when: single summary sentence, pure feature enumeration, or no stakes named.
+- Violated → **WARNING** when: present but stakeholder voice is thin or stakes aren't concrete.
 
-This catches synthesis loss — insights that were gathered but didn't survive crystallization.
+**A2. Stakeholders carry real perspectives.** Each stakeholder entry states what perspective they brought — architectural concern, product lens, operational constraint — not just a role label.
+- Violated → **WARNING** when: entries are role labels without perspective, or perspectives are generic ("cares about performance").
 
-#### Downstream Awareness
+**A3. Constraints carry rationale.** Each constraint states why it's a constraint — a stakeholder concern, architectural reason, regulatory driver, or business reality.
+- Violated → **WARNING** when: constraints listed without reasoning.
 
-Frame content quality findings in terms of what any consumer of the spec needs — whether that's a human team, an AI coding agent, or a decomposition pipeline:
+**A4. Cross-cutting concerns have substance.** Each concern section contains specific targets, stakeholder attribution, or concrete requirements — not template filler.
+- Violated → **FAIL** when: section exists but contains only placeholder language or generic statements with no targets or attribution.
+- Violated → **WARNING** when: substance thin but some content present.
 
-- Thin descriptions make it harder for anyone acting on the spec to understand scope and intent
-- Missing success conditions mean whoever builds this has to guess what "done" means
-- Absent cross-cutting concerns lead to implementations that ignore NFRs
-- Missing stakeholder attribution loses the "why" — consumers won't know which constraints come from which stakeholder
+#### Capability-level assertions
+
+For each capability, read its description, metadata, success conditions, and dependencies. Apply each assertion in turn:
+
+**A5. Description carries stakeholder WHY.** The description explains why this capability is needed and who needs it, not just what it does. A decomposer should understand the problem context and stakeholder perspective, not just the feature shape.
+- Violated → **FAIL** when: description is pure WHAT (feature behavior, output specification) with no stakeholder context or problem framing.
+- Violated → **WARNING** when: stakeholder context present but thin or implicit.
+
+**A6. Success conditions are independently verifiable.** Someone who wasn't in the conversation should be able to read each condition and know whether it's been met.
+- Violated → **FAIL** when: conditions are vague ("works correctly", "is reliable", "performs well") or circular ("X is done when X works").
+- Violated → **WARNING** when: mix of specific and vague conditions.
+
+**A7. Strategic risk reflects genuine unknowns.** The risk label (low/medium/high) matches actual uncertainty — external dependencies, stakeholder disagreement, unknown behavior, novel territory. Not code complexity or implementation difficulty.
+- Violated → **WARNING** when: risk seems miscalibrated (high on a clear path, low on a fuzzy area).
+
+**A8. Description does not prescribe implementation.** Descriptions describe what the capability provides and why, not how it should be built.
+- Violated → **WARNING** when: description specifies technology choices, architectural patterns, or code structure.
+
+#### Canvas cross-reference (mandatory when canvas exists)
+
+If `.ido4shape/canvas.md` is present in the workspace, compare the canvas (and session summaries, decisions, stakeholders files) against the spec. These assertions catch synthesis loss — substance the conversation produced but the synthesizer dropped.
+
+**A9. Canvas stakeholders preserved in spec.** Every stakeholder captured in the canvas or `stakeholders.md` appears in the spec's Stakeholders section with matching perspective. Merging or reframing is fine; silent omission is not.
+- Violated → **FAIL** when: canvas stakeholders absent from spec's Stakeholders section.
+- Violated → **WARNING** when: stakeholders present but their perspectives generalized or lost.
+
+**A10. Canvas cross-cutting concerns preserved in spec.** Every concern discussed in the canvas appears in the spec's Cross-Cutting Concerns section. Merging two canvas concerns into one spec concern is fine; silent omission is not.
+- Violated → **FAIL** when: concerns discussed in canvas but not represented in spec.
+
+**A11. Canvas decisions reflected in spec.** Every decision from `decisions.md` appears as a constraint, non-goal, or shapes a capability description. Decisions that don't show up in the spec were effectively lost.
+- Violated → **FAIL** when: decisions made but not encoded in spec.
+
+**A12. Stakeholder perspectives attributed in capability descriptions.** Perspectives captured in session summaries appear in capability descriptions with attribution ("per the architect", "the PM flagged", "operations raised").
+- Violated → **WARNING** when: perspectives present in canvas but not attributed in capabilities that depend on them.
+
+#### Downstream awareness
+
+Frame all Pass 2 findings in terms of what the downstream code-analyzer agent needs to produce good technical tasks:
+- Thin descriptions mean capability analysis is thin — generated tasks will miss stakeholder concerns.
+- Vague success conditions mean task decomposition has no grounding for "done."
+- Canvas loss means the conversation's substance never reaches the codebase.
+- Missing attribution means constraints travel through the pipeline without knowing which stakeholder they serve.
 
 ## Combined Report
 
@@ -125,14 +158,27 @@ Merge both passes into a single, actionable report:
 - For each error: what's wrong, where, and the specific fix
 - For each warning: what it means and whether action is needed
 
-**Content Quality:**
-- Findings organized as errors (must fix), warnings (should fix), suggestions (could improve)
-- Canvas cross-reference findings (if canvas exists)
+**Content Quality (Pass 2 assertions):**
+- For each violated assertion: cite the assertion, show what in the spec violates it, state the specific edit needed
+- Assertions are reported with their severity (FAIL or WARNING) per the assertion definitions
+- Canvas cross-reference findings included (A9-A12) when `.ido4shape/canvas.md` exists
 
 **Dependency Graph:** from parser output, rendered as a readable list with critical path highlighted
 
 **Verdict:** PASS / PASS WITH WARNINGS / FAIL
 
-Any structural error from the parser OR completeness failure means FAIL. A missing required field — empty stakeholders, empty constraints, empty groups, or a group with no capabilities — is structural, not stylistic. Surface these as errors rather than filtering them out. Content warnings alone mean PASS WITH WARNINGS.
+Roll up findings mechanically across both passes:
+- Any structural error from the parser (Pass 1) → **FAIL**
+- Any Pass 1 completeness failure (empty required fields) → **FAIL**
+- Any Pass 2 assertion violated at FAIL severity → **FAIL**
+- Only Pass 1 warnings and/or Pass 2 WARNING-grade violations, no FAILs → **PASS WITH WARNINGS**
+- All Pass 1 checks clean, all Pass 2 assertions satisfied → **PASS**
 
-**When the verdict is FAIL**, offer to fix via `/ido4shape:refine-spec`. Rather than making judgment calls about what's "worth fixing," surface every structural finding and every completeness failure so the user can decide which to refine. For each issue, describe the specific edit needed (what section, what structure, where the content should live) so the user can approve it.
+Do not apply judgment-call filtering. Every finding — structural, completeness, assertion violation — surfaces to the user. The user decides what to refine. The assistant does not silently dismiss findings as "cosmetic" or "not worth fixing."
+
+**When the verdict is FAIL**, offer to fix via `/ido4shape:refine-spec`. For each finding, describe:
+- Which check or assertion was violated (e.g., "A5: capability description carries stakeholder WHY")
+- What the violation looks like in the spec (cite the specific section or capability)
+- The specific edit needed (what section, what structure, where content should live)
+
+The user can then approve specific refinements.
