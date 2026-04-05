@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.4.4] — 2026-04-05
+
+Presence checks for description and open questions, template placeholder fix
+
+### Added
+- Contribution guidelines (CONTRIBUTING.md) with development workflow and testing expectations
+- E2E test #3 report documenting enterprise cloud platform specification validation
+- New documentation structure (docs/ for public docs, private/ for internal planning)
+- System architecture documentation with technical design details
+- Auto-generated changelog entries from commit messages with LLM assistance and deterministic fallback
+
+### Changed
+- Synthesizer template now clarifies placeholder usage in canvas context
+- README reorganized to address both PM/founder and engineer audiences with intermediate artifacts as value
+- Documentation site structure unified with example specification linked in "What You Get" section
+- CLAUDE.md expanded with complete file inventory, skill definitions, and marketplace submission guidance
+
+### Fixed
+- Presence validation checks for description and openQuestions fields in strategic specs
+- Completeness checks in validate-spec skill with improved format documentation
+- Cowork installation and getting started instructions to match current UI
+- Release script OAuth authentication for LLM changelog generation
+- Release script now warns if claude CLI is not authenticated before running
+- Marketplace manifest now syncs description and category on release
+- Validation test suite expanded from 130 to 199 checks covering edge cases and format compliance
+
 ## [0.4.3] — 2026-04-05
 
 Validation completeness checks and format documentation fixes
