@@ -74,6 +74,10 @@ The parser emits the full structural model of the spec as JSON — not just erro
 
 **Project identity** — `project.name` must be non-empty and `project.format` must equal `"strategic-spec"`. A missing format marker means the `> format: strategic-spec | version: 1.0` metadata line is missing or malformed.
 
+**Project description present** — If `project.description` is empty or shorter than 50 characters, the project description narrative is missing or malformed. The description lives as free-text prose directly below the format marker. If the synthesizer wrapped it in an H2 section (like `## Problem Statement`), the parser treats the H2 as an unknown section and returns empty description. The code-analyzer downstream depends on this field for project context during capability analysis — an empty description leaves it without orientation. Escalate as **FAIL**.
+
+**Open questions present** — If `project.openQuestions` is an empty array, the `**Open questions:**` bold-label section is missing or its bullets weren't recognized (e.g., numbered list `1.` instead of bullets `-`). Open questions are informational context for downstream — missing them doesn't block decomposition but loses honest uncertainty signals. Escalate as **WARNING** (not FAIL).
+
 Empty required fields are structural failures, not cosmetic drift. Silent content loss — where the synthesizer wrote content in the wrong place or structure, the parser can't find it, and downstream tools get nothing — is exactly what completeness checks exist to prevent.
 
 ### Pass 2 — Content Quality (LLM judgment)

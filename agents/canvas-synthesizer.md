@@ -54,7 +54,7 @@ The artifact must follow this exact structure. Study it — heading levels, meta
 # Project Name
 > format: strategic-spec | version: 1.0
 
-[Problem statement — rich narrative, not a summary]
+[Rich narrative describing the problem — who suffers, how acutely, why solving it now matters. Placed directly below the format marker and before `**Stakeholders:**`, written as plain narrative (not wrapped in a heading or section).]
 
 **Stakeholders:**
 - [Name/Role]: [Perspective they brought]
