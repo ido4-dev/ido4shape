@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.4.3] — 2026-04-05
+
+Validation completeness checks and format documentation fixes
+
+### Added
+- Full system architecture documentation covering plugin structure, skill design, and validator bundling
+- E2E test #3 report documenting enterprise cloud platform specification and validation results
+- Automated CHANGELOG generation from commit history with LLM-powered summarization and deterministic fallback
+- CONTRIBUTING.md guide for contributors and developers
+- 69 new validation completeness checks (test suite expanded from 130 to 199 checks)
+- Marketplace manifest auto-sync for plugin description and category on release
+
+### Changed
+- Reorganized documentation: public docs in docs/ directory, internal planning in private/ (gitignored)
+- README rewritten to serve two audiences (PMs/founders vs. tech leads) and highlight intermediate artifacts as value
+- Updated Cowork getting started instructions to match actual UI flow
+- Enhanced release script with OAuth-compatible auth and CLI login verification warnings
+- Improved LLM changelog generation with graceful fallback to conventional commit parsing
+
+### Fixed
+- Validation completeness checks in validate-spec skill for stricter artifact validation
+- Format documentation corrections in artifact-format references
+- Cowork installation alignment with actual marketplace UI behavior
+- Code fence stripping in auto-generated changelog entries
+
 ## [0.4.2] — 2026-04-03
 
 Infrastructure: test suite expansion, automated changelog, marketplace sync
