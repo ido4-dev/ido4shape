@@ -1,7 +1,7 @@
 {
   "name": "ido4shape",
   "description": "Specification discovery and writing for product managers, founders, and tech leads. Explores your problem space through guided conversation, builds a knowledge canvas, then synthesizes a structured strategic spec with stakeholder analysis, capability decomposition, dependencies, and success conditions.",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "category": "productivity",
   "author": {
     "name": "Bogdan Coman",

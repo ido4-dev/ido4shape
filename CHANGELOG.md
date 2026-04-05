@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.4.5] — 2026-04-05
+
+Downgrade description check to WARNING — remove false positive on parser/docs mismatch
+
+### Added
+- CONTRIBUTING.md with contribution guidelines
+- System architecture documentation
+- LLM-powered changelog generation with deterministic fallback
+- E2E test #3 report for enterprise cloud platform use case
+
+### Changed
+- Description validation check downgraded from FAIL to WARNING to eliminate false positives
+- Documentation reorganized into public `docs/` and internal `private/` directories
+- README refocused on value delivered to both PMs and tech leads
+- Marketplace auto-sync now updates description and category alongside version
+- Test suite expanded from 130 to 199 validation checks
+
+### Fixed
+- Clarity on description and openQuestions presence checks
+- Validate-spec completeness checking logic
+- Cowork installation and getting started instructions
+- Format documentation accuracy and naming consistency
+
 ## [0.4.4] — 2026-04-05
 
 Presence checks for description and open questions, template placeholder fix
