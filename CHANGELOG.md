@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.4.7] — 2026-04-06
+
+Capability-level completeness check + user-facing report restructure
+
+### Added
+- Capability-level completeness validation with 199 structured checks
+- LLM-powered CHANGELOG generation with deterministic fallback for offline release workflows
+- End-to-end test report documenting enterprise cloud platform specification
+
+### Changed
+- Documentation restructured into public (`docs/`) and internal (`private/`) sections
+- README refocused on value proposition and intermediate artifacts
+- Description validation downgraded to WARNING (reduces false positives)
+
+### Fixed
+- Completeness checks for capability descriptions and open questions in specs
+- Marketplace sync now updates both description and category
+- Cowork installation instructions and getting-started guide
+- Canvas synthesizer template for clearer capability structure
+- Release script now warns if Claude CLI authentication is missing
+
 ## [0.4.6] — 2026-04-06
 
 Assertion-based Pass 2 — authoritative content quality gate
