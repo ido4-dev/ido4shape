@@ -31,9 +31,9 @@ GROUP:       /^## Group:\s*(.+)$/
 CAPABILITY:  /^### ([A-Z]{2,5}-\d{2,3}):\s*(.+)$/
 ```
 
-Additional recognized sections (not regex-parsed, recognized by convention):
-- `## Cross-Cutting Concerns` — project-wide NFRs and constraints
-- `## Stakeholders` — within the project header area (before first group)
+Additional recognized areas (beyond regex-parsed headings):
+- `## Cross-Cutting Concerns` — H2 section, project-wide NFRs and constraints
+- `**Stakeholders:**`, `**Constraints:**`, `**Non-goals:**`, `**Open questions:**` — bold labels in the project header area (between the project description and `## Cross-Cutting Concerns`), each followed by a bullet list. These are NOT H2 headings — writing `## Stakeholders` makes the parser treat it as unknown H2 and ignore the content.
 
 ## Metadata
 

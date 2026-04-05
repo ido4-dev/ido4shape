@@ -717,7 +717,9 @@ else
 fi
 
 # Implementation-level metadata in skills (should reference strategic spec only)
-IMPL_IN_SKILLS=$(grep -rlE "effort: [SMLX]|type: feature|ai: full|ai: assisted" "$PLUGIN_DIR/skills/" 2>/dev/null | wc -l | tr -d ' ')
+# format-spec.md documents the distinction between strategic and technical specs,
+# so it necessarily names the implementation-level fields that don't belong in strategic specs
+IMPL_IN_SKILLS=$(grep -rlE "effort: [SMLX]|type: feature|ai: full|ai: assisted" "$PLUGIN_DIR/skills/" 2>/dev/null | grep -v "artifact-format/references/format-spec.md" | wc -l | tr -d ' ')
 if [ "$IMPL_IN_SKILLS" -eq 0 ]; then
   pass "No implementation-level metadata examples in skills"
 else

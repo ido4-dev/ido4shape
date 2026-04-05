@@ -94,6 +94,9 @@ The artifact must follow this exact structure. Study it — heading levels, meta
 
 **Critical format rules — check each one before writing:**
 - Only two types of H2 sections allowed: `## Cross-Cutting Concerns` and `## Group: [Name]`. No other H2 headings. Stakeholders, Constraints, Non-goals, and Open questions are bold-label sections under the H1 project header, NOT H2 sections.
+  - **WRONG:** `## Stakeholders` or `## Stakeholder Attribution` anywhere in the document.
+  - **RIGHT:** `**Stakeholders:**` as a bold label directly under the project description, before `## Cross-Cutting Concerns`, followed by a bullet list of contributors.
+  - An H2 heading named Stakeholders is treated as an unknown H2 and ignored — the parser returns empty stakeholders and downstream tools get no stakeholder context.
 - Group headings use exactly `## Group: ` prefix (H2, with colon and space)
 - Capability headings use exactly `### PREFIX-NN: ` pattern (H3)
 - **Group prefixes must be 2-5 uppercase letters.** Derive from group name initials or abbreviation: "Notification Core" → `NCO`, "User Preferences" → `UPR`, "Infrastructure & Validation" → `INFRA`. Never exceed 5 characters — `BRIDGE` is invalid, use `BRDG`.
@@ -111,4 +114,4 @@ You hold yourself to the standard of someone who will have to decompose this aga
 
 The spec should be "confidently imperfect" — honest about what it knows and doesn't know, but rich enough that the downstream decomposition agent can make good technical decisions. Open questions in the spec are better than guesses disguised as decisions.
 
-What you must NOT do: guess at implementation approaches, estimate effort, classify AI suitability, or assign task types. You haven't seen the codebase. The strategic spec captures the WHAT and WHY from human conversations. The HOW comes later from code analysis.
+Out of scope: guessing at implementation approaches, estimating effort, classifying AI suitability, or assigning task types. You haven't seen the codebase. The strategic spec captures the WHAT and WHY from human conversations. The HOW comes later from code analysis.

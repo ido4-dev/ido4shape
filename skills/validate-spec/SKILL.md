@@ -62,6 +62,20 @@ Do not just relay errors. Diagnose them. Every error has a root cause and a spec
 - Max dependency depth > 4: deep chains make decomposition harder — look for opportunities to parallelize
 - Zero dependency edges with multiple capabilities: suspicious — most real systems have inter-capability dependencies
 
+#### Completeness Checks
+
+The parser emits the full structural model of the spec as JSON — not just errors. Read the non-error fields and apply ido4shape's completeness policy. These are structural failures, not content warnings:
+
+**Stakeholders present** — If `project.stakeholders` is an empty array, the Stakeholders bold-label section is missing from the project metadata area, OR it was written as an H2 section (like `## Stakeholders` or `## Stakeholder Attribution`) which the parser treats as an unknown H2 and ignores. The fix is to place `**Stakeholders:**` as a bold label directly under the project description, before `## Cross-Cutting Concerns`, followed by a bullet list of contributors.
+
+**Constraints present** — If `project.constraints` is an empty array, the Constraints bold-label section is missing. Every strategic spec should capture at least one hard constraint with rationale. An empty array usually means the section was written as an H2 instead of a bold label.
+
+**Groups present and non-empty** — `groups.length === 0` means the spec has no capability groups at all. Any group with `capabilityCount === 0` means an empty group was declared. Both are structural failures.
+
+**Project identity** — `project.name` must be non-empty and `project.format` must equal `"strategic-spec"`. A missing format marker means the `> format: strategic-spec | version: 1.0` metadata line is missing or malformed.
+
+Empty required fields are structural failures, not cosmetic drift. Silent content loss — where the synthesizer wrote content in the wrong place or structure, the parser can't find it, and downstream tools get nothing — is exactly what completeness checks exist to prevent.
+
 ### Pass 2 — Content Quality (LLM judgment)
 
 Read the spec file and assess what only judgment can evaluate:
@@ -115,6 +129,6 @@ Merge both passes into a single, actionable report:
 
 **Verdict:** PASS / PASS WITH WARNINGS / FAIL
 
-A single structural error from the parser means FAIL — the spec isn't ready for use. Content warnings alone mean PASS WITH WARNINGS.
+Any structural error from the parser OR completeness failure means FAIL. A missing required field — empty stakeholders, empty constraints, empty groups, or a group with no capabilities — is structural, not stylistic. Surface these as errors rather than filtering them out. Content warnings alone mean PASS WITH WARNINGS.
 
-**When the verdict is FAIL or PASS WITH WARNINGS**, offer to fix issues via `/ido4shape:refine-spec`. For structural errors (broken refs, invalid metadata), describe the exact edits needed so the user can approve them. For content issues, suggest what to add and from where (canvas, stakeholder input, prior conversations).
+**When the verdict is FAIL**, offer to fix via `/ido4shape:refine-spec`. Rather than making judgment calls about what's "worth fixing," surface every structural finding and every completeness failure so the user can decide which to refine. For each issue, describe the specific edit needed (what section, what structure, where the content should live) so the user can approve it.

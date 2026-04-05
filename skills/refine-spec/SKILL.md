@@ -49,4 +49,6 @@ Verify: all capability IDs unique, all depends_on references valid, no circular 
 
 When fixing format compliance issues, identify the pattern (e.g., all IDs missing zero-padding) and fix ALL instances in one pass. Don't fix one at a time — that's expensive and risks content drift.
 
+**When parser output doesn't match expectations:** If you applied a fix and re-validation shows the parser still doesn't reflect the intended change (e.g., you renamed a section but the parser still returns it as empty), treat this as a signal to verify the expected format rather than concluding the parser is "stricter than documented." Read `${CLAUDE_SKILL_DIR}/../../references/strategic-spec-format.md` for the format specification and `${CLAUDE_SKILL_DIR}/../../references/example-strategic-notification-system.md` for a working parseable example. Compare the exact structure — heading level, section position, bold label vs H2 — to verify the expected format before concluding the fix isn't possible.
+
 Explain what you changed and suggest related changes the user might want.
