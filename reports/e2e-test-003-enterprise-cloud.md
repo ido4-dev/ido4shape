@@ -179,6 +179,7 @@ The cleanest skill execution of the entire test. Role-adapted perfectly to busin
 - **User reaction:** "what question is that? would be this possible? or you ask questions just because you have been trained to ask endless questions?"
 - **Impact:** Erodes trust with users who want a thinking partner. NEW-02 fix (always lead with one recommendation) is working most of the time but still slips.
 - **Fix candidate:** Strengthen the "assert, don't ask" guidance in soul.md and create-spec. Distinguish "propose with conviction" from "ask for validation of your own opinion."
+- **Fix:** Deferred (Group C — conversation quality). Rule already present in soul.md + create-spec; slip rate ~2 in ~80 turns. soul.md has highest blast radius; touching it prematurely risks the content quality it's meant to protect. Reassess after Phase 2.
 
 ### NEW-06: `--as [role]` flag doesn't trigger role-onboarding greeting
 - **Type:** Design gap — skill behavior
@@ -187,6 +188,7 @@ The cleanest skill execution of the entire test. Role-adapted perfectly to busin
 - **User reaction:** "I think it should greet me as technical stakeholder"
 - **Expected:** When a new stakeholder role joins a returning session, agent should briefly onboard them — acknowledge role transition, orient to project state, name where their perspective is needed — before diving into questions.
 - **Fix candidate:** Add explicit role-transition handling to create-spec when `--as [role]` differs from previous session's stakeholder.
+- **Fix:** Deferred (Group D — scheduled for next fix round after Phase 1 stabilizes).
 
 ### NEW-08: Agent dumps multi-option lists without clear single question
 - **Type:** Behavioral — conversation quality (mirror of NEW-05)
@@ -195,6 +197,7 @@ The cleanest skill execution of the entire test. Role-adapted perfectly to busin
 - **User reaction:** "what you expect now from me? you listed 3 different things"
 - **Root cause:** Same as NEW-05 — agent isn't consistently ending turns with a single focused ask. Where NEW-05 is "opinion wrapped as question," NEW-08 is "opinion without question."
 - **Fix candidate:** When agent has a lean, say the lean AND end with a single focused question.
+- **Fix:** Deferred (Group C — same rationale as NEW-05).
 
 ### NEW-09: Synthesizer renames required sections silently
 - **Type:** Bug — synthesizer
@@ -203,6 +206,7 @@ The cleanest skill execution of the entire test. Role-adapted perfectly to busin
 - **Impact:** Parser returns `stakeholders: []`. Downstream tools (ido4 MCP decomposition) get no stakeholder context. Validation passes (parser is tolerant) so the drift goes undetected by default tooling.
 - **Why high severity:** This is exactly the silent content loss pattern OBS-08 was meant to catch. The content is present but invisible to structured consumers.
 - **Fix candidate:** Canvas-synthesizer prompt should specify exact required section headings as immutable. Or validator should enforce presence of required sections by name.
+- **Fix applied (v0.4.3 + v0.4.4):** validate-spec Completeness Checks detect empty stakeholders array as FAIL; canvas-synthesizer has WRONG/RIGHT examples for bold-label vs H2; `format-spec.md` reference corrected to show all 4 bold-label sections explicitly; ambiguous `[Problem statement — rich narrative]` template placeholder rewritten to prevent `## Problem Statement` H2 wrapping. **Verified in post-v0.4.3 and post-v0.4.5 re-tests** — stakeholders correctly populated, description placement correct.
 
 ### NEW-10: Synthesizer creates pseudo-dependencies
 - **Type:** Bug — synthesizer
@@ -210,12 +214,14 @@ The cleanest skill execution of the entire test. Role-adapted perfectly to busin
 - **When:** First-pass synthesis used "EMAIL infrastructure (implicit)" as a depends_on value. Not a valid capability ref.
 - **Root cause:** Synthesizer understood the semantic intent (email is a dependency) but implemented it through a fake capability reference instead of creating/referencing OPS-03.
 - **Fix candidate:** Canvas-synthesizer should verify every depends_on value resolves to an existing capability ID before emitting.
+- **Fix:** None applied directly — parser already flags broken `depends_on` refs as errors; POSITIVE-01 auto-fix flow handles these mechanically when they occur. Under Path 4 architecture, this remains detected at validation layer rather than prevented at synthesis.
 
 ### NEW-11: Synthesizer introduces cycles in produces/consumes relationships
 - **Type:** Bug — synthesizer
 - **Severity:** Medium
 - **When:** First-pass synthesis created STOR-06 ↔ VIEW-02 circular dependency. STOR-06 produces diffs, VIEW-02 consumes them. Synthesizer made it bidirectional.
 - **Fix candidate:** Canvas-synthesizer should treat "X is consumed by Y" as unidirectional dependency (Y depends on X), not as symmetric.
+- **Fix:** None applied directly — parser already detects cycles as errors; POSITIVE-01 auto-fix flow handles these mechanically.
 
 ### NEW-12: Agent dismisses format drift as "cosmetic" instead of offering refine-spec
 - **Type:** Bug — skill sequencing
@@ -226,6 +232,7 @@ The cleanest skill execution of the entire test. Role-adapted perfectly to busin
 - **Impact:** User had to notice and manually invoke refine-spec. Defeats the skill sequencing intent.
 - **Why high severity:** This is where the automated validate-fix flow (POSITIVE-01) crosses the line from helpful to opinionated. The agent should not silently decide what to fix vs. dismiss.
 - **Fix candidate:** After validate-spec runs, always surface every finding AND always offer refine-spec. Auto-fix only mechanical structural errors (broken refs, cycles); everything else goes to refine-spec or explicit user review.
+- **Fix applied (v0.4.3):** validate-spec verdict rewritten to remove "cosmetic" escape hatch and judgment-call filtering language. Findings surface to user rather than being filtered by the assistant. **Verified in post-v0.4.5 re-test** — agent surfaced description WARNING with full technical context and actionable guidance, did not dismiss.
 
 ### NEW-13: Agent gives up on format drift fixes when parser behavior differs from expectation
 - **Type:** Bug — skill behavior
@@ -234,6 +241,7 @@ The cleanest skill execution of the entire test. Role-adapted perfectly to busin
 - **What's missing:** Agent didn't read `references/strategic-spec-format.md` or `references/example-strategic-notification-system.md` (which contains a correctly-parsing Stakeholders section) to understand the expected structure.
 - **Impact:** Original format drift (NEW-09) remains unfixed. Refine-spec session reported success but underlying issue persists.
 - **Fix candidate:** When expected format != actual parser output, refine-spec should consult the working example in references/ before giving up.
+- **Fix applied (v0.4.3):** refine-spec gained explicit "consult references/strategic-spec-format.md and the working example" instruction when parser output doesn't match expectations. Not yet exercised — refine-spec wasn't invoked in Phase 1 re-tests.
 
 ### NEW-14: stakeholder-brief doesn't close the loop on next actions
 - **Type:** Design gap — skill behavior
@@ -242,6 +250,43 @@ The cleanest skill execution of the entire test. Role-adapted perfectly to busin
 - **Expected:** Explicit branching — path for contributing input (`create-spec --as [role]` → canvas update → regenerate spec via synthesize-spec) vs. path for staying informed (no action needed).
 - **Impact:** Stakeholder gets oriented but doesn't know what to DO with their feedback. Creates ambiguity about whether their input re-enters the process.
 - **Fix candidate:** stakeholder-brief SKILL.md should always end with a "Next Steps" section that branches on input vs. informed-only paths and names specific skill invocations.
+- **Fix:** Deferred (Group D — scheduled for next fix round after Phase 1 stabilizes).
+
+---
+
+## Phase 1 Follow-Up Discoveries
+
+Findings surfaced during Phase 1 fix verification (v0.4.3 → v0.4.5, 2026-04-05) that weren't present during the original test execution.
+
+### D1: Parser/docs description mismatch (pre-existing bug)
+
+When v0.4.4's new description presence check escalated empty `project.description` to FAIL, it surfaced a pre-existing parser bug. The `@ido4/spec-format` parser captures `project.description` only from blockquote lines (`> ` prefix) between the format marker and `**Stakeholders:**`. Plain-text paragraphs in that position are NOT captured — the parser sets `projectDescriptionDone = true` on the first non-blockquote, non-empty line.
+
+However, ido4shape's `references/strategic-spec-format.md`, the canvas-synthesizer format template, AND the working example `references/example-strategic-notification-system.md` all teach plain-text description. The synthesizer has been following this teaching. **Every strategic spec since test #1 has had empty `project.description` in parser output** — just never noticed until v0.4.4's presence check fired.
+
+This would have been **Critical severity** — `project.description` is load-bearing per the ido4-MCP investigation (code-analyzer uses it for project context during capability analysis). All downstream decomposition has been operating without project context since project inception.
+
+**Action taken (v0.4.5):** Downgraded description presence check from FAIL to WARNING to remove the false-positive blockade on correctly-authored specs. WARNING surfaces the gap with full explanatory context.
+
+**Action pending (Phase 3):** Relax `@ido4/spec-format` parser upstream to accept plain-text descriptions. Then revisit validate-spec's description check — upgrade back to FAIL or remove entirely depending on Phase 2 Pass 2 scope.
+
+### D2: Architectural direction adopted (Path 4)
+
+During Phase 1 fix discussions, the prose-accretion pattern (each fix adds prose rules to canvas-synthesizer, each test reveals a new drift shape) was identified as a failing architecture. Across tests #1-#3, the synthesizer's drift patterns evolved faster than prose rules could constrain them.
+
+A reframe session produced Path 4: parser guards structure (relaxed on format), LLM layer (validate-spec Pass 2 + downstream code-analyzer) reads raw markdown for content. Format drift becomes non-consequential because content is judged at the layer that sees the full markdown file.
+
+Four-phase implementation plan documented in `private/architectural-evolution-plan.md`:
+- **Phase 1:** close observed drifts in ido4shape (complete, v0.4.3–v0.4.5)
+- **Phase 2:** strengthen Pass 2 as authoritative content quality gate (ido4shape)
+- **Phase 3:** relax parser + update code-analyzer (ido4-MCP + ido4dev, cross-repo)
+- **Phase 4:** e2e retest + simplify canvas-synthesizer (subtractive cleanup)
+
+### D3: Bundled CLI strips body/description fields
+
+During investigation, discovered that `dist/spec-validator.js` (the CLI bundled in ido4shape) deliberately omits `body` and `description` fields from capability output. The underlying `@ido4/spec-format` parser captures these fields; the CLI's output mapper excludes them. This means validate-spec cannot deterministically check capability body substance via the bundled CLI — must defer to Pass 2 LLM reading raw markdown.
+
+Not a blocker for Path 4 (Pass 2 handles content quality via raw markdown), but worth flagging for Phase 3 CLI update if needed.
 
 ---
 
