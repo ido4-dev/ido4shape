@@ -1,6 +1,6 @@
 # Developer Guide
 
-**Status:** stable | **Last updated:** 2026-04-03 | **Audience:** contributors
+**Status:** stable | **Last updated:** 2026-04-06 | **Audience:** contributors
 
 Technical details for contributors and advanced users.
 

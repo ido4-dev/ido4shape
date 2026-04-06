@@ -21,7 +21,7 @@ Run from the plugin root. Use `/reload-plugins` to pick up changes during iterat
 bash tests/validate-plugin.sh
 ```
 
-201 checks covering plugin structure, skill format, agent definitions, hooks, documentation, and cross-references.
+203 checks covering plugin structure, skill format, agent definitions, hooks, documentation, and cross-references.
 
 ## What's Welcome
 

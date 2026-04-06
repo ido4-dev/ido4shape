@@ -141,21 +141,22 @@ ido4shape/
 6. ~~Bundled validator~~ — replaced npm install approach with bundled .js file (2026-03-29). See `architecture/bundled-validator-architecture.md` in ido4-MCP.
 7. ~~E2E test #2~~ — OpenClaw outreach project (v0.3.3, 2026-04-02). 4/5 fixes pass, 1 mostly pass. 3 follow-up fixes applied (v0.3.4): convergence check, stronger propose mode, prefix length rule. See `reports/e2e-test-002-openclaw-outreach.md`
 8. ~~Marketplace submission prep~~ — (v0.4.0-v0.4.2, 2026-04-03). Standalone positioning, README rewrite with example workflows, SECURITY.md, developer-guide.md, CHANGELOG.md, SEO optimization, spec-reviewer integrated into review-spec, test suite expanded to 199 checks, LLM-powered changelog generation, marketplace sync for description/category.
-9. Next: Submit to official Anthropic plugin marketplace
+9. ~~Path 4 architecture: validation + parser trust boundary~~ — (v0.4.3-v0.4.9, 2026-04-02 to 2026-04-06). Phase 1: close observed drifts. Phase 2: assertion-based Pass 2, format/content split. Phase 3: parser accepts plain-text descriptions and all markdown list markers, description check upgraded to FAIL, automated bundle sync pipeline fully connected. See `private/architectural-evolution-plan.md`.
+10. Next: Phase 4 — e2e retest + simplify canvas-synthesizer + evaluate soul.md loading
 
 ## Bundled Validator
 
 ido4shape ships a bundled copy of the @ido4/spec-format parser CLI at `dist/spec-validator.js`.
-This is a single self-contained JS file (~8KB) with zero npm dependencies.
+This is a single self-contained JS file (~8KB) with zero npm dependencies. As of v0.7.0, the parser accepts both blockquote and plain-text descriptions, and all standard markdown list markers (-, *, +, numbered).
 
 **How it works:**
 - SessionStart hook copies the bundle to `${CLAUDE_PLUGIN_DATA}/spec-validator.js`
 - The validate-spec skill runs it via `node` to get deterministic structural validation
 - If the bundle is unavailable, validation falls back to LLM-only (graceful degradation)
 
-**How it's updated:**
-- ido4-MCP publishes @ido4/spec-format → CI dispatches to ido4shape
-- `update-validator.yml` creates a PR with the new bundle
+**How it's updated (fully automated as of 2026-04-06):**
+- ido4-MCP publishes @ido4/spec-format → CI dispatches to ido4shape via `update-validator.yml`
+- Workflow fetches bundle from npm, smoke tests, creates PR
 - Patch/minor updates auto-merge after CI passes
 - Major version updates require review (output format may have changed)
 
