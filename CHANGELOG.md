@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.4.8] — 2026-04-06
+
+Format/content split: auto-fix format silently, present only content findings to user
+
+### Added
+- LLM-powered changelog generation with deterministic fallback, synced to marketplace on release
+- CONTRIBUTING.md guide and expanded public documentation directory
+- Enterprise cloud platform end-to-end test report with 9 observations and fixes
+- System architecture reference documentation
+
+### Changed
+- **Validation now auto-fixes format issues silently** — structural problems are corrected in the background, only content findings are presented to the user
+- Expanded validation suite from 130 to 199 checks covering format completeness and content quality
+- Marketplace sync now includes description and category updates, not just version
+- Documentation reorganized with `/docs` for public-facing guides and `/private` for internal planning
+- Release process now auto-generates CHANGELOG entries from commits instead of manual creation
+
+### Fixed
+- Downgrade description presence check from FAIL to WARNING to reduce false positives
+- Clarified description and openQuestions presence checks in synthesizer template
+- Cowork installation instructions to match actual UI flow
+- OAuth-compatible authentication for LLM changelog generation
+- Release script now warns if claude CLI is not authenticated
+
 ## [0.4.7] — 2026-04-06
 
 Capability-level completeness check + user-facing report restructure

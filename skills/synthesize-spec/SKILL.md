@@ -43,7 +43,26 @@ Delegate the reasoning-intensive composition to the `canvas-synthesizer` sub-age
 The sub-agent reads the full workspace and produces the strategic spec artifact. After it completes:
 - Verify the artifact was written to the project root as `[project-name]-spec.md`
 - Verify it includes `format: strategic-spec | version: 1.0` in the project metadata
-- Verify stakeholder attribution survived crystallization (names/roles appear in descriptions)
-- Verify cross-cutting concerns section has substance, not template filler
 - Run `/ido4shape:validate-spec` for independent quality verification
-- If issues are found, offer to fix them via `/ido4shape:refine-spec`
+
+## Post-Validation
+
+The user didn't write the spec — the synthesizer did. Format drift (wrong section headings, inline success conditions, numbered lists instead of bullets, missing metadata labels) is the system's problem. Content quality (thin descriptions, vague conditions, synthesis loss) is the user's domain.
+
+### Auto-fix format findings (Pass 1)
+
+If Pass 1 reports structural or completeness failures, fix them directly via edits to the spec file. These are mechanical: restructure labels, convert list formats, add missing metadata markers, fix broken dependency references. Re-run validate-spec to confirm fixes landed. Do not show format findings to the user unless a fix is genuinely ambiguous (e.g., circular dependency where the correct direction isn't clear from context — that needs user judgment).
+
+### Present content findings (Pass 2) to user
+
+If Pass 2 reports content assertion violations (A1-A12), present these to the user. Content quality and synthesis integrity are their domain:
+
+- Thin descriptions, vague success conditions, missing stakeholder context → the user decides whether to refine
+- Canvas content lost during synthesis (stakeholders, concerns, decisions dropped) → the user needs to know what didn't survive
+- Ambiguous risk calibration or missing attribution → the user has the context to judge
+
+Present content findings in plain language. If format auto-fixes were applied, mention them in one sentence ("4 format issues were fixed automatically"). Propose the next step: `/ido4shape:refine-spec` to address content issues. Wait for the user to decide.
+
+### Clean spec
+
+If both passes are clean (after format auto-fixes), tell the user the spec is ready. Name what's strong — content quality, synthesis integrity, canvas preservation. Propose next step: `/ido4shape:stakeholder-brief` for sharing, or downstream decomposition.

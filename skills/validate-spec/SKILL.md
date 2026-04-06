@@ -151,48 +151,44 @@ Frame all Pass 2 findings in terms of what the downstream code-analyzer agent ne
 
 ## Combined Report
 
-The report is for the user, not a parser trace. The user needs to know: is my spec ready? If not, what's wrong in their own terms? What action should I take next?
+Findings fall into two categories with different audiences:
 
-Synthesize findings from both passes into a user-facing report. Describe problems in domain language, not parser field names. Lead with verdict and action. Keep technical trace short and last.
+**Format findings (Pass 1)** — structural and completeness issues caused by synthesizer drift: wrong section headings, inline success conditions, numbered lists instead of bullets, missing metadata labels, broken dependency references. These are mechanical, auto-fixable. The user didn't write the spec; format drift is the system's problem.
+
+**Content findings (Pass 2)** — substance and synthesis integrity issues that need the user's judgment: thin descriptions, vague success conditions, missing stakeholder context, canvas content lost during synthesis. These are the user's domain.
 
 ### Report structure
 
-**Verdict (first, one line with plain-language summary):**
+**Verdict (first, one line):**
 - PASS — "Spec is ready for downstream decomposition."
-- PASS WITH WARNINGS — "Spec is usable but has N issues worth addressing."
-- FAIL — "Spec has N blocking issues that prevent reliable decomposition."
+- PASS WITH WARNINGS — "Spec content is mostly strong but has N issues worth reviewing."
+- FAIL — "Spec has N content issues that need attention before decomposition."
 
-**What's working (one paragraph):** Name the content strengths in plain language, informed by Pass 2 assertions that passed. Examples: "Problem framing is rich and stakeholder-grounded," "Cross-cutting concerns carry specific targets," "Canvas stakeholders and decisions are preserved." Do not list assertion IDs in this paragraph.
+The verdict reflects content findings (Pass 2) only. Format findings don't affect the verdict — they are auto-fixed by the system. If a format issue cannot be auto-fixed (e.g., ambiguous circular dependency needing user judgment), it escalates as a content-level decision point.
 
-**What needs fixing (findings list, ordered FAIL first, then WARNING):** For each finding:
-- State the issue in user terms, not parser internals. Example — YES: "Your 25 capabilities have success conditions written inline in prose instead of under a dedicated bullet list. Downstream tools that read the parsed format will see nothing for any capability." NO: "successConditions array is empty in 25 capabilities" or "parser expects `**Success conditions:**` sublabel."
-- Cite the specific location (which capability, which section).
-- One-sentence downstream impact (why it matters).
-- The specific edit needed.
+**What's working (one paragraph):** Content strengths in plain language — problem framing, stakeholder voice, cross-cutting substance, canvas preservation. No assertion IDs.
 
-**Next step (clear action):**
-- Findings exist → "Run `/ido4shape:refine-spec` to fix these."
-- Clean spec with canvas → "Ready for `/ido4shape:stakeholder-brief` or downstream decomposition."
-- Parser unavailable → note that structural validation was skipped, Pass 2 is the only signal.
+**What needs your input (content findings only):** Pass 2 violations, ordered FAIL-severity first, then WARNING. For each:
+- The issue in user terms (not parser fields)
+- Which section or capability
+- Why it matters for downstream use
+- What to do about it
 
-**Supporting metrics (short, last):** Counts — groups, capabilities, cross-cutting concerns, dependency edges, max depth. Critical path if dependency depth > 3. One paragraph, reference material only.
+**Format issues resolved (one sentence, if applicable):** "N format issues were fixed automatically (section headings, list formatting, metadata labels)." No detail unless the user asks.
+
+**Next step:**
+- Content findings exist → "Run `/ido4shape:refine-spec` to address these."
+- Clean spec → "Ready for `/ido4shape:stakeholder-brief` or downstream decomposition."
+
+**Supporting metrics (short, last):** Counts — groups, capabilities, concerns, dependency edges, max depth. One paragraph.
 
 ### Verdict rollup rules
 
-Roll up findings mechanically across both passes:
-- Any structural error from the parser (Pass 1) → **FAIL**
-- Any Pass 1 completeness failure (empty required fields, including per-capability failures) → **FAIL**
 - Any Pass 2 assertion violated at FAIL severity → **FAIL**
-- Only Pass 1 warnings and/or Pass 2 WARNING-grade violations, no FAILs → **PASS WITH WARNINGS**
-- All Pass 1 checks clean, all Pass 2 assertions satisfied → **PASS**
-
-Do not apply judgment-call filtering. Every finding — structural, completeness, assertion violation — surfaces to the user. The user decides what to refine. The assistant does not silently dismiss findings as "cosmetic" or "not worth fixing."
+- Only WARNING-grade Pass 2 violations → **PASS WITH WARNINGS**
+- All Pass 2 assertions satisfied (regardless of Pass 1 state) → **PASS**
+- Pass 1 structural findings are resolved by the system before the verdict is determined. If auto-fix succeeds, they don't affect the verdict. If auto-fix fails or the issue is ambiguous, it escalates to the user as a decision point at FAIL severity.
 
 ### Handoff to refine-spec
 
-When the user accepts the offer to refine, pass each finding with its technical trace so refine-spec can act:
-- The check or assertion ID (e.g., "A5" or "Pass 1: Capability success conditions present")
-- The specific section or capability affected
-- The structural edit needed (which section, which label, which format)
-
-The user-facing report speaks user language. The refine-spec handoff speaks technical language. These are two different outputs from the same findings.
+When the user wants to fix content issues, pass each finding with its assertion ID and the specific edit needed so refine-spec can act precisely.
