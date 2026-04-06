@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.9] — 2026-04-06
+
+Phase 3: parser trust boundary fix — description check restored to FAIL
+
+### Added
+- Automatic CHANGELOG generation from git commits on release
+
+### Changed
+- Validation test suite expanded from 130 to 199 checks
+- Bundled spec validator updated with support for plain-text descriptions and numbered lists
+- Documentation reorganized with public docs/ directory and contributor guide
+- Release automation now includes LLM-powered changelog generation with OAuth-compatible authentication
+
+### Fixed
+- Description presence check now enforces as hard FAIL—parser trust boundary restored (Phase 3)
+- Description and openQuestions validation severity levels restored
+- Cowork installation instructions corrected to match actual UI flow
+- Marketplace manifest now auto-syncs with plugin version, description, and category on release
+
 ## [0.4.8] — 2026-04-06
 
 Format/content split: auto-fix format silently, present only content findings to user
