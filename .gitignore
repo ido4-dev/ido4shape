@@ -1,4 +1,5 @@
-.claude/
+.claude/*
+!.claude/rules/
 .ido4shape/
 private/
 .DS_Store

@@ -377,3 +377,41 @@ Runs on every push to main and on PRs. Validates full plugin structure.
 | Sub-agents | Claude models (Opus, Sonnet) | Spawned via Agent tool |
 | CI | GitHub Actions | Structure validation |
 | Marketplace | ido4-dev/ido4-plugins | Auto-synced on release |
+
+---
+
+## Cowork Debugging
+
+Session data lives at: `~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<orgId>/`
+
+Each session has:
+- `local_<sessionId>.json` — metadata (title, model, timestamps, userSelectedFolders)
+- `local_<sessionId>/` — session directory
+  - `.claude/projects/-sessions-<vm-name>/<cliSessionId>.jsonl` — conversation transcript
+  - `audit.jsonl` — audit log
+  - `outputs/` — files produced
+
+To investigate a hung or failed session, read the conversation JSONL and look for:
+- `"Operation stopped by hook"` — Cowork's injection defense falsely flagged skill content
+- Path resolution errors — relative paths don't resolve safely in the VM sandbox
+- Rate limit events — API throttling
+
+---
+
+## Related Repos
+
+**ido4-MCP** — `/Users/bogdanionutcoman/dev-projects/ido4-MCP/`
+- Strategic spec parser: `packages/spec-format/src/strategic-spec-parser.ts`
+- Technical spec parser: `packages/core/src/domains/ingestion/spec-parser.ts`
+- Mapper: `packages/core/src/domains/ingestion/spec-mapper.ts`
+- Profiles: `packages/core/src/profiles/` (hydro.ts, scrum.ts, shape-up.ts)
+- Bundle build: `packages/spec-format/esbuild.bundle.mjs`
+
+**ido4dev** — `/Users/bogdanionutcoman/dev-projects/ido4dev/`
+- Code-analyzer agent: `agents/code-analyzer.md`
+- Technical spec writer: `agents/technical-spec-writer.md`
+- Decompose skill: `skills/decompose/SKILL.md`
+
+**specs-wizard** (old, reference only) — `/Users/bogdanionutcoman/dev-projects/specs-wizard/`
+- Conversation starters: `templates/conversation-starters.md`
+- Conversation examples: `knowledge/methodology/conversation-examples.md`
