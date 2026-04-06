@@ -160,6 +160,28 @@ This is a single self-contained JS file (~8KB) with zero npm dependencies. As of
 - Patch/minor updates auto-merge after CI passes
 - Major version updates require review (output format may have changed)
 
+**Cross-repo sync pipeline:**
+```
+ido4-MCP: scripts/release.sh 0.X.0
+  → bumps version, commits, tags v0.X.0, pushes
+  → publish.yml triggers (on tag v*)
+    → npm run build + build:bundle + test
+    → npm publish @ido4/spec-format (includes bundle in dist/)
+    → repository_dispatch to ido4-dev/ido4shape (event: spec-format-published)
+      → ido4shape: update-validator.yml triggers
+        → npm pack @ido4/spec-format@0.X.0, extract bundle
+        → smoke test against references/example-strategic-notification-system.md
+        → create PR (branch: automated/update-spec-validator)
+        → CI runs on PR (validate-plugin.sh, 203 checks)
+        → auto-merge (squash) if patch/minor, review if major
+```
+
+**Infrastructure required:**
+- `IDO4SHAPE_DISPATCH_TOKEN` secret in ido4-MCP repo (PAT with `repo` scope, enables cross-repo dispatch)
+- `PAT` secret in ido4shape repo (same PAT, enables PR creation that triggers CI)
+- ido4shape org+repo settings: "Allow GitHub Actions to create and approve pull requests" enabled
+- ido4shape branch protection: required status check = `validate`
+
 **Manual update (if needed):**
 ```bash
 scripts/update-validator.sh 0.7.0                  # from npm
