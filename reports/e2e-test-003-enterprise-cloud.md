@@ -268,7 +268,7 @@ This would have been **Critical severity** — `project.description` is load-bea
 
 **Action taken (v0.4.5):** Downgraded description presence check from FAIL to WARNING to remove the false-positive blockade on correctly-authored specs. WARNING surfaces the gap with full explanatory context.
 
-**Action pending (Phase 3):** Relax `@ido4/spec-format` parser upstream to accept plain-text descriptions. Then revisit validate-spec's description check — upgrade back to FAIL or remove entirely depending on Phase 2 Pass 2 scope.
+**Resolved (Phase 3, 2026-04-06):** Parser relaxed upstream (`@ido4/spec-format` commit `1dcb3b7`) to accept plain-text descriptions alongside blockquotes. Also expanded list marker support from dash-only to all markdown markers (`-`, `*`, `+`, `1.`). Bundle updated in ido4shape (commit `8e2a8f9`). Description presence check upgraded back to FAIL — empty `project.description` now genuinely means missing content.
 
 ### D2: Architectural direction adopted (Path 4)
 
@@ -288,6 +288,20 @@ During investigation, discovered that `dist/spec-validator.js` (the CLI bundled 
 
 Not a blocker for Path 4 (Pass 2 handles content quality via raw markdown), but worth flagging for Phase 3 CLI update if needed.
 
+### D4: Phase 2 implementation and format/content split (2026-04-06)
+
+Phase 2 shipped across v0.4.6–v0.4.8. Key evolution during implementation:
+
+**Original plan → actual implementation:** The plan proposed explicit thresholds ("< 200 chars = FAIL"). During implementation, reframed to assertion-based: thresholds are deterministic counting (parser's job), not LLM substance judgment (Pass 2's job). 12 assertions (A1-A12) across project-level, capability-level, and canvas cross-reference.
+
+**Capability-level completeness gap (v0.4.7):** First synthesis test on v0.4.6 revealed Pass 1 completeness checks stopped at project level. Synthesizer wrote success conditions inline in prose — all 25 capabilities had empty `successConditions` arrays in parser output. Neither Pass 1 (no capability-level check) nor Pass 2 (content was present in raw markdown, A6 satisfied) caught it. Added `successConditions.length === 0 → FAIL` per capability.
+
+**Format/content split (v0.4.8):** Second synthesis test showed agent consumed validator output internally and auto-fixed without showing user. User asked "what's the value for the user in this report?" — realized format findings have zero user value. The user didn't write the spec. Format drift is the synthesizer's fault, not the user's problem. Shipped format/content split: format auto-fixed silently by system, content findings presented to user, verdict reflects content only.
+
+**Third synthesis test (v0.4.8):** Format/content split working. Agent ran validation properly, auto-fixed one dependency direction (surfaced to user as judgment call), presented content quality assessment in plain language with zero parser jargon. Synthesizer drifted in 3 new ways (invalid H2 sections: Capability Dependencies, Quality Bar, Summary) — 5th distinct drift pattern across all tests. Validator caught all of them. Path 4 premise validated.
+
+**Untested:** negative case (thin content → FAIL). Both v0.4.8 synthesis tests had strong content — all Pass 2 assertions satisfied. Needs a project with thinner canvas to verify FAIL-grade assertions fire correctly.
+
 ---
 
 ## New Positive Patterns
@@ -296,6 +310,8 @@ Not a blocker for Path 4 (Pass 2 handles content quality via raw markdown), but 
 After synthesis, the agent ran validate-spec inline, caught 3 structural errors, fixed them in place, and re-validated — all in a single orchestrated flow. No manual refine-spec round required for mechanical issues. **Significant improvement over test #1 (6+ manual rounds) and test #2 (1 manual round).**
 
 **Note:** This pattern is valuable for mechanical fixes but crossed the line into opinionated dismissal (NEW-12). Keep the pattern, add a rail that surfaces all findings and offers refine-spec for non-mechanical issues.
+
+**Phase 2 resolution (v0.4.8):** The format/content split formalized POSITIVE-01 as the correct behavior for format drift: auto-fix format silently (system's problem), present content findings to user (their domain). The agent's original instinct to auto-fix was right for format issues — it just also needed to show content findings, which it wasn't doing. v0.4.8 synthesis test confirmed: agent auto-fixed dependency direction, surfaced content assessment, zero parser jargon in output.
 
 ### POSITIVE-02: Review findings incorporated architecturally
 The synthesizer read the review output and incorporated findings as architecture changes — the OPS group was added with 3 capabilities directly addressing review finding #2 (email infrastructure invisible). Review → synthesis handoff is working.
