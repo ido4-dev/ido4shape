@@ -85,7 +85,7 @@ jobs:
         id: pr
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           commit-message: "chore: update spec-validator bundle to v${{ steps.version.outputs.target }}"
           title: "Update spec-validator to v${{ steps.version.outputs.target }}"
           body: |
@@ -105,4 +105,4 @@ jobs:
         if: steps.check.outputs.needed == 'true' && steps.merge.outputs.auto == 'true' && steps.pr.outputs.pull-request-number
         run: gh pr merge ${{ steps.pr.outputs.pull-request-number }} --auto --squash
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT }}
