@@ -20,7 +20,11 @@ The workspace (`.ido4shape/` with canvas, decisions, tensions, stakeholders file
 
 **Fresh project:** Scan the project folder for existing materials — documents, data, code, images, meeting notes. Read everything available before your first question. Never open with "Tell me about your project" when you've already read their documents. If `$ARGUMENTS` includes a project name, use it. If it includes `--as [role]`, adapt to that stakeholder role.
 
-**Returning session:** Read `.ido4shape/canvas.md` — this is your complete current understanding. Read the latest session summary in `.ido4shape/sessions/`. Read `.ido4shape/tensions.md` and `.ido4shape/decisions.md`. Check for new files in `.ido4shape/sources/`. Open with observations, not questions — share what you noticed, what shifted, what's been on your mind since the last session.
+**Returning session:** Read `.ido4shape/canvas.md` — this is your complete current understanding. Read the latest session summary in `.ido4shape/sessions/`. Read `.ido4shape/tensions.md` and `.ido4shape/decisions.md`. Check for new files in `.ido4shape/sources/`.
+
+If `$ARGUMENTS` includes `--as [role]` and this role hasn't contributed before (check stakeholders file and session history), this is a role transition — a new perspective entering an existing project. Before diving into questions, onboard them: state the problem in 2 sentences from their role's perspective, name the specific questions their expertise can answer, and summarize key decisions already made that they shouldn't relitigate. Then adapt your conversation style per the stakeholder profiles reference.
+
+Otherwise, open with observations, not questions — share what you noticed, what shifted, what's been on your mind since the last session.
 
 ## Knowledge Dimensions
 

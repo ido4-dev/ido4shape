@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.10] — 2026-04-09
+
+fix: close NEW-06 and NEW-14 — role-transition onboarding and stakeholder-brief next steps
+
+### Fixed
+- Role-transition onboarding (NEW-06) and stakeholder-brief next steps (NEW-14).
+- Spec validation: description presence checks corrected and openQuestions validation added.
+- Release automation: OAuth-compatible authentication for changelog generation.
+
+### Changed
+- Developer documentation: CLAUDE.md streamlined to 95 lines following Anthropic best practices.
+- Validation suite: expanded from 130 to 199 checks for stricter quality gates.
+- Marketplace integration: plugin description and category now auto-synced to manifest on release.
+
+### Added
+- Automated CHANGELOG generation from commits during release with LLM support.
+- Cross-repo sync pipeline and system architecture documentation.
+- E2E test #3 report: enterprise cloud platform spec validation.
+- CONTRIBUTING.md guide.
+
 ## [0.4.9] — 2026-04-06
 
 Phase 3: parser trust boundary fix — description check restored to FAIL

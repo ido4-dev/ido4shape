@@ -26,3 +26,6 @@ The briefing should be readable in 3 minutes:
 - **Where We Need Your Perspective** (specific questions their expertise can answer)
 - **Active Tensions** (unresolved tensions relevant to this role)
 - **What to Look At** (specific canvas sections or source materials worth reading)
+- **Next Steps** — branch explicitly:
+  - **To contribute input:** run `/ido4shape:create-spec --as [role]` to join the conversation. Your perspective will update the canvas and feed into the next spec synthesis.
+  - **To stay informed:** no action needed. You'll get an updated briefing when the spec evolves.
