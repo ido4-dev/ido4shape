@@ -51,6 +51,24 @@ fi
 echo "Pre-flight: spec-validator v$BUNDLED_VERSION ✓"
 echo ""
 
+# ─── Pre-flight: Plugin Validation Suite ───────────────────
+
+echo "Pre-flight: running plugin validation suite..."
+VALIDATE_LOG=$(mktemp)
+if ! bash "$PLUGIN_DIR/tests/validate-plugin.sh" > "$VALIDATE_LOG" 2>&1; then
+  echo "ERROR: Plugin validation failed. Aborting release."
+  echo ""
+  echo "--- Last 40 lines of validation output ---"
+  tail -40 "$VALIDATE_LOG"
+  echo ""
+  echo "Full log: $VALIDATE_LOG"
+  exit 1
+fi
+PASS_COUNT=$(grep -c "PASS:" "$VALIDATE_LOG" 2>/dev/null || echo "0")
+rm -f "$VALIDATE_LOG"
+echo "Pre-flight: plugin validation ✓ ($PASS_COUNT checks passed)"
+echo ""
+
 # ─── Version Bump ──────────────────────────────────────────
 
 # Read current version from plugin.json

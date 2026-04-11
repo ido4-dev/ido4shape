@@ -1,20 +1,25 @@
 name: Sync Marketplace
 
+# Gated on CI passing — never publishes a commit that failed validation.
+# Sync is idempotent (skips if marketplace already matches), so it's safe
+# to fire on every successful CI run, not just plugin.json changes.
 on:
-  push:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
     branches: [main]
-    paths:
-      - '.claude-plugin/plugin.json'
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: write
     steps:
-      - name: Checkout ido4shape
+      - name: Checkout ido4shape (the SHA CI validated)
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           path: source
 
       - name: Read version from plugin.json

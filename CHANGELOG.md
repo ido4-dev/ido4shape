@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.4.12] — 2026-04-11
+
+Strengthen release gates: pre-flight validation, CI-gated marketplace sync, shell script quality checks
+
+### Added
+- Automated changelog generation from commit history during releases
+- Pre-flight validation gates (203 checks) prevent broken specs from reaching marketplace
+- CONTRIBUTING.md with developer setup guidance and workflow documentation
+
+### Changed
+- Updated spec-validator to v0.7.1 with stricter description and format validation
+- Reorganized documentation into public docs/ and internal planning/ sections
+- Release process now gates marketplace sync behind validation checks and CI workflows
+- CLAUDE.md refactored to 95 lines following Anthropic best practices
+
+### Fixed
+- Marketplace metadata automatically synced with plugin manifest on each release
+- Release script now verifies Claude CLI authentication before proceeding
+- CI workflow permissions fixed for validator updates and cross-repo synchronization
+- Validation checks clarified (description presence, numbered lists, field requirements)
+
 ## [0.4.11] — 2026-04-11
 
 Fix Stop hook loop in empty-folder exploration sessions

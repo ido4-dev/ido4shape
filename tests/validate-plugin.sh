@@ -754,6 +754,57 @@ fi
 
 echo ""
 
+# ─── TEST 19: Shell Script Quality ──────────────────────
+
+echo "--- Test 19: Shell Script Quality ---"
+
+# All hook scripts referenced in hooks.json must be executable, parse cleanly,
+# and (when shellcheck is available) pass shellcheck at error severity.
+
+HOOK_SCRIPTS=$(grep -oE '\$\{CLAUDE_PLUGIN_ROOT\}/scripts/[a-zA-Z0-9_-]+\.sh' "$HOOKS_FILE" 2>/dev/null | sed 's|.*scripts/||' | sort -u)
+
+for script in $HOOK_SCRIPTS; do
+  script_path="$PLUGIN_DIR/scripts/$script"
+  [ -f "$script_path" ] || continue
+
+  # Executable bit check — git tracks this, missing +x silently breaks hooks
+  if [ -x "$script_path" ]; then
+    pass "scripts/$script is executable"
+  else
+    fail "scripts/$script is NOT executable (run: chmod +x scripts/$script)"
+  fi
+
+  # Bash syntax check — catches typos before they ship
+  if bash -n "$script_path" 2>/dev/null; then
+    pass "scripts/$script has valid bash syntax"
+  else
+    SYNTAX_ERR=$(bash -n "$script_path" 2>&1)
+    fail "scripts/$script has bash syntax errors: $SYNTAX_ERR"
+  fi
+done
+
+# Shellcheck on all scripts/ shell files (not just hooks) at error severity.
+# Skipped gracefully if shellcheck is not installed locally — CI runners
+# (ubuntu-latest) have shellcheck preinstalled, so this always runs in CI.
+if command -v shellcheck >/dev/null 2>&1; then
+  SHELLCHECK_FAIL=0
+  for script_path in "$PLUGIN_DIR"/scripts/*.sh; do
+    [ -f "$script_path" ] || continue
+    script_name=$(basename "$script_path")
+    if shellcheck -S error "$script_path" >/dev/null 2>&1; then
+      pass "shellcheck (error level): scripts/$script_name"
+    else
+      SHELLCHECK_FAIL=$((SHELLCHECK_FAIL + 1))
+      ERR=$(shellcheck -S error "$script_path" 2>&1 | head -5)
+      fail "shellcheck: scripts/$script_name — $ERR"
+    fi
+  done
+else
+  warn "shellcheck not installed locally — shell quality checks skipped (CI will still run them)"
+fi
+
+echo ""
+
 # ─── SUMMARY ────────────────────────────────────────────
 
 echo "========================================="
