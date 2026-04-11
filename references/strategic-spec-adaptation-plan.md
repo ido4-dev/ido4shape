@@ -2,7 +2,7 @@
 
 Adapting ido4shape from producing implementation-ready artifacts to producing strategic specs.
 
-**This is the ido4shape side of a two-project change.** For the ido4-MCP side (decomposition agent, strategic spec reader, technical spec producer), see `/Users/bogdanionutcoman/dev-projects/ido4-MCP/strategic-spec-mcp-plan.md`.
+**This is the ido4shape side of a two-project change.** For the ido4 side (decomposition agent, strategic spec reader, technical spec producer), see `/Users/bogdanionutcoman/dev-projects/ido4/strategic-spec-mcp-plan.md`.
 
 ## Context
 
@@ -171,6 +171,6 @@ Phases 2-4 are the core work. Phase 1 sets the foundation. Phase 5 is cleanup.
 
 ## What This Plan Does NOT Cover
 
-- **ido4 MCP side:** Building the decomposition agent, strategic spec reader, technical spec producer. See `/Users/bogdanionutcoman/dev-projects/ido4-MCP/strategic-spec-mcp-plan.md`.
+- **ido4 MCP side:** Building the decomposition agent, strategic spec reader, technical spec producer. See `/Users/bogdanionutcoman/dev-projects/ido4/strategic-spec-mcp-plan.md`.
 - **V2 (GitHub backend):** The GitHub-as-canvas architecture. Independent of this format change.
 - **Canvas redesign:** The single-document canvas architecture. Can proceed in parallel.

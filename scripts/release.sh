@@ -74,7 +74,7 @@ if git rev-parse --verify origin/main >/dev/null 2>&1; then
     echo "ERROR: Your local main is behind origin/main by ${AHEAD_COUNT} commit(s)."
     echo ""
     echo "This usually means the cross-repo sync pipeline auto-merged a PR"
-    echo "(e.g., a spec-format validator update from ido4-MCP) into the remote"
+    echo "(e.g., a spec-format validator update from ido4) into the remote"
     echo "since you last pulled. The pipeline runs without your involvement,"
     echo "so your local clone doesn't know about it until you fetch."
     echo ""

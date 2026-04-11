@@ -38,5 +38,5 @@ ido4-MCP: scripts/release.sh 0.X.0
 
 ```bash
 scripts/update-validator.sh 0.7.0                  # from npm
-scripts/update-validator.sh ~/dev-projects/ido4-MCP # from local build
+scripts/update-validator.sh ~/dev-projects/ido4 # from local build
 ```

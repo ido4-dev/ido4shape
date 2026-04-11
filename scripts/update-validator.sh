@@ -1,12 +1,12 @@
 #!/bin/bash
-# Update the bundled spec-format validator from npm or a local ido4-MCP build.
+# Update the bundled spec-format validator from npm or a local ido4 build.
 #
 # Usage:
 #   ./scripts/update-validator.sh 0.7.0              # Fetch from npm
-#   ./scripts/update-validator.sh ~/dev/ido4-MCP      # Copy from local build
+#   ./scripts/update-validator.sh ~/dev/ido4          # Copy from local build
 #
 # The bundle is a single self-contained .js file (~8KB) with zero npm dependencies.
-# See: architecture/bundled-validator-architecture.md (in ido4-MCP repo)
+# See: architecture/bundled-validator-architecture.md (in ido4 repo)
 
 set -euo pipefail
 
@@ -17,11 +17,11 @@ BUNDLE_FILE="$DIST_DIR/spec-validator.js"
 VERSION_FILE="$DIST_DIR/.spec-format-version"
 
 usage() {
-  echo "Usage: $0 <version|path-to-ido4-MCP>"
+  echo "Usage: $0 <version|path-to-ido4>"
   echo ""
   echo "Examples:"
   echo "  $0 0.7.0              # Fetch from npm, extract bundle"
-  echo "  $0 ~/dev/ido4-MCP     # Copy from local build"
+  echo "  $0 ~/dev/ido4         # Copy from local build"
   exit 1
 }
 
@@ -60,7 +60,7 @@ else
     # Bundle not in npm package — build it locally
     echo "Bundle not in npm package. Building from extracted source..."
     if ! command -v npx &>/dev/null; then
-      echo "ERROR: npx not found. Install Node.js or use a local ido4-MCP build instead."
+      echo "ERROR: npx not found. Install Node.js or use a local ido4 build instead."
       exit 1
     fi
     cd package

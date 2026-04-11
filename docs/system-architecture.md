@@ -400,7 +400,7 @@ To investigate a hung or failed session, read the conversation JSONL and look fo
 
 ## Related Repos
 
-**ido4-MCP** — `/Users/bogdanionutcoman/dev-projects/ido4-MCP/`
+**ido4** — `/Users/bogdanionutcoman/dev-projects/ido4/`
 - Strategic spec parser: `packages/spec-format/src/strategic-spec-parser.ts`
 - Technical spec parser: `packages/core/src/domains/ingestion/spec-parser.ts`
 - Mapper: `packages/core/src/domains/ingestion/spec-mapper.ts`

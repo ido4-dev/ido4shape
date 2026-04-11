@@ -57,7 +57,7 @@ CAPABILITY:  /^### ([A-Z]{2,5}-\d{2,3}):\s*(.+)$/
 
 `dist/spec-validator.js` — bundled @ido4/spec-format CLI. SessionStart hook copies to `${CLAUDE_PLUGIN_DATA}/`. Falls back to LLM-only if unavailable.
 
-**Manual update:** `scripts/update-validator.sh 0.7.0` (npm) or `scripts/update-validator.sh ~/dev-projects/ido4-MCP` (local). Automated sync via CI — see `.claude/rules/cross-repo-sync.md`.
+**Manual update:** `scripts/update-validator.sh 0.7.0` (npm) or `scripts/update-validator.sh ~/dev-projects/ido4` (local). Automated sync via CI — see `.claude/rules/cross-repo-sync.md`.
 
 ## Testing, Releasing, Deploying
 
