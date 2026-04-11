@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.4.13] — 2026-04-11
+
+Add local/remote sync pre-flight check with detailed remediation messages
+
+### Added
+- Pre-flight validation for sync configuration with detailed remediation guidance
+- Automated changelog generation from commits with Claude API and deterministic fallback
+- System architecture documentation and contributor guidelines
+
+### Changed
+- Validation test suite expanded from 130 to 199 checks with improved diagnostics
+- Documentation reorganized into public (docs/) and internal (private/) structures
+- Spec-validator bundle updated to v0.7.1 with enhanced validation messages
+
+### Fixed
+- Release workflow now validates Claude CLI authentication before marketplace operations
+- Marketplace manifest syncing corrected for description and category fields
+
 ## [0.4.12] — 2026-04-11
 
 Strengthen release gates: pre-flight validation, CI-gated marketplace sync, shell script quality checks

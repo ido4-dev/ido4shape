@@ -51,6 +51,73 @@ fi
 echo "Pre-flight: spec-validator v$BUNDLED_VERSION ✓"
 echo ""
 
+# ─── Pre-flight: Local vs Remote Sync ──────────────────────
+
+echo "Pre-flight: checking local vs origin/main..."
+git fetch --quiet origin main 2>/dev/null || {
+  echo "WARNING: Could not fetch origin/main (offline?). Skipping sync check."
+  echo ""
+}
+
+if git rev-parse --verify origin/main >/dev/null 2>&1; then
+  LOCAL_SHA=$(git rev-parse @)
+  REMOTE_SHA=$(git rev-parse origin/main)
+  BASE_SHA=$(git merge-base @ origin/main)
+
+  if [ "$LOCAL_SHA" = "$REMOTE_SHA" ]; then
+    echo "Pre-flight: local in sync with remote ✓"
+    echo ""
+  elif [ "$LOCAL_SHA" = "$BASE_SHA" ]; then
+    # Local is behind remote — most likely the auto-update pipeline
+    AHEAD_COUNT=$(git rev-list --count @..origin/main)
+    echo ""
+    echo "ERROR: Your local main is behind origin/main by ${AHEAD_COUNT} commit(s)."
+    echo ""
+    echo "This usually means the cross-repo sync pipeline auto-merged a PR"
+    echo "(e.g., a spec-format validator update from ido4-MCP) into the remote"
+    echo "since you last pulled. The pipeline runs without your involvement,"
+    echo "so your local clone doesn't know about it until you fetch."
+    echo ""
+    echo "Commits on remote that you don't have locally:"
+    git log --oneline @..origin/main | sed 's/^/  /'
+    echo ""
+    echo "To resolve, pull the missing commits and re-run the release:"
+    echo "  git pull --ff-only origin main"
+    echo "  bash scripts/release.sh ${BUMP_TYPE} \"${MESSAGE}\""
+    exit 1
+  elif [ "$REMOTE_SHA" = "$BASE_SHA" ]; then
+    # Local is ahead of remote — normal in-progress state
+    BEHIND_COUNT=$(git rev-list --count origin/main..@)
+    echo "Pre-flight: local has ${BEHIND_COUNT} unpushed commit(s) ahead of remote — ok, continuing"
+    echo ""
+  else
+    # Diverged — local has commits remote doesn't, AND remote has commits local doesn't
+    LOCAL_ONLY=$(git rev-list --count origin/main..@)
+    REMOTE_ONLY=$(git rev-list --count @..origin/main)
+    echo ""
+    echo "ERROR: Local and remote main have diverged."
+    echo ""
+    echo "Your local has ${LOCAL_ONLY} commit(s) that aren't on remote AND"
+    echo "remote has ${REMOTE_ONLY} commit(s) that aren't on local. This needs"
+    echo "manual resolution — most likely you made a local commit while the"
+    echo "auto-update pipeline merged a PR upstream."
+    echo ""
+    echo "Local-only commits:"
+    git log --oneline origin/main..@ | sed 's/^/  /'
+    echo ""
+    echo "Remote-only commits:"
+    git log --oneline @..origin/main | sed 's/^/  /'
+    echo ""
+    echo "To resolve:"
+    echo "  1. Inspect the remote commits above to understand what landed"
+    echo "  2. Rebase your local work on top of remote:"
+    echo "       git pull --rebase origin main"
+    echo "  3. Re-run the release once main is unified:"
+    echo "       bash scripts/release.sh ${BUMP_TYPE} \"${MESSAGE}\""
+    exit 1
+  fi
+fi
+
 # ─── Pre-flight: Plugin Validation Suite ───────────────────
 
 echo "Pre-flight: running plugin validation suite..."
