@@ -216,7 +216,7 @@ One summary per session. Curated memory, not transcripts. Captures: key insights
 
 **Location:** `dist/spec-validator.js` (~8KB, zero npm dependencies)
 
-**Source:** @ido4/spec-format package from ido4-MCP repository
+**Source:** @ido4/spec-format package from ido4 repository
 
 Deterministic structural validation of strategic specs. Invoked via `node spec-validator.js <path>`, outputs JSON with:
 - Validity status
@@ -228,7 +228,7 @@ Deterministic structural validation of strategic specs. Invoked via `node spec-v
 
 **Installation:** SessionStart hook copies the bundle to `${CLAUDE_PLUGIN_DATA}/spec-validator.js`. If unavailable, validation falls back to LLM-only.
 
-**Update mechanism:** ido4-MCP publishes @ido4/spec-format → CI dispatches to ido4shape via `update-validator.yml`. Patch/minor auto-merge; major requires review.
+**Update mechanism:** ido4 publishes @ido4/spec-format → CI dispatches to ido4shape via `update-validator.yml`. Patch/minor auto-merge; major requires review.
 
 ---
 
@@ -352,7 +352,7 @@ Runs on every push to main and on PRs. Validates full plugin structure.
 ### Additional Workflows
 
 - **sync-marketplace.yml** — syncs to marketplace when plugin.json version changes
-- **update-validator.yml** — pulls latest spec-validator.js from ido4-MCP
+- **update-validator.yml** — pulls latest spec-validator.js from ido4
 
 ---
 

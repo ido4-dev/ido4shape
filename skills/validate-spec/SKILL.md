@@ -74,7 +74,7 @@ The parser emits the full structural model of the spec as JSON — not just erro
 
 **Project identity** — `project.name` must be non-empty and `project.format` must equal `"strategic-spec"`. A missing format marker means the `> format: strategic-spec | version: 1.0` metadata line is missing or malformed.
 
-**Project description present** — If `project.description` is empty or shorter than 50 characters, the description is missing or trivially short. The parser captures description from both blockquote lines (`> `) and plain-text paragraphs between the format marker and `**Stakeholders:**`. An empty `project.description` means ido4-MCP's decomposition agent also sees no project context — this directly degrades technical task quality. Escalate as **FAIL**.
+**Project description present** — If `project.description` is empty or shorter than 50 characters, the description is missing or trivially short. The parser captures description from both blockquote lines (`> `) and plain-text paragraphs between the format marker and `**Stakeholders:**`. An empty `project.description` means ido4's decomposition agent also sees no project context — this directly degrades technical task quality. Escalate as **FAIL**.
 
 **Open questions present** — If `project.openQuestions` is an empty array, the `**Open questions:**` bold-label section is missing. Open questions are informational context for downstream — missing them doesn't block decomposition but loses honest uncertainty signals. Escalate as **WARNING** (not FAIL).
 

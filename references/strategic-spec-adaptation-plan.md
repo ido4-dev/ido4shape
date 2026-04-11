@@ -13,7 +13,7 @@ The two-artifact architecture (decided 2026-03-18) splits specification into:
 Format designed: `references/strategic-spec-format.md`
 Example: `references/example-strategic-notification-system.md`
 
-## Pre-Work: Transfer Implementation-Level Assets to ido4-MCP
+## Pre-Work: Transfer Implementation-Level Assets to ido4
 
 Before rewriting ido4shape skills, transfer content that ido4 MCP will need for its side of the pipeline. These assets currently live in ido4shape but belong on the governance/implementation side.
 
@@ -22,7 +22,7 @@ Before rewriting ido4shape skills, transfer content that ido4 MCP will need for 
 - `skills/validate-spec/SKILL.md` — format validation protocol for implementation-ready specs
 - `agents/spec-reviewer.md` — two-stage review protocol (format compliance + quality assessment)
 
-**How:** Adapt framing from "discovery/conversation" to "governance/execution." Create as new skills in ido4-MCP's plugin. Don't copy-paste — rewrite for the MCP audience.
+**How:** Adapt framing from "discovery/conversation" to "governance/execution." Create as new skills in ido4's plugin. Don't copy-paste — rewrite for the MCP audience.
 
 **When:** Before rewriting these skills in ido4shape. The current content is the source material.
 
@@ -158,7 +158,7 @@ Before rewriting ido4shape skills, transfer content that ido4 MCP will need for 
 
 The phases are roughly sequential but some items within phases are independent:
 
-1. **Pre-work** — Transfer assets to ido4-MCP (do this first, before rewriting)
+1. **Pre-work** — Transfer assets to ido4 (do this first, before rewriting)
 2. **Phase 1** — Format foundation (all items can be done in parallel)
 3. **Phase 2** — Composition pipeline (2.1 and 2.2 are coupled; 2.3 and 2.4 are coupled)
 4. **Phase 3** — Quality & validation (3.1 and 3.2 are independent)

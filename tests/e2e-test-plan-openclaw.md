@@ -3,7 +3,7 @@
 **Purpose:** Validate the 5 high-severity observation fixes (OBS-01, 05, 06, 08, 11) against a real project with rich source material.
 
 **Project:** OpenClaw outreach strategy for ido4
-**Source material:** `ido4-MCP/strategy/openclaw-outreach.md` (~240 lines)
+**Source material:** `ido4/strategy/openclaw-outreach.md` (~240 lines)
 **Environment:** Cowork with ido4shape plugin, working folder mounted
 
 ---

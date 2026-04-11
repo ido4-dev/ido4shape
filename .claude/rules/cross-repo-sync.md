@@ -6,14 +6,14 @@ paths:
   - "scripts/release*"
 ---
 
-# Cross-Repo Sync: ido4-MCP → ido4shape
+# Cross-Repo Sync: ido4 → ido4shape
 
-The bundled validator (`dist/spec-validator.js`) is built from `@ido4/spec-format` in ido4-MCP and synced automatically.
+The bundled validator (`dist/spec-validator.js`) is built from `@ido4/spec-format` in ido4 and synced automatically.
 
 ## Automated Pipeline
 
 ```
-ido4-MCP: scripts/release.sh 0.X.0
+ido4: scripts/release.sh 0.X.0
   → bumps version, commits, tags v0.X.0, pushes
   → publish.yml triggers (on tag v*)
     → npm run build + build:bundle + test
@@ -29,7 +29,7 @@ ido4-MCP: scripts/release.sh 0.X.0
 
 ## Infrastructure
 
-- `IDO4SHAPE_DISPATCH_TOKEN` secret in ido4-MCP repo — PAT with `repo` scope for cross-repo dispatch
+- `IDO4SHAPE_DISPATCH_TOKEN` secret in ido4 repo — PAT with `repo` scope for cross-repo dispatch
 - `PAT` secret in ido4shape repo — same PAT, enables PR creation that triggers CI
 - ido4shape org+repo: "Allow GitHub Actions to create and approve pull requests" enabled
 - ido4shape branch protection: required status check = `validate`
