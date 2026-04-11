@@ -57,8 +57,9 @@
         "matcher": "",
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "If specification work happened in this session, ensure the canvas is updated and a session summary has been written."
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/stop-check.sh",
+            "timeout": 5
           }
         ]
       }

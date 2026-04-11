@@ -72,10 +72,17 @@ EOF
 # Stakeholders
 EOF
 
+  # Sentinel for the Stop hook: marks the moment this Claude session began.
+  # Touched AFTER all workspace files so it is strictly newer than them at session start.
+  touch "$WORKSPACE/.session-start"
+
   echo "ido4shape workspace created in project directory."
   echo "Canvas initialized with Understanding Assessment (all dimensions: not started)."
   exit 0
 fi
+
+# Existing workspace — refresh the session-start sentinel for the Stop hook.
+touch "$WORKSPACE/.session-start"
 
 # === EXISTING WORKSPACE — OUTPUT CONTEXT ===
 echo "=== ido4shape session context ==="

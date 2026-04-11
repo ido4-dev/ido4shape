@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.11] — 2026-04-11
+
+Fix Stop hook loop in empty-folder exploration sessions
+
+### Added
+- Automatic CHANGELOG generation from git commits on release
+- Expanded validation test suite (130 → 199 checks)
+
+### Changed
+- Updated spec-validator to v0.7.1 with improved description formatting
+- Documentation reorganized: public content in docs/, internal planning in private/
+- Developer guide simplified (CLAUDE.md: 291 → 95 lines)
+
+### Fixed
+- Stop hook loop in empty-folder exploration sessions
+- Validation checks for description and openQuestions field presence
+- Cowork installation instructions updated to match current UI
+- Release script verifies Claude CLI authentication before running
+- Marketplace manifest syncs properly on release
+
 ## [0.4.10] — 2026-04-09
 
 fix: close NEW-06 and NEW-14 — role-transition onboarding and stakeholder-brief next steps
