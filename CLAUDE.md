@@ -63,7 +63,8 @@ CAPABILITY:  /^### ([A-Z]{2,5}-\d{2,3}):\s*(.+)$/
 
 ```bash
 bash tests/validate-plugin.sh                                    # 203 checks
-bash scripts/release.sh [patch|minor|major] "Release message"   # bump + changelog + push
+bash scripts/release.sh [patch|minor|major] "Release message"        # bump + changelog + push
+bash scripts/release.sh --yes [patch|minor|major] "Release message"  # non-interactive (agent/CI)
 ```
 
 **Release:** bumps `plugin.json` version, auto-generates CHANGELOG (Haiku LLM with deterministic fallback), commits, pushes. CI syncs to marketplace automatically.
@@ -74,6 +75,17 @@ bash scripts/release.sh [patch|minor|major] "Release message"   # bump + changel
 These are separate systems — CLI commands do NOT update Cowork and vice versa.
 
 **After e2e tests:** produce a structured report in `reports/`. See existing reports for format.
+
+## ido4 Suite Coordination
+
+This repo is part of the ido4 suite. Cross-repo release patterns, audit tooling, and coordination docs live in `~/dev-projects/ido4-suite/`:
+
+- `release-architecture.md` — the canonical 4-layer release pattern this repo follows (reference implementation)
+- `scripts/audit-suite.sh` — verifies all repos against the pattern. Run after any release/CI changes: `bash ~/dev-projects/ido4-suite/scripts/audit-suite.sh`
+- `PLAN.md` — master plan tracking in-progress cross-repo work
+- `cross-repo-connections.md` — dispatch map, shared secrets, trust boundaries
+
+Before changing release scripts, CI workflows, or cross-repo dispatch: read `release-architecture.md` first. After changes: run the audit script. Also see `.claude/rules/cross-repo-sync.md` for the bundled validator sync flow specifically.
 
 ## Cowork Compatibility Rules
 
