@@ -1,12 +1,23 @@
 #!/bin/bash
 # Release script: bump version, update changelog, commit, push ido4shape.
 # Marketplace sync happens automatically via sync-marketplace.yml CI workflow.
-# Usage: bash scripts/release.sh [patch|minor|major] "Release message"
+# Usage: bash scripts/release.sh [--yes] [patch|minor|major] "Release message"
 # Default: patch
+#
+# Flags:
+#   --yes   Auto-confirm warnings (for agent/CI use). Errors still abort.
 
 set -e
 
 PLUGIN_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+YES_FLAG=false
+while [[ "${1:-}" == --* ]]; do
+  case "$1" in
+    --yes) YES_FLAG=true; shift ;;
+    *) echo "Unknown flag: $1"; exit 1 ;;
+  esac
+done
 
 BUMP_TYPE="${1:-patch}"
 MESSAGE="${2:-Release}"
@@ -43,9 +54,13 @@ LATEST_NPM=$(npm view @ido4/spec-format version 2>/dev/null || echo "unknown")
 if [ "$BUNDLED_VERSION" != "$LATEST_NPM" ] && [ "$LATEST_NPM" != "unknown" ]; then
   echo "WARNING: Bundled spec-validator is v$BUNDLED_VERSION, latest on npm is v$LATEST_NPM"
   echo "Consider running: scripts/update-validator.sh $LATEST_NPM"
-  read -p "Continue anyway? [y/N] " -n 1 -r
-  echo
-  [[ $REPLY =~ ^[Yy]$ ]] || exit 1
+  if [ "$YES_FLAG" = "true" ]; then
+    echo "  --yes flag: proceeding despite validator drift"
+  else
+    read -p "Continue anyway? [y/N] " -n 1 -r
+    echo
+    [[ $REPLY =~ ^[Yy]$ ]] || exit 1
+  fi
 fi
 
 echo "Pre-flight: spec-validator v$BUNDLED_VERSION ✓"
