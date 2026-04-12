@@ -87,6 +87,8 @@ This repo is part of the ido4 suite. Cross-repo release patterns, audit tooling,
 
 Before changing release scripts, CI workflows, or cross-repo dispatch: read `release-architecture.md` first. After changes: run the audit script. Also see `.claude/rules/cross-repo-sync.md` for the bundled validator sync flow specifically.
 
+Before writing or auditing skills, agents, or prompts: read `docs/prompt-strategy.md` first. It defines degrees of freedom, rules vs principles, language guidance for Opus 4.5/4.6, skill architecture patterns, and the two-layer validation pattern.
+
 ## Cowork Compatibility Rules
 
 - **No XML tags in SKILL.md** — triggers injection defense. Use markdown headers.
