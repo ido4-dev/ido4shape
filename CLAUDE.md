@@ -80,10 +80,10 @@ These are separate systems — CLI commands do NOT update Cowork and vice versa.
 
 This repo is part of the ido4 suite. Cross-repo release patterns, audit tooling, and coordination docs live in `~/dev-projects/ido4-suite/`:
 
-- `release-architecture.md` — the canonical 4-layer release pattern this repo follows (reference implementation)
+- `docs/release-architecture.md` — the canonical 4-layer release pattern this repo follows (reference implementation)
 - `scripts/audit-suite.sh` — verifies all repos against the pattern. Run after any release/CI changes: `bash ~/dev-projects/ido4-suite/scripts/audit-suite.sh`
 - `PLAN.md` — master plan tracking in-progress cross-repo work
-- `cross-repo-connections.md` — dispatch map, shared secrets, trust boundaries
+- `docs/cross-repo-connections.md` — dispatch map, shared secrets, trust boundaries
 
 Before changing release scripts, CI workflows, or cross-repo dispatch: read `release-architecture.md` first. After changes: run the audit script. Also see `.claude/rules/cross-repo-sync.md` for the bundled validator sync flow specifically.
 

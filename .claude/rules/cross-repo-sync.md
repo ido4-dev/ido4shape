@@ -43,7 +43,7 @@ scripts/update-validator.sh ~/dev-projects/ido4 # from local build
 
 ## See also
 
-- `~/dev-projects/ido4-suite/release-architecture.md` — the canonical 4-layer release pattern that all active ido4 repos follow (the abstract rule). This file is one specific instance of that pattern.
-- `~/dev-projects/ido4-suite/cross-repo-connections.md` — the suite-wide connection map: every cross-repo dispatch, secret, PAT, and trust boundary across the ido4 ecosystem.
+- `~/dev-projects/ido4-suite/docs/release-architecture.md` — the canonical 4-layer release pattern that all active ido4 repos follow (the abstract rule). This file is one specific instance of that pattern.
+- `~/dev-projects/ido4-suite/docs/cross-repo-connections.md` — the suite-wide connection map: every cross-repo dispatch, secret, PAT, and trust boundary across the ido4 ecosystem.
 - `~/dev-projects/ido4-suite/scripts/audit-suite.sh` — runs the canonical-pattern audit against every active ido4 repo. Use it when you change anything in `.github/`, `scripts/release.sh`, `scripts/update-validator*`, or `dist/` to verify the change doesn't introduce a regression.
 - `~/dev-projects/ido4/architecture/bundled-validator-architecture.md` — the original architectural spec for the bundled validator design (now implemented). Useful for understanding *why* the current approach was chosen over the previous npm-runtime-install approach.
