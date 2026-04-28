@@ -12,9 +12,9 @@ Either way — every specification tool assumes you already know what to build. 
 
 ## Installation
 
-**Cowork (Claude Desktop):**
+> ido4shape is also published in Anthropic's community plugin marketplace (`anthropics/claude-plugins-community`), but the listing there is pinned to an older release and there is no maintainer-side update path. For the most recent release, install from the `ido4-dev/ido4-plugins` marketplace below — it tracks `main` automatically and supports auto-sync.
 
-*Pending Anthropic marketplace approval. Once approved, ido4shape will be available directly in the Anthropic & Partners directory. Until then, install via personal marketplace:*
+### Cowork (Claude Desktop)
 
 1. Click **Customize** in the left sidebar
 2. Under **Personal plugins**, click the **+** button
@@ -22,7 +22,12 @@ Either way — every specification tool assumes you already know what to build. 
 4. Enter `ido4-dev/ido4-plugins` and click **Sync**
 5. Open the Directory, go to the **Personal** tab, and click **+** on ido4shape to install
 
-**Claude Code (CLI):**
+> **Tip:** In the marketplace card menu (•••), enable **Sync automatically** to receive new releases without lifting a finger.
+
+### Claude Code (CLI)
+
+For developer audiences using Claude Code in the terminal:
+
 ```bash
 claude plugin marketplace add ido4-dev/ido4-plugins
 claude plugin install ido4shape@ido4-plugins
