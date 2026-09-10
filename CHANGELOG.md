@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.14] — 2026-09-10
+
+Hook reliability: bounded Stop hook, scoped phase gate, correct CLI workspace path
+
+### Added
+- Non-interactive release flag (`--yes`) for automation in agent and CI contexts
+
+### Changed
+- Spec-validator updated to v0.13.1 with latest format support
+- Phase gate logic refined for improved hook isolation
+- Workspace path detection improved for accurate session initialization
+
+### Fixed
+- Stop hook bounds checking to prevent indefinite waits
+- Stale skill references in SessionStart hooks
+- Marketplace sync workflow race condition during releases
+
 ## [0.4.13] — 2026-04-11
 
 Add local/remote sync pre-flight check with detailed remediation messages
