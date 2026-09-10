@@ -3,6 +3,7 @@
 # in this session and no session summary has been written yet.
 #
 # Silent (allow stop) when:
+#   - Claude is already continuing from a previous Stop block (stop_hook_active)
 #   - no workspace exists
 #   - no sentinel (workspace pre-dates this fix) — fail open, allow stop
 #   - no workspace files newer than the session-start sentinel
@@ -11,6 +12,15 @@
 # Block (continue with reminder) when:
 #   - canvas/decisions/tensions/stakeholders has been touched this session
 #   - AND no session summary newer than sentinel exists yet
+
+# Claude Code sets stop_hook_active when it is ALREADY continuing because of a
+# previous Stop hook block. Honour it: blocking again from here is what turns a
+# single reminder into an unbreakable loop when the summary cannot be written
+# where this script looks for it.
+INPUT=$(cat 2>/dev/null || true)
+if printf '%s' "$INPUT" | grep -qE '"stop_hook_active"[[:space:]]*:[[:space:]]*true'; then
+  exit 0
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 

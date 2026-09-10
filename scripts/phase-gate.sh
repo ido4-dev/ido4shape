@@ -28,7 +28,10 @@ if [ $? -ne 0 ] || [ ! -f "$WORKSPACE/canvas.md" ]; then
 fi
 
 # Check for insufficient understanding
-NOT_READY=$(grep -i "not started\|: thin" "$WORKSPACE/canvas.md" 2>/dev/null | head -3)
+# Only the Understanding Assessment block decides readiness. Scanning the whole
+# canvas would let the words "not started" in ordinary project prose block a write.
+ASSESSMENT=$(sed -n '/^## Understanding Assessment/,/^## [^U]/p' "$WORKSPACE/canvas.md" 2>/dev/null)
+NOT_READY=$(printf '%s\n' "$ASSESSMENT" | grep -i "not started\|: thin" | head -3)
 
 if [ -n "$NOT_READY" ]; then
   REASONS=$(echo "$NOT_READY" | sed 's/^- //' | tr '\n' '; ')

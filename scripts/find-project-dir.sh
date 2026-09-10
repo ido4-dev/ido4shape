@@ -15,6 +15,8 @@ if [ "${CLAUDE_CODE_IS_COWORK}" = "1" ] && [ -d "/sessions" ]; then
   done
 fi
 
-# Claude Code CLI: use current directory
-echo "$(pwd)"
+# Claude Code CLI: use current directory.
+# Trailing slash matters: callers append ".ido4shape" directly, and the Cowork
+# branch above yields a trailing slash from the glob.
+echo "$(pwd)/"
 exit 0

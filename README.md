@@ -1,6 +1,6 @@
 # ido4shape
 
-A specification discovery plugin primarily designed for [Cowork](https://claude.com/product/cowork), Anthropic's agentic desktop application — though it also works in Claude Code.
+A specification discovery plugin primarily designed for [Cowork](https://claude.com/product/cowork), the agentic mode inside Claude — though it also works in Claude Code.
 
 ido4shape is like having a principal consultant inside Claude — it reads your docs, probes your assumptions, tracks stakeholder tensions across sessions, and produces the kind of structured strategic specification that usually takes weeks of consulting.
 
@@ -12,17 +12,18 @@ Either way — every specification tool assumes you already know what to build. 
 
 ## Installation
 
-> ido4shape is also published in Anthropic's community plugin marketplace (`anthropics/claude-plugins-community`), but the listing there is pinned to an older release and there is no maintainer-side update path. For the most recent release, install from the `ido4-dev/ido4-plugins` marketplace below — it tracks `main` automatically and supports auto-sync.
+> ido4shape is also published in Anthropic's community plugin marketplace (`anthropics/claude-plugins-community`), but that listing is pinned to a fixed commit with no maintainer-side update path, so it will not follow future releases. For the most recent release, install from the `ido4-dev/ido4-plugins` marketplace below — it tracks `main` automatically and supports auto-sync.
 
 ### Cowork (Claude Desktop)
 
-1. Click **Customize** in the left sidebar
-2. Under **Personal plugins**, click the **+** button
-3. Select **Create plugin** → **Add marketplace**
-4. Enter `ido4-dev/ido4-plugins` and click **Sync**
-5. Open the Directory, go to the **Personal** tab, and click **+** on ido4shape to install
+1. Open **Customize** in the sidebar and select the **Plugins** tab
+2. Click **Add** (top right), then **Add marketplace**
+3. Enter `ido4-dev/ido4-plugins` in the **URL** field and click **Sync**
+4. With the **Yours** tab selected, search for `ido4` and click **Add** next to **ido4shape**
 
-> **Tip:** In the marketplace card menu (•••), enable **Sync automatically** to receive new releases without lifting a finger.
+> The Add marketplace dialog shows a red trust warning for any marketplace not operated by Anthropic. That is expected for every third-party marketplace, not a problem with this one.
+>
+> **Sync automatically** is enabled by default, so new releases arrive without any action.
 
 ### Claude Code (CLI)
 
@@ -37,12 +38,12 @@ claude plugin install ido4shape@ido4-plugins
 
 1. **Prepare a project folder** with any materials you have — PRDs, meeting notes, architecture docs, research. You can also start with nothing.
 2. **Start a session:**
-   - **Cowork:** Click **"Work in a project"** at the bottom of the chat input and select your project folder. Then type `/create-spec my-project` or pick from the "Get to work with ido4shape" suggestions.
+   - **Cowork:** Click **"Work in a project or folder"** in the prompt bar and select your project folder. Then type `/create-spec my-project` or pick from the "Get to work with ido4shape" suggestions.
    - **Claude Code:** Navigate to your project folder, start Claude Code, then run `/ido4shape:create-spec my-project`
 3. **Have a conversation** — the agent reads your materials, asks questions, and builds understanding. Stop and resume anytime; everything is saved.
 4. **When ready**, run `/synthesize-spec` to produce the formal spec
 
-> **Cowork users:** Always select a project folder via "Work in a project" before starting. Without a folder selected, the plugin won't work.
+> **Cowork users:** Always select a project folder via "Work in a project or folder" before starting, and make sure the message box is in **Cowork** mode rather than Chat. Without a folder selected, the plugin won't work.
 
 ## Example Workflows
 
