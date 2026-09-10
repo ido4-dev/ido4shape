@@ -21,13 +21,13 @@ If a spec artifact exists (`*-spec.md`), reviewers assess the artifact and a fou
 
 Launch all reviewers in parallel using the Agent tool:
 
-1. **Technical Feasibility** (`agents/technical-reviewer.md`) — Architecture coherence, strategic risk honesty, cross-cutting concern completeness, hidden dependencies, constraint realism.
+1. **Technical Feasibility** (`${CLAUDE_SKILL_DIR}/../../agents/technical-reviewer.md`) — Architecture coherence, strategic risk honesty, cross-cutting concern completeness, hidden dependencies, constraint realism.
 
-2. **Scope Alignment** (`agents/scope-reviewer.md`) — North star alignment, constraint compliance, non-goal violations, coverage gaps, priority coherence.
+2. **Scope Alignment** (`${CLAUDE_SKILL_DIR}/../../agents/scope-reviewer.md`) — North star alignment, constraint compliance, non-goal violations, coverage gaps, priority coherence.
 
-3. **Dependency Audit** (`agents/dependency-auditor.md`) — Graph integrity, critical path analysis, cross-group dependency health, parallelization opportunities, hidden dependencies.
+3. **Dependency Audit** (`${CLAUDE_SKILL_DIR}/../../agents/dependency-auditor.md`) — Graph integrity, critical path analysis, cross-group dependency health, parallelization opportunities, hidden dependencies.
 
-4. **Format & Quality** (`agents/spec-reviewer.md`) — Format compliance, description quality, success condition specificity, stakeholder attribution preservation. **Only runs when reviewing an existing spec artifact**, not canvas-only reviews.
+4. **Format & Quality** (`${CLAUDE_SKILL_DIR}/../../agents/spec-reviewer.md`) — Format compliance, description quality, success condition specificity, stakeholder attribution preservation. **Only runs when reviewing an existing spec artifact**, not canvas-only reviews.
 
 ## Synthesis
 
